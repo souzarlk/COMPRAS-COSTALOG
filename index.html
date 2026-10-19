@@ -1773,6 +1773,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
       renderPurchases();updateLaunchNavCount();updateMyOrdersBadge();
       if(!userOrdersView.classList.contains("hidden"))renderMyOrders();
       if(launchesView&&!launchesView.classList.contains("hidden")){initializeLaunchFilters();renderLaunches();}
+      if(analyticsView&&!analyticsView.classList.contains("hidden"))renderAnalytics();
     }
   });
 
