@@ -513,7 +513,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
 @keyframes costalogPulse{0%,100%{box-shadow:0 0 0 0 rgba(227,6,19,0)}50%{box-shadow:0 0 0 5px rgba(227,6,19,.10)}}
 #app .page-main .container>section:not(.hidden){animation:costalogPageIn .42s cubic-bezier(.2,.75,.25,1) both}
 button,.home-card,.launch-summary-card,.purchase-item,.analytics-chart-card,.user-order-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease}
-button:hover:not(:disabled){transform:translateY(-1px)}button:active:not(:disabled){transform:scale(.985)}
+button:hover:not(:disabled){transform:translateY(-1px)}button:active:not(:disabled){transform:scale(.985)}button svg{transition:transform .25s ease}button:hover:not(:disabled) svg{transform:translateX(2px)}
 .home-icon{animation:costalogFloat 4s ease-in-out infinite}.home-icon svg{transition:transform .3s ease}.home-card:hover .home-icon svg{transform:rotate(-7deg) scale(1.08)}
 .purchase-item:hover,.user-order-card:hover,.analytics-chart-card:hover{transform:translateY(-2px);box-shadow:0 16px 35px rgba(0,0,0,.075);border-color:rgba(227,6,19,.28)}
 .launch-summary-card:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(0,0,0,.07)}
@@ -542,9 +542,9 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     <div class="login-card-top"><span class="login-dot"></span><span>SISTEMA COSTALOG</span></div>
     <span class="eyebrow">ACESSO AO PORTAL</span>
     <h1>Portal de<br><span>Compras</span></h1>
-    <p>Acesso aberto temporariamente para configuração do Portal de Compras.</p>
+    <p>Entre pelo Portal Costalog e abra esta ferramenta pelo menu autorizado. Sua sessão será validada pelo portal principal.</p>
     <div id="loginSessionNotice" class="login-session-notice" role="status">Acesse esta ferramenta pelo Portal Costalog. O seu login e as permissões serão fornecidos pelo portal principal.</div>
-    <div class="login-security"><span class="security-icon">⌁</span><span>Login demonstrativo • Acesso interno</span></div>
+    <div class="login-security"><span class="security-icon">⌁</span><span>SESSÃO CENTRALIZADA • ACESSO POR PERMISSÃO</span></div>
   </div>
   <div class="login-footer">Portal de Compras Costalog — Desenvolvido pela equipe de informática.</div>
 </section>
@@ -911,6 +911,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     portalRole="";portalIdentity={id:"",email:"",name:"",key:""};activeUserName="";savedUser="";
     app.classList.add("hidden");loginScreen.classList.remove("hidden");currentRoleLabel.textContent="Aguardando acesso do portal";
     document.getElementById("requesterName").value="";document.getElementById("requesterName").readOnly=true;
+    requestForm.reset();closeReceipt();
   }
   function applyPortalSession(rawSession){
     var session=rawSession&&rawSession.session?rawSession.session:rawSession||{},user=session.user||session.profile||session;
