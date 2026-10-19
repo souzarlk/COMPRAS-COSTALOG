@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e30613">
+<title>Portal de Compras | Costalog</title>
+<style>
+:root{--red:#e30613;--red-dark:#b8040f;--ink:#171717;--muted:#747474;--line:#e4e4e7;--paper:#fff;--canvas:#f5f5f6;--shadow:0 18px 50px rgba(0,0,0,.08);font-synthesis:none}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0;scroll-behavior:smooth}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--canvas)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(227,6,19,.22);outline-offset:2px}
+.hidden{display:none!important}
+.login-screen{min-height:100vh;position:relative;display:grid;place-items:center;padding:112px 22px 82px;background:radial-gradient(circle at 50% 44%,rgba(255,255,255,.09),transparent 35%),linear-gradient(135deg,#a8000d 0%,#e30613 47%,#b3000d 100%);overflow:hidden;isolation:isolate}
+.login-screen:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.08) 48%,transparent 52%);transform:translateX(-100%);animation:scan 7s linear infinite}
+@keyframes scan{to{transform:translateX(100%)}}
+.matrix-layer{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.34}
+.login-glow{position:absolute;z-index:0;border-radius:50%;pointer-events:none;filter:blur(6px)}
+.login-glow-one{width:430px;height:430px;top:-230px;right:-130px;background:rgba(255,255,255,.11)}
+.login-glow-two{width:380px;height:380px;bottom:-260px;left:-160px;background:rgba(70,0,0,.18)}
+.login-brand{position:absolute;z-index:4;top:25px;left:30px;width:132px;height:72px;display:flex;align-items:center}
+.login-brand img{width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1)}
+.login-card{width:min(510px,100%);position:relative;z-index:3;padding:42px 44px 32px;background:rgba(255,255,255,.985);border:1px solid rgba(255,255,255,.8);border-radius:25px;box-shadow:0 34px 100px rgba(72,0,0,.38);backdrop-filter:blur(12px)}
+.login-card-top{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;font-weight:900;letter-spacing:.16em;margin-bottom:27px}
+.login-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(227,6,19,.09)}
+.eyebrow{font-size:10px;letter-spacing:.17em;font-weight:900;color:#777}
+.login-card h1{margin:10px 0 12px;font-size:39px;line-height:1.02;letter-spacing:-.045em;color:var(--red)}
+.login-card h1 span{color:var(--red)}
+.login-card p{margin:0 0 26px;color:#6e6e6e;line-height:1.65;font-size:13px}
+.login-field{margin-top:16px}
+.login-field label,.field label{display:block;font-size:12px;font-weight:800;margin-bottom:8px}
+.login-field label{color:#393939}
+.login-field input{width:100%;border:1px solid #d3d3d3;outline:0;border-radius:12px;padding:14px 14px;background:#fff;color:#171717;transition:border .2s,box-shadow .2s}
+.login-field input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(227,6,19,.09)}
+.password-wrap{display:flex;border:1px solid #d3d3d3;border-radius:12px;overflow:hidden;background:#fff;transition:.2s}
+.password-wrap:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(227,6,19,.09)}
+.password-wrap input{border:0!important;box-shadow:none!important;border-radius:0;width:100%;min-width:0}
+.password-wrap button{width:49px;flex:0 0 49px;border:0;background:transparent;color:#777;display:grid;place-items:center}
+.eye-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.eye-closed{display:none}.password-wrap button.visible .eye-open{display:none}.password-wrap button.visible .eye-closed{display:block}
+.primary-btn{border:0;background:linear-gradient(135deg,var(--red),#c8000e);color:#fff;padding:14px 18px;border-radius:11px;font-weight:900;transition:transform .2s,box-shadow .2s,background .2s;box-shadow:0 10px 24px rgba(227,6,19,.2)}
+.primary-btn:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 13px 28px rgba(227,6,19,.25)}
+.login-submit{display:flex;justify-content:center;align-items:center;gap:14px;width:100%;margin-top:22px}
+.btn-arrow{font-size:20px;line-height:0;transition:transform .2s}.login-submit:hover .btn-arrow{transform:translateX(4px)}
+.login-error{min-height:17px;color:#c00000;font-size:11px;margin-top:9px}
+.login-security{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:20px;color:#8a8a8a;font-size:10px}
+.security-icon{color:var(--red);font-size:16px}
+.login-footer{position:absolute;z-index:4;bottom:18px;left:20px;right:20px;text-align:center;color:rgba(255,255,255,.82);font-size:10px}
+.app-shell{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#f7f7f8 0%,#f2f2f3 100%);transition:background .2s,color .2s}
+.topbar{background:rgba(17,17,17,.98);color:#fff;position:sticky;top:0;z-index:10;box-shadow:0 7px 28px rgba(0,0,0,.14);backdrop-filter:blur(10px)}
+.topbar-inner{width:min(1160px,100%);margin:auto;padding:12px 23px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand-lockup{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-lockup img{display:block;width:57px;height:47px;object-fit:contain;filter:brightness(0) invert(1);flex:0 0 auto}
+.brand-lockup strong{display:block;font-size:14px;letter-spacing:-.01em}
+.brand-lockup span{display:block;color:#a6a6a6;font-size:10px;margin-top:3px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.role-badge{border:1px solid #393939;background:#202020;color:#eee;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.08em;white-space:nowrap}
+.theme-toggle,.logout-btn{border:1px solid #424242;border-radius:9px;color:#f2f2f2;background:#222;padding:9px 11px;font-size:12px;font-weight:800}
+.theme-toggle{width:38px;height:38px;display:grid;place-items:center;font-size:18px;padding:0}
+.theme-toggle:hover,.logout-btn:hover{border-color:#777;background:#2b2b2b}
+.page-main{flex:1;width:100%}
+.container{width:min(1060px,100%);margin:0 auto;padding:42px 22px 70px}
+.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:27px}
+.eyebrow.red{color:var(--red)}
+.page-heading h2{font-size:clamp(30px,4vw,43px);line-height:1.05;letter-spacing:-.045em;margin:8px 0 8px}
+.page-heading p{font-size:13px;color:var(--muted);line-height:1.6;margin:0;max-width:650px}
+.home-card{position:relative;overflow:hidden;min-height:350px;padding:48px 42px;background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 225px;align-items:center;gap:28px}
+.home-card:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,var(--red),#ff6972)}
+.home-copy{max-width:600px}
+.home-icon{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:#fff0f1;color:var(--red);margin-bottom:22px}
+.home-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.home-card h3{font-size:clamp(23px,3vw,31px);line-height:1.15;letter-spacing:-.035em;margin:0 0 11px}
+.home-card p{font-size:13px;color:var(--muted);line-height:1.75;margin:0 0 25px;max-width:530px}
+.home-card .primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:15px 20px}
+.home-card .primary-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.home-side{border:1px solid #f0d2d4;background:linear-gradient(145deg,#fff8f8,#fff);border-radius:18px;padding:24px;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:15px}
+.side-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;color:var(--red);background:#ffe8ea;font-weight:950;font-size:18px}
+.home-side strong{font-size:13px;line-height:1.45}
+.home-side span{font-size:11px;line-height:1.65;color:#777}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}
+.back-btn{border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);padding:10px 13px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:8px}
+.back-btn:hover{border-color:#c8c8c8}
+.section-head h2{margin:0;font-size:clamp(24px,3.2vw,32px);letter-spacing:-.035em}
+.section-head p{margin:6px 0 0;font-size:12px;color:var(--muted)}
+.request-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:var(--shadow)}
+.form-class{padding:0;margin:0;border:0;min-width:0}
+.form-class+.form-class{border-top:1px solid var(--line);margin-top:27px;padding-top:25px}
+.class-heading{display:flex;align-items:center;gap:11px;margin:0 0 20px}
+.class-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:#fff0f1;color:var(--red);font-size:16px;font-weight:900}
+.class-heading h3{margin:0;font-size:16px;letter-spacing:-.015em}
+.class-heading p{margin:3px 0 0;color:var(--muted);font-size:10px}
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 16px}
+.form-grid.order-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+.field label{color:var(--ink)}
+.required{color:var(--red);font-weight:900}
+.field input,.field select,.field textarea{display:block;width:100%;min-width:0;border:1px solid #d6d6d9;border-radius:10px;padding:12px 13px;background:#fff;color:#191919;outline:0;transition:border .2s,box-shadow .2s}
+.field input,.field select{min-height:44px}
+.field textarea{min-height:106px;resize:vertical;line-height:1.55}
+.field input::placeholder,.field textarea::placeholder{color:#a2a2a7}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(227,6,19,.09)}
+.field small{display:block;color:var(--muted);font-size:10px;margin-top:6px;line-height:1.45}
+.form-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px;padding-top:24px}
+.secondary-btn{border:1px solid #d5d5d8;background:var(--paper);color:var(--ink);border-radius:10px;padding:13px 16px;font-size:12px;font-weight:850;transition:.2s}
+.secondary-btn:hover{border-color:#aaa;background:#f9f9f9}
+.form-actions .primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px}
+.form-actions .primary-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.form-note{font-size:10px;color:var(--muted);margin:14px 0 0;line-height:1.55}
+.footer{margin-top:auto;border-top:1px solid #e2e2e2;background:#fff;padding:20px 22px;display:flex;justify-content:center;align-items:center;gap:14px;color:#858585;font-size:10px;text-align:center}
+.footer img{width:55px;height:38px;object-fit:contain}
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:18px}
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(5px)}
+.receipt-card{position:relative;width:min(780px,100%);max-height:92vh;overflow:auto;background:var(--paper);color:var(--ink);border-radius:21px;padding:30px;box-shadow:0 28px 90px rgba(0,0,0,.32)}
+.receipt-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:23px}
+.receipt-brand{display:flex;align-items:center;gap:11px}
+.receipt-brand img{width:49px;height:49px;object-fit:contain}
+.receipt-brand span{display:block;font-size:9px;font-weight:900;color:var(--red);letter-spacing:.15em}
+.receipt-brand h2{font-size:21px;letter-spacing:-.025em;margin:4px 0 0}
+.protocol{padding:10px 12px;background:#f7f7f8;border:1px solid #e6e6e8;border-radius:10px;text-align:right;min-width:148px}
+.protocol small{display:block;color:#818189;font-size:8px;font-weight:900;letter-spacing:.12em}
+.protocol strong{display:block;font-size:12px;margin-top:5px;overflow-wrap:anywhere}
+.receipt-success{display:flex;align-items:center;gap:13px;padding:15px 16px;border:1px solid #b9e6ca;border-radius:13px;background:#effaf3;margin-bottom:23px}
+.receipt-check{width:39px;height:39px;flex:0 0 39px;border-radius:50%;display:grid;place-items:center;background:#18a957;color:#fff;font-size:22px;font-weight:900}
+.receipt-success strong{display:block;font-size:13px;color:#147a43}
+.receipt-success p{margin:4px 0 0;font-size:10px;line-height:1.5;color:#557362}
+.receipt-section-label{display:flex;align-items:center;gap:8px;margin:22px 0 11px;font-size:11px;font-weight:950;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.receipt-section-label:after{content:"";height:1px;background:var(--line);flex:1}
+.receipt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.receipt-item{min-height:68px;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#fcfcfc;min-width:0}
+.receipt-item.full{grid-column:1/-1}
+.receipt-item small{display:block;color:#85858b;font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+.receipt-item strong{display:block;font-size:12px;line-height:1.55;overflow-wrap:anywhere;white-space:pre-wrap}
+.receipt-meta{margin-top:17px;padding-top:14px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:9px;flex-wrap:wrap}
+.receipt-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:22px}
+.receipt-actions .primary-btn{min-width:105px}
+body.dark-mode{--ink:#f1f1f3;--muted:#a7a7b0;--line:#38383f;--paper:#1b1b20;--canvas:#121216;--shadow:0 18px 50px rgba(0,0,0,.22)}
+body.dark-mode .app-shell{background:linear-gradient(180deg,#151519 0%,#111115 100%)}
+body.dark-mode .home-card,body.dark-mode .request-card{border-color:#33333a}
+body.dark-mode .home-side{background:linear-gradient(145deg,#291a1c,#201a1b);border-color:#573136}
+body.dark-mode .home-side span{color:#b3b3bb}
+body.dark-mode .home-icon,body.dark-mode .class-icon{background:#351d20;color:#ff858c}
+body.dark-mode .side-mark{background:#3c2024;color:#ff9298}
+body.dark-mode .field input,body.dark-mode .field select,body.dark-mode .field textarea{background:#131317;border-color:#414149;color:#f4f4f6}
+body.dark-mode .field input::placeholder,body.dark-mode .field textarea::placeholder{color:#85858e}
+body.dark-mode .back-btn,body.dark-mode .secondary-btn{background:#222228;color:#f2f2f4;border-color:#42424a}
+body.dark-mode .secondary-btn:hover{background:#2a2a31}
+body.dark-mode .footer{background:#151519;border-color:#303036;color:#aaa}
+body.dark-mode .protocol{background:#24242a;border-color:#404048}
+body.dark-mode .protocol small{color:#a0a0aa}
+body.dark-mode .receipt-item{background:#202026}
+body.dark-mode .receipt-item small{color:#a0a0aa}
+body.dark-mode .receipt-success{background:#192c22;border-color:#2d6648}
+body.dark-mode .receipt-success strong{color:#72d39b}
+body.dark-mode .receipt-success p{color:#b0cabb}
+@media(max-width:760px){
+ .container{padding:30px 16px 48px}
+ .page-heading{align-items:flex-start;flex-direction:column}
+ .home-card{grid-template-columns:1fr;padding:30px 26px;gap:22px}
+ .home-side{min-height:0;padding:17px;display:grid;grid-template-columns:38px 1fr;column-gap:12px;align-items:center}
+ .home-side .side-mark{grid-row:span 2}
+ .home-side strong{align-self:end}.home-side span{align-self:start}
+ .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .topbar-inner{padding:11px 15px}.role-badge{display:none}
+}
+@media(max-width:540px){
+ .login-screen{padding:94px 15px 75px}
+ .login-brand{top:18px;left:17px;width:106px;height:55px}
+ .login-card{padding:31px 24px 25px;border-radius:20px}
+ .login-card h1{font-size:34px}
+ .login-card-top{margin-bottom:22px}
+ .login-footer{font-size:9px}
+ .topbar-inner{gap:10px}.brand-lockup{gap:8px}.brand-lockup img{width:43px;height:40px}.brand-lockup strong{font-size:12px}.brand-lockup span{font-size:9px}
+ .logout-btn{padding:9px 10px;font-size:11px}
+ .container{padding:27px 13px 40px}
+ .home-card{padding:25px 22px}
+ .form-grid,.form-grid.order-grid{grid-template-columns:1fr}
+ .request-card{padding:21px 17px}
+ .form-actions{align-items:stretch;flex-direction:column-reverse}
+ .form-actions button{width:100%}
+ .section-head{align-items:flex-start;flex-direction:column-reverse}
+ .section-head .back-btn{align-self:flex-start}
+ .receipt-card{padding:21px 16px;border-radius:17px}
+ .receipt-topline{flex-direction:column}
+ .protocol{text-align:left;width:100%}
+ .receipt-grid{grid-template-columns:1fr}
+ .receipt-item.full{grid-column:auto}
+ .receipt-actions{flex-direction:column-reverse}
+ .receipt-actions button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-screen" aria-label="Acesso ao portal">
+  <canvas class="matrix-layer" id="matrixLayer" aria-hidden="true"></canvas>
+  <div class="login-glow login-glow-one" aria-hidden="true"></div><div class="login-glow login-glow-two" aria-hidden="true"></div>
+  <div class="login-brand"><img src="https://raw.githubusercontent.com/souzarlk/Cerificados-Costalog/main/assets/logo-costalog-white.svg" alt="Costalog"></div>
+  <div class="login-card">
+    <div class="login-card-top"><span class="login-dot"></span><span>SISTEMA COSTALOG</span></div>
+    <span class="eyebrow">ACESSO AO PORTAL</span>
+    <h1>Portal de<br><span>Compras</span></h1>
+    <p>Acesse o portal para solicitar materiais, peças e serviços à equipe de Compras.</p>
+    <form id="loginForm">
+      <div class="login-field"><label for="loginName">Nome do funcionário</label><input id="loginName" name="name" type="text" placeholder="Digite seu nome" autocomplete="name" required maxlength="100"></div>
+      <div class="login-field"><label for="loginPassword">Senha de acesso</label><div class="password-wrap"><input id="loginPassword" name="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required><button type="button" id="togglePassword" aria-label="Mostrar senha" title="Mostrar senha"><svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.8"></circle></svg><svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 6.2A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a17 17 0 0 1-3.2 3.7"></path><path d="M6.1 6.8C3.8 8.3 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.8-.3 4-.8"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path></svg></button></div></div>
+      <button class="primary-btn login-submit" type="submit"><span>Entrar no portal</span><span class="btn-arrow">→</span></button>
+      <div id="loginError" class="login-error" role="status" aria-live="polite"></div>
+    </form>
+    <div class="login-security"><span class="security-icon">⌁</span><span>Acesso interno • Portal de Compras</span></div>
+  </div>
+  <div class="login-footer">Portal de Compras Costalog — Desenvolvido pela equipe de informática.</div>
+</section>
+
+<div id="app" class="app-shell hidden">
+  <header class="topbar"><div class="topbar-inner">
+    <div class="brand-lockup"><img src="https://raw.githubusercontent.com/souzarlk/Cerificados-Costalog/main/assets/logo-costalog-white.svg" alt="Costalog"><div><strong>Portal de Compras</strong><span>Solicitações e acompanhamento</span></div></div>
+    <div class="top-actions"><span class="role-badge">ÁREA DO SOLICITANTE</span><button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo claro e escuro" title="Alternar tema">☾</button><button id="logoutBtn" class="logout-btn" type="button">Sair ↗</button></div>
+  </div></header>
+  <main class="page-main"><div class="container">
+    <section id="homeView">
+      <div class="page-heading"><div><span class="eyebrow red">COSTALOG • COMPRAS</span><h2>Solicitações de compra</h2><p>Centralize seus pedidos de materiais, peças e serviços em um só lugar.</p></div></div>
+      <article class="home-card">
+        <div class="home-copy">
+          <div class="home-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 7.5h17l-1.3 13h-14z"></path><path d="M8.5 8V5.8a3.5 3.5 0 0 1 7 0V8"></path><path d="M8.5 12v.5M15.5 12v.5"></path></svg></div>
+          <h3>Precisa de materiais, peças ou serviços?</h3>
+          <p>Preencha uma solicitação com as informações do que sua área precisa. O pedido poderá ser analisado pela equipe de Compras, que avaliará os detalhes e os valores informados.</p>
+          <button id="createRequestBtn" class="primary-btn" type="button">Criar pedido de compra <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
+        </div>
+        <aside class="home-side"><div class="side-mark" aria-hidden="true">✓</div><strong>Pedido organizado desde o início</strong><span>Informe o setor solicitante, a autorização e os detalhes do item para facilitar a análise.</span></aside>
+      </article>
+    </section>
+
+    <section id="requestView" class="hidden">
+      <div class="section-head"><div><span class="eyebrow red">NOVA SOLICITAÇÃO</span><h2 style="margin:7px 0 0">Criar pedido de compra</h2><p>Preencha os campos abaixo para gerar seu comprovante.</p></div><button id="backHomeBtn" class="back-btn" type="button">← Voltar ao início</button></div>
+      <form id="requestForm" class="request-card">
+        <fieldset class="form-class">
+          <div class="class-heading"><span class="class-icon" aria-hidden="true">01</span><div><h3>Cabeçalho</h3><p>Identificação e autorização da solicitação</p></div></div>
+          <div class="form-grid">
+            <div class="field"><label for="requesterName">Nome <span class="required">*</span></label><input id="requesterName" name="requesterName" required maxlength="100" placeholder="Nome do solicitante" autocomplete="name"></div>
+            <div class="field"><label for="requesterSector">Setor <span class="required">*</span></label><input id="requesterSector" name="requesterSector" required maxlength="100" placeholder="Ex.: Operacional, TI, RH"></div>
+            <div class="field"><label for="authorizedBy">Autorizado por <span class="required">*</span></label><select id="authorizedBy" name="authorizedBy" required><option value="">Selecione o responsável</option><option>ALLAN</option><option>GEDIMAR</option><option>MAURO</option><option>ANDRÉ</option><option>ERICK</option><option>CELSO</option><option>JORGE</option><option>THIAGO</option></select></div>
+          </div>
+        </fieldset>
+        <fieldset class="form-class">
+          <div class="class-heading"><span class="class-icon" aria-hidden="true">02</span><div><h3>Pedido</h3><p>Informações sobre o produto ou material solicitado</p></div></div>
+          <div class="form-grid order-grid">
+            <div class="field full"><label for="productName">Produto <span class="required">*</span></label><input id="productName" name="productName" required maxlength="180" placeholder="Descreva o material, peça ou serviço"></div>
+            <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="number" inputmode="decimal" min="0.01" max="999999999" step="0.01" required placeholder="0,00"></div>
+            <div class="field"><label for="suggestedBrand">Marca indicada</label><input id="suggestedBrand" name="suggestedBrand" maxlength="120" placeholder="Marca ou modelo preferido"></div>
+            <div class="field full"><label for="observations">Observação</label><textarea id="observations" name="observations" maxlength="2000" placeholder="Inclua detalhes, quantidade, justificativa ou outras informações relevantes."></textarea></div>
+          </div>
+        </fieldset>
+        <div class="form-actions"><button id="emailNoopForm" class="secondary-btn" type="button">Registrar pedido no email</button><button class="primary-btn" type="submit">Finalizar pedido de compra <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button></div>
+        <p class="form-note">Os campos marcados com <span class="required">*</span> são obrigatórios. Ao finalizar, será gerado um comprovante com os dados desta solicitação.</p>
+      </form>
+    </section>
+  </div></main>
+  <footer class="footer"><img src="https://raw.githubusercontent.com/souzarlk/Cerificados-Costalog/main/assets/logo-costalog.svg" alt="Costalog"><span>Uso interno • Portal de Compras Costalog</span></footer>
+</div>
+
+<div id="receiptModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="receiptHeading">
+  <div class="modal-backdrop"></div>
+  <section class="receipt-card">
+    <div class="receipt-topline"><div class="receipt-brand"><img src="https://raw.githubusercontent.com/souzarlk/Cerificados-Costalog/main/assets/logo-costalog.svg" alt="Costalog"><div><span>COSTALOG • COMPRAS</span><h2 id="receiptHeading">Comprovante do pedido</h2></div></div><div class="protocol"><small>NÚMERO DO PEDIDO</small><strong id="receiptProtocol">PC-00000000</strong></div></div>
+    <div class="receipt-success"><span class="receipt-check">✓</span><div><strong>Pedido de compra registrado com sucesso!</strong><p>Confira abaixo os dados que foram informados na solicitação.</p></div></div>
+    <div class="receipt-section-label">Cabeçalho</div>
+    <div class="receipt-grid">
+      <div class="receipt-item"><small>Nome</small><strong id="receiptName">—</strong></div>
+      <div class="receipt-item"><small>Setor</small><strong id="receiptSector">—</strong></div>
+      <div class="receipt-item full"><small>Autorizado por</small><strong id="receiptAuthorized">—</strong></div>
+    </div>
+    <div class="receipt-section-label">Pedido</div>
+    <div class="receipt-grid">
+      <div class="receipt-item full"><small>Produto</small><strong id="receiptProduct">—</strong></div>
+      <div class="receipt-item"><small>Valor estimado</small><strong id="receiptValue">—</strong></div>
+      <div class="receipt-item"><small>Marca indicada</small><strong id="receiptBrand">—</strong></div>
+      <div class="receipt-item full"><small>Observação</small><strong id="receiptObservations">—</strong></div>
+    </div>
+    <div class="receipt-meta"><span id="receiptDate">Data do registro: —</span><span>Status: Registrado pelo solicitante</span></div>
+    <div class="receipt-actions"><button id="closeReceiptBtn" class="secondary-btn" type="button">Fechar</button><button id="emailNoopReceipt" class="primary-btn" type="button">Registrar pedido no email</button></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var loginScreen=document.getElementById("loginScreen");
+  var app=document.getElementById("app");
+  var loginForm=document.getElementById("loginForm");
+  var loginName=document.getElementById("loginName");
+  var loginPassword=document.getElementById("loginPassword");
+  var loginError=document.getElementById("loginError");
+  var requestForm=document.getElementById("requestForm");
+  var homeView=document.getElementById("homeView");
+  var requestView=document.getElementById("requestView");
+  var receiptModal=document.getElementById("receiptModal");
+  var savedUser="";
+  try { savedUser=sessionStorage.getItem("costalogComprasUsuario")||""; } catch(e) {}
+  try { if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode"); } catch(e) {}
+
+  function showApp(name){
+    savedUser=(name||"").trim();
+    try { sessionStorage.setItem("costalogComprasUsuario",savedUser); } catch(e) {}
+    loginScreen.classList.add("hidden");
+    app.classList.remove("hidden");
+    document.getElementById("requesterName").value=savedUser;
+    document.getElementById("themeToggle").textContent=document.body.classList.contains("dark-mode")?"☀":"☾";
+  }
+  if(savedUser){showApp(savedUser);}
+  loginForm.addEventListener("submit",function(event){
+    event.preventDefault();
+    var name=loginName.value.trim();
+    var password=loginPassword.value;
+    if(!name||!password){loginError.textContent="Informe seu nome e sua senha para continuar.";return;}
+    loginError.textContent="";
+    showApp(name);
+  });
+
+  document.getElementById("togglePassword").addEventListener("click",function(){
+    var showing=loginPassword.type==="text";
+    loginPassword.type=showing?"password":"text";
+    this.classList.toggle("visible",!showing);
+    this.setAttribute("aria-label",showing?"Mostrar senha":"Ocultar senha");
+    this.title=showing?"Mostrar senha":"Ocultar senha";
+  });
+
+  document.getElementById("themeToggle").addEventListener("click",function(){
+    document.body.classList.toggle("dark-mode");
+    var dark=document.body.classList.contains("dark-mode");
+    this.textContent=dark?"☀":"☾";
+    try { localStorage.setItem("costalogComprasTema",dark?"escuro":"claro"); } catch(e) {}
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click",function(){
+    try { sessionStorage.removeItem("costalogComprasUsuario"); } catch(e) {}
+    savedUser="";
+    loginForm.reset();
+    loginError.textContent="";
+    loginScreen.classList.remove("hidden");
+    app.classList.add("hidden");
+    requestForm.reset();
+    closeReceipt();
+    showHome();
+  });
+
+  function showHome(){
+    homeView.classList.remove("hidden");
+    requestView.classList.add("hidden");
+  }
+  function showRequest(){
+    homeView.classList.add("hidden");
+    requestView.classList.remove("hidden");
+    document.getElementById("requesterName").value=savedUser;
+    document.getElementById("requesterSector").focus({preventScroll:true});
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("createRequestBtn").addEventListener("click",showRequest);
+  document.getElementById("backHomeBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
+
+  function formatCurrency(raw){
+    return Number(raw).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  }
+  function currentDate(){
+    return new Date().toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+  }
+  function setText(id,value){
+    document.getElementById(id).textContent=(value&&String(value).trim())?String(value).trim():"Não informado";
+  }
+  function makeProtocol(date){
+    var yyyy=String(date.getFullYear());
+    var mm=String(date.getMonth()+1).padStart(2,"0");
+    var dd=String(date.getDate()).padStart(2,"0");
+    var hh=String(date.getHours()).padStart(2,"0");
+    var mi=String(date.getMinutes()).padStart(2,"0");
+    var ss=String(date.getSeconds()).padStart(2,"0");
+    return "PC-"+yyyy+mm+dd+"-"+hh+mi+ss;
+  }
+  function closeReceipt(){
+    receiptModal.classList.add("hidden");
+  }
+  requestForm.addEventListener("submit",function(event){
+    event.preventDefault();
+    if(!requestForm.reportValidity()) return;
+    var date=new Date();
+    var order={
+      protocolo:makeProtocol(date),
+      nome:document.getElementById("requesterName").value.trim(),
+      setor:document.getElementById("requesterSector").value.trim(),
+      autorizadoPor:document.getElementById("authorizedBy").value,
+      produto:document.getElementById("productName").value.trim(),
+      valorEstimado:Number(document.getElementById("estimatedValue").value),
+      marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
+      observacao:document.getElementById("observations").value.trim(),
+      dataRegistro:date.toISOString(),
+      status:"Registrado"
+    };
+    setText("receiptProtocol",order.protocolo);
+    setText("receiptName",order.nome);
+    setText("receiptSector",order.setor);
+    setText("receiptAuthorized",order.autorizadoPor);
+    setText("receiptProduct",order.produto);
+    setText("receiptValue",formatCurrency(order.valorEstimado));
+    setText("receiptBrand",order.marcaIndicada);
+    setText("receiptObservations",order.observacao);
+    setText("receiptDate","Data do registro: "+currentDate());
+
+    try {
+      var previous=JSON.parse(localStorage.getItem("comprasCostalogPedidosLocais")||"[]");
+      if(!Array.isArray(previous)) previous=[];
+      previous.unshift(order);
+      localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(previous.slice(0,100)));
+    } catch(storageError) {
+      /* O comprovante continua disponível nesta sessão mesmo se o armazenamento local estiver indisponível. */
+    }
+    receiptModal.classList.remove("hidden");
+    document.getElementById("closeReceiptBtn").focus({preventScroll:true});
+  });
+
+  document.getElementById("closeReceiptBtn").addEventListener("click",function(){
+    closeReceipt();
+    requestForm.reset();
+    document.getElementById("requesterName").value=savedUser;
+    showHome();
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape"&&!receiptModal.classList.contains("hidden")) closeReceipt();
+  });
+
+  // Animação decorativa da tela de acesso.
+  var canvas=document.getElementById("matrixLayer");
+  var ctx=canvas.getContext("2d");
+  var columns=[],fontSize=16,animationId=null,lastFrame=0;
+  var chars="01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
+  function resizeMatrix(){
+    var ratio=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.floor(window.innerWidth*ratio);
+    canvas.height=Math.floor(window.innerHeight*ratio);
+    canvas.style.width=window.innerWidth+"px";
+    canvas.style.height=window.innerHeight+"px";
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    columns=Array(Math.ceil(window.innerWidth/fontSize)).fill(0).map(function(){return Math.random()*-40;});
+  }
+  function drawMatrix(time){
+    if(time-lastFrame<55){animationId=requestAnimationFrame(drawMatrix);return;}
+    lastFrame=time;
+    ctx.fillStyle="rgba(120,0,8,0.11)";
+    ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+    ctx.fillStyle="rgba(255,255,255,0.72)";
+    ctx.font=fontSize+"px monospace";
+    columns.forEach(function(y,index){
+      var char=chars.charAt(Math.floor(Math.random()*chars.length));
+      ctx.fillText(char,index*fontSize,y*fontSize);
+      if(y*fontSize>window.innerHeight&&Math.random()>.975) columns[index]=0;
+      else columns[index]=y+0.65;
+    });
+    animationId=requestAnimationFrame(drawMatrix);
+  }
+  if(ctx && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    resizeMatrix();animationId=requestAnimationFrame(drawMatrix);
+    window.addEventListener("resize",resizeMatrix);
+  }
+})();
+</script>
+</body>
+</html>
