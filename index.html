@@ -754,13 +754,21 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
   });
 
   function showHome(){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
+    activeRole="solicitante";
+    currentRoleLabel.textContent="Área do solicitante";
+    roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");
+    document.querySelectorAll(".role-option").forEach(function(option){var selected=option.getAttribute("data-role")==="solicitante";option.classList.toggle("active",selected);option.setAttribute("aria-current",selected?"true":"false");});
     homeView.classList.remove("hidden");
     requestView.classList.add("hidden");
-    if(comprasView) comprasView.classList.add("hidden");
+    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
   }
   function showRequest(){
     homeView.classList.add("hidden");
     requestView.classList.remove("hidden");
+    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
     document.getElementById("requesterName").value=savedUser;
     document.getElementById("requesterSector").focus({preventScroll:true});
     window.scrollTo({top:0,behavior:"smooth"});
@@ -1197,7 +1205,7 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
   }
   function showQuotesPage(){
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
-    comprasView.classList.add("hidden");
+    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quoteEditorView.classList.add("hidden");
     quotesView.classList.remove("hidden");
     refreshQuotes();
@@ -1205,10 +1213,11 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
   }
   function returnToPurchases(){
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
-    quotesView.classList.add("hidden");
-    quoteEditorView.classList.add("hidden");
+    launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    homeView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.remove("hidden");
-    renderPurchases();
+    renderPurchases();updateLaunchNavCount();
     window.scrollTo({top:0,behavior:"smooth"});
   }
   document.getElementById("openQuotesBtn").addEventListener("click",showQuotesPage);
@@ -1351,7 +1360,7 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
       addQuoteRow(emptyOffer());
     }
     quotesView.classList.add("hidden");
-    comprasView.classList.add("hidden");
+    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quoteEditorView.classList.remove("hidden");
     if(pageContainer)pageContainer.classList.add("quote-editor-open");
     document.getElementById("exportQuoteFromEditor").disabled=!existing;
