@@ -15,3 +15,13 @@ Esta entrega é um protótipo de interface. O formulário salva uma cópia local
 
 ## Publicação
 O workflow em `.github/workflows/pages.yml` publica o conteúdo do repositório usando GitHub Pages.
+
+
+## Cotações
+- Página **Cotações** para localizar cotações por status.
+- Editor com as colunas do modelo Costalog: PRODUTO, VALOR, VALOR PARC., FRETE, VALOR TOTAL A VISTA, VALOR TOTAL PARC, MARCA, FORNECEDOR e LINK.
+- Filtros de preço mais barato, preço médio e preço mais alto.
+- Edição após salvar e exportação para Excel com cabeçalho vermelho/branco, seguindo o modelo anexado.
+- Status disponíveis: Em andamento, Esperando resposta, Comprando e Finalizado.
+
+Por padrão, os dados de cotações ficam no navegador. A sincronização entre computadores exige configurar Supabase em `assets/config.js` e criar a tabela conforme `SUPABASE_SETUP.md`. Para restringir dados ao setor de Compras com segurança, é necessário concluir também autenticação e políticas RLS; enquanto o login estiver aberto, o seletor de cargo não é uma barreira de segurança.
