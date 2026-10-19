@@ -113,6 +113,70 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .footer{margin-top:auto;border-top:1px solid #e2e2e2;background:#fff;padding:20px 22px;display:flex;justify-content:center;align-items:center;gap:14px;color:#858585;font-size:10px;text-align:center}
 .footer img{width:55px;height:38px;object-fit:contain}
 
+/* Central de cotações */
+.quotes-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+.quotes-search{flex:1 1 230px;min-width:180px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);outline:0}
+.quotes-filter{min-width:190px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+.quote-sync-notice{padding:12px 14px;border:1px solid #f0d69e;border-radius:11px;background:#fff8e7;color:#77530a;font-size:10px;line-height:1.6;margin:13px 0 17px}
+body.dark-mode .quote-sync-notice{background:#302817;border-color:#59451f;color:#f3d58f}
+.quotes-table-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,.04)}
+.quotes-table{width:100%;border-collapse:collapse;min-width:800px}
+.quotes-table th{padding:13px 14px;text-align:left;background:#e30613;color:#fff;font-size:9px;letter-spacing:.08em;white-space:nowrap}
+.quotes-table td{padding:14px;border-bottom:1px solid var(--line);font-size:11px;vertical-align:middle}
+.quotes-table tr:last-child td{border-bottom:0}
+.quotes-table td strong{display:block;font-size:11px;line-height:1.5}
+.quotes-table td small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.quote-status{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;white-space:nowrap;font-size:9px;font-weight:900}
+.quote-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.quote-status.status-progress{color:#986000;background:#fff4d9}
+.quote-status.status-waiting{color:#245ca4;background:#eaf2ff}
+.quote-status.status-buying{color:#7847a7;background:#f3eaff}
+.quote-status.status-finished{color:#147a43;background:#e8f8ee}
+body.dark-mode .quote-status.status-progress{color:#ffd17a;background:#3a2c14}
+body.dark-mode .quote-status.status-waiting{color:#a9c8ff;background:#1e2b43}
+body.dark-mode .quote-status.status-buying{color:#d8b5ff;background:#31213f}
+body.dark-mode .quote-status.status-finished{color:#80d99e;background:#183323}
+.quote-row-actions{display:flex;gap:7px;flex-wrap:wrap}
+.quote-row-actions button{padding:8px 10px;font-size:9px;white-space:nowrap}
+.quotes-empty{padding:45px 20px;text-align:center;color:var(--muted)}
+.quotes-empty strong{display:block;color:var(--ink);font-size:15px;margin-bottom:7px}
+.quotes-empty span{font-size:11px;line-height:1.6}
+.quote-meta-grid{display:grid;grid-template-columns:2fr 1.2fr 1.3fr 1.2fr;gap:14px}
+.quote-editor-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:var(--shadow)}
+.quote-editor-section{padding:0 0 23px;margin:0 0 22px;border:0;border-bottom:1px solid var(--line)}
+.quote-editor-section:last-of-type{margin-bottom:0}
+.quote-editor-section legend{font-size:13px;font-weight:950;padding:0 0 14px;color:var(--ink)}
+.quote-items-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:8px 0 14px}
+.price-filter-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.price-filter-btn{border:1px solid var(--line);border-radius:999px;padding:8px 11px;background:var(--paper);color:var(--ink);font-size:10px;font-weight:850}
+.price-filter-btn.active{background:#fff0f1;border-color:#f2b7bc;color:#b5000d}
+body.dark-mode .price-filter-btn.active{background:#351d20;border-color:#653037;color:#ff9aa0}
+.quote-table-shell{overflow:auto;border:1px solid var(--line);border-radius:12px}
+.quote-edit-table{width:100%;min-width:1360px;border-collapse:separate;border-spacing:0;background:var(--paper)}
+.quote-edit-table thead th{position:sticky;top:0;padding:12px 9px;background:#e30613;color:#fff;font-size:9px;text-align:left;white-space:nowrap;z-index:1}
+.quote-edit-table tbody td{padding:7px;border-bottom:1px solid var(--line);background:var(--paper)}
+.quote-edit-table tbody tr:last-child td{border-bottom:0}
+.quote-edit-table input{width:100%;min-width:100px;padding:9px 10px;border:1px solid #d7d7dc;border-radius:7px;background:#fff;color:#191919;font-size:10px}
+.quote-edit-table input.product-input{min-width:165px}
+.quote-edit-table input.link-input{min-width:180px}
+.quote-edit-table input[type=number]{min-width:104px}
+.quote-edit-table input:focus{border-color:var(--red);outline:2px solid rgba(227,6,19,.1)}
+body.dark-mode .quote-edit-table tbody td{background:#1b1b20}
+body.dark-mode .quote-edit-table input{background:#131317;border-color:#414149;color:#f4f4f6}
+.quote-edit-table tr.price-hidden{display:none}
+.remove-offer-btn{width:30px;height:32px;border:1px solid #f0c2c2;border-radius:8px;background:#fff1f1;color:#b0000b;font-size:15px;font-weight:900}
+body.dark-mode .remove-offer-btn{background:#3a1d20;border-color:#653037;color:#ff9aa0}
+.quote-editor-buttons{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:22px}
+.quote-editor-buttons-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.quote-editor-buttons button{padding:12px 15px}
+.quote-export-help{font-size:10px;color:var(--muted);line-height:1.6;margin:12px 0 0}
+.quote-summary-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:18px 0}
+.quote-summary-kpi{padding:15px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.quote-summary-kpi small{display:block;color:var(--muted);font-size:9px;font-weight:850}
+.quote-summary-kpi strong{display:block;margin-top:6px;font-size:23px;letter-spacing:-.04em}
+@media(max-width:850px){.quote-meta-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quote-summary-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.quote-meta-grid{grid-template-columns:1fr}.quote-editor-card{padding:16px 12px}.quote-editor-buttons{align-items:stretch;flex-direction:column-reverse}.quote-editor-buttons-right{display:grid;grid-template-columns:1fr}.quote-editor-buttons button{width:100%}.quote-summary-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* Seletor de cargo e painel do setor de Compras */
 .role-switcher-wrap{position:relative;flex:0 0 auto}
 .role-switcher{display:flex;align-items:center;gap:12px;min-height:38px;padding:9px 12px;border:1px solid #555;border-radius:9px;background:#202020;color:#f4f4f4;font-size:11px;font-weight:850;white-space:nowrap;transition:background .2s,border-color .2s}
@@ -333,8 +397,8 @@ body.dark-mode .receipt-success p{color:#b0cabb}
 
     <section id="comprasView" class="hidden">
       <div class="section-head">
-        <div><span class="eyebrow red">ÁREA DE COMPRAS</span><h2 style="margin:7px 0 0">Painel do setor de Compras</h2><p>Consulte os pedidos disponíveis, acompanhe a análise e registre a decisão.</p></div>
-        <button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button>
+        <div><span class="eyebrow red">ÁREA DE COMPRAS</span><h2 style="margin:7px 0 0">Painel do setor de Compras</h2><p>Consulte pedidos recebidos e abra a central de cotações para comparar propostas de fornecedores.</p></div>
+        <div class="quote-editor-buttons-right"><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
       </div>
       <div class="purchase-stats">
         <div class="purchase-stat"><small>Total de pedidos</small><strong id="purchasesTotal">0</strong></div>
@@ -345,6 +409,93 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       <div id="purchasesList" class="purchases-list" aria-live="polite"></div>
       <p class="form-note purchase-mode-note">Modo de configuração: esta versão mostra os pedidos salvos neste navegador. A sincronização em tempo real entre diferentes computadores será conectada em uma próxima etapa.</p>
     </section>
+
+    <section id="quotesView" class="hidden">
+      <div class="section-head">
+        <div><span class="eyebrow red">SETOR DE COMPRAS</span><h2 style="margin:7px 0 0">Cotações</h2><p>Veja as cotações existentes, acompanhe seus status e abra uma cotação para editar ou exportar.</p></div>
+        <div class="quote-editor-buttons-right">
+          <button id="backToPurchasesBtn" class="back-btn" type="button">← Painel de Compras</button>
+          <button id="newQuoteBtn" class="primary-btn" type="button">+ Nova cotação</button>
+        </div>
+      </div>
+      <div class="quote-summary-kpis">
+        <div class="quote-summary-kpi"><small>Todas as cotações</small><strong id="quoteCountAll">0</strong></div>
+        <div class="quote-summary-kpi"><small>Em andamento</small><strong id="quoteCountProgress">0</strong></div>
+        <div class="quote-summary-kpi"><small>Esperando resposta</small><strong id="quoteCountWaiting">0</strong></div>
+        <div class="quote-summary-kpi"><small>Comprando / Finalizadas</small><strong id="quoteCountClosed">0</strong></div>
+      </div>
+      <div id="quoteSyncNotice" class="quote-sync-notice">Modo local: as cotações são salvas neste navegador. Para que todos os computadores do setor de Compras vejam as mesmas cotações em tempo real, é necessário conectar um banco de dados compartilhado.</div>
+      <div class="quotes-toolbar">
+        <input id="quotesSearch" class="quotes-search" type="search" placeholder="Pesquisar por nome, responsável ou número da cotação..." aria-label="Pesquisar cotações">
+        <select id="quotesStatusFilter" class="quotes-filter" aria-label="Filtrar cotações por status">
+          <option value="todos">Todos os status</option><option>Em andamento</option><option>Esperando resposta</option><option>Comprando</option><option>Finalizado</option>
+        </select>
+      </div>
+      <div class="quotes-table-wrap">
+        <table class="quotes-table">
+          <thead><tr><th>COTAÇÃO</th><th>RESPONSÁVEL</th><th>STATUS</th><th>ATUALIZADA EM</th><th>ITENS</th><th>AÇÕES</th></tr></thead>
+          <tbody id="quotesTableBody"><tr><td colspan="6"><div class="quotes-empty"><strong>Nenhuma cotação cadastrada</strong><span>Crie a primeira cotação para começar.</span></div></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="quoteEditorView" class="hidden">
+      <div class="section-head">
+        <div><span class="eyebrow red">SETOR DE COMPRAS • COTAÇÃO</span><h2 id="quoteEditorHeading" style="margin:7px 0 0">Nova cotação</h2><p>Cadastre as ofertas e compare os valores usando o modelo de cotação Costalog.</p></div>
+        <button id="cancelQuoteEditorTop" class="back-btn" type="button">← Voltar às cotações</button>
+      </div>
+      <form id="quoteForm" class="quote-editor-card">
+        <fieldset class="quote-editor-section">
+          <legend>Identificação da cotação</legend>
+          <div class="quote-meta-grid">
+            <div class="field"><label for="quoteTitle">Nome da cotação <span class="required">*</span></label><input id="quoteTitle" required maxlength="160" placeholder="Ex.: Compra de pneus para frota"></div>
+            <div class="field"><label for="quotePurchaseRef">Pedido de compra relacionado</label><input id="quotePurchaseRef" maxlength="100" placeholder="Nº do pedido, se houver"></div>
+            <div class="field"><label for="quoteOwner">Responsável</label><input id="quoteOwner" maxlength="100" placeholder="Responsável pela cotação"></div>
+            <div class="field"><label for="quoteStatus">Status da cotação</label><select id="quoteStatus" required><option>Em andamento</option><option>Esperando resposta</option><option>Comprando</option><option>Finalizado</option></select></div>
+          </div>
+        </fieldset>
+        <fieldset class="quote-editor-section">
+          <legend>Comparativo de preços</legend>
+          <div class="quote-items-toolbar">
+            <div class="price-filter-group" role="group" aria-label="Filtrar ofertas por preço">
+              <button class="price-filter-btn active" type="button" data-price-filter="todos">Todas as ofertas</button>
+              <button class="price-filter-btn" type="button" data-price-filter="barato">Preço mais barato</button>
+              <button class="price-filter-btn" type="button" data-price-filter="medio">Preço médio</button>
+              <button class="price-filter-btn" type="button" data-price-filter="alto">Preço mais alto</button>
+            </div>
+            <button id="addQuoteOfferBtn" class="secondary-btn" type="button">+ Adicionar oferta</button>
+          </div>
+          <div class="quote-table-shell">
+            <table class="quote-edit-table" id="quoteItemsTable">
+              <thead><tr><th>PRODUTO</th><th>VALOR</th><th>VALOR PARC.</th><th>FRETE</th><th>VALOR TOTAL A VISTA</th><th>VALOR TOTAL PARC</th><th>MARCA</th><th>FORNECEDOR</th><th>LINK</th><th>REMOVER</th></tr></thead>
+              <tbody id="quoteRowsBody">
+                <tr class="quote-row">
+                  <td><input class="product-input q-product" aria-label="Produto" placeholder="Produto" maxlength="180"></td>
+                  <td><input class="q-value" aria-label="Valor" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-installment" aria-label="Valor parcelado" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-freight" aria-label="Frete" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-total-cash" aria-label="Valor total à vista" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-total-installment" aria-label="Valor total parcelado" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-brand" aria-label="Marca" maxlength="120" placeholder="Marca"></td>
+                  <td><input class="q-supplier" aria-label="Fornecedor" maxlength="160" placeholder="Fornecedor"></td>
+                  <td><input class="link-input q-link" aria-label="Link" type="url" placeholder="https://..."></td>
+                  <td><button type="button" class="remove-offer-btn" aria-label="Remover oferta" title="Remover oferta">×</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="quote-export-help">Os valores são preenchidos conforme a proposta de cada fornecedor. Os filtros de preço consideram o campo “Valor total à vista” das ofertas preenchidas.</p>
+        </fieldset>
+        <div class="quote-editor-buttons">
+          <button id="cancelQuoteEditor" class="secondary-btn" type="button">Cancelar</button>
+          <div class="quote-editor-buttons-right">
+            <button id="exportQuoteFromEditor" class="secondary-btn" type="button">↓ Exportar para Excel</button>
+            <button id="saveQuoteBtn" class="primary-btn" type="submit">Salvar cotação</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
   </div></main>
   <footer class="footer"><img src="assets/logo-costalog.svg" alt="Costalog"><span>Uso interno • Portal de Compras Costalog</span></footer>
 </div>
@@ -372,6 +523,9 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/config.js"></script>
 <script>
 (function(){
   "use strict";
@@ -382,7 +536,19 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   var homeView=document.getElementById("homeView");
   var requestView=document.getElementById("requestView");
   var comprasView=document.getElementById("comprasView");
+  var quotesView=document.getElementById("quotesView");
+  var quoteEditorView=document.getElementById("quoteEditorView");
+  var quoteForm=document.getElementById("quoteForm");
+  var quoteRowsBody=document.getElementById("quoteRowsBody");
   var receiptModal=document.getElementById("receiptModal");
+  var currentQuoteId=null;
+  var priceFilter="todos";
+  var quotesCache=[];
+  var supabaseClient=null;
+  var supabaseConfig=window.COSTALOG_CONFIG||{};
+  if(window.supabase&&window.supabase.createClient&&supabaseConfig.url&&supabaseConfig.anonKey){
+    try{supabaseClient=window.supabase.createClient(supabaseConfig.url,supabaseConfig.anonKey);}catch(e){supabaseClient=null;}
+  }
   var roleSwitcher=document.getElementById("roleSwitcher");
   var roleMenu=document.getElementById("roleMenu");
   var currentRoleLabel=document.getElementById("currentRoleLabel");
@@ -446,10 +612,14 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       homeView.classList.add("hidden");
       requestView.classList.add("hidden");
       comprasView.classList.remove("hidden");
+      quotesView.classList.add("hidden");
+      quoteEditorView.classList.add("hidden");
       currentRoleLabel.textContent="Setor de Compras";
       renderPurchases();
     }else{
       comprasView.classList.add("hidden");
+      quotesView.classList.add("hidden");
+      quoteEditorView.classList.add("hidden");
       homeView.classList.remove("hidden");
       requestView.classList.add("hidden");
       currentRoleLabel.textContent="Área do solicitante";
@@ -554,6 +724,299 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     });
   }
   document.getElementById("refreshPurchasesBtn").addEventListener("click",renderPurchases);
+
+  function setQuoteNotice(message,isError){
+    var notice=document.getElementById("quoteSyncNotice");
+    if(notice){
+      notice.textContent=message;
+      notice.style.borderColor=isError?"#f0b7bb":"";
+      notice.style.background=isError?"#fff1f1":"";
+      notice.style.color=isError?"#a00000":"";
+    }
+  }
+  function loadLocalQuotes(){
+    try{
+      var rows=JSON.parse(localStorage.getItem("costalogCotacoes")||"[]");
+      return Array.isArray(rows)?rows:[];
+    }catch(e){return [];}
+  }
+  function saveLocalQuotes(rows){
+    try{localStorage.setItem("costalogCotacoes",JSON.stringify(rows));}catch(e){}
+  }
+  async function refreshQuotes(){
+    if(supabaseClient){
+      try{
+        var response=await supabaseClient.from("costalog_cotacoes").select("id,payload,updated_at").order("updated_at",{ascending:false});
+        if(response.error)throw response.error;
+        quotesCache=(response.data||[]).map(function(row){return Object.assign({},row.payload||{},{id:row.id,updatedAt:row.updated_at||(row.payload||{}).updatedAt});});
+        saveLocalQuotes(quotesCache);
+        setQuoteNotice("Sincronização compartilhada ativa. As cotações são lidas do banco de dados conectado.",false);
+      }catch(error){
+        quotesCache=loadLocalQuotes();
+        setQuoteNotice("Não foi possível acessar o banco compartilhado. Os dados abaixo são a cópia local deste navegador; verifique a configuração do banco.",true);
+      }
+    }else{
+      quotesCache=loadLocalQuotes();
+      setQuoteNotice("Modo local: as cotações são salvas neste navegador. Para que todos os computadores do setor de Compras vejam as mesmas cotações em tempo real, configure o banco compartilhado Supabase em assets/config.js e a tabela costalog_cotacoes.",false);
+    }
+    renderQuotesTable();
+    return quotesCache;
+  }
+  function statusClass(status){
+    if(status==="Esperando resposta")return "status-waiting";
+    if(status==="Comprando")return "status-buying";
+    if(status==="Finalizado")return "status-finished";
+    return "status-progress";
+  }
+  function formatDateShort(value){
+    if(!value)return "—";
+    var d=new Date(value);
+    return isNaN(d.getTime())?"—":d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+  }
+  function showQuotesPage(){
+    comprasView.classList.add("hidden");
+    quoteEditorView.classList.add("hidden");
+    quotesView.classList.remove("hidden");
+    refreshQuotes();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function returnToPurchases(){
+    quotesView.classList.add("hidden");
+    quoteEditorView.classList.add("hidden");
+    comprasView.classList.remove("hidden");
+    renderPurchases();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("openQuotesBtn").addEventListener("click",showQuotesPage);
+  document.getElementById("backToPurchasesBtn").addEventListener("click",returnToPurchases);
+  document.getElementById("newQuoteBtn").addEventListener("click",function(){openQuoteEditor(null);});
+  document.getElementById("cancelQuoteEditor").addEventListener("click",showQuotesPage);
+  document.getElementById("cancelQuoteEditorTop").addEventListener("click",showQuotesPage);
+  document.getElementById("quotesSearch").addEventListener("input",renderQuotesTable);
+  document.getElementById("quotesStatusFilter").addEventListener("change",renderQuotesTable);
+
+  function renderQuotesTable(){
+    var body=document.getElementById("quotesTableBody");
+    if(!body)return;
+    var total=quotesCache.length;
+    document.getElementById("quoteCountAll").textContent=total;
+    document.getElementById("quoteCountProgress").textContent=quotesCache.filter(function(q){return q.status==="Em andamento";}).length;
+    document.getElementById("quoteCountWaiting").textContent=quotesCache.filter(function(q){return q.status==="Esperando resposta";}).length;
+    document.getElementById("quoteCountClosed").textContent=quotesCache.filter(function(q){return q.status==="Comprando"||q.status==="Finalizado";}).length;
+    var search=(document.getElementById("quotesSearch").value||"").trim().toLocaleLowerCase("pt-BR");
+    var status=document.getElementById("quotesStatusFilter").value;
+    var found=quotesCache.filter(function(q){
+      var searchable=[q.title,q.id,q.owner,q.purchaseReference].join(" ").toLocaleLowerCase("pt-BR");
+      return (!search||searchable.includes(search))&&(status==="todos"||q.status===status);
+    }).sort(function(a,b){return new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0);});
+    body.replaceChildren();
+    if(!found.length){
+      var tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=6;
+      var empty=document.createElement("div");empty.className="quotes-empty";
+      var strong=document.createElement("strong");strong.textContent=total?"Nenhuma cotação corresponde ao filtro":"Nenhuma cotação cadastrada";
+      var span=document.createElement("span");span.textContent=total?"Altere o texto ou o status para ver outras cotações.":"Clique em “Nova cotação” para registrar a primeira.";
+      empty.append(strong,span);td.appendChild(empty);tr.appendChild(td);body.appendChild(tr);return;
+    }
+    found.forEach(function(q){
+      var tr=document.createElement("tr");
+      var nameTd=document.createElement("td"),name=document.createElement("strong"),meta=document.createElement("small");
+      name.textContent=q.title||"Cotação sem título";meta.textContent=(q.id||"COT")+(q.purchaseReference?" · Pedido "+q.purchaseReference:"");
+      nameTd.append(name,meta);
+      var ownerTd=document.createElement("td");ownerTd.textContent=q.owner||"Não informado";
+      var statusTd=document.createElement("td"),statusBadge=document.createElement("span");statusBadge.className="quote-status "+statusClass(q.status);statusBadge.textContent=q.status||"Em andamento";statusTd.appendChild(statusBadge);
+      var dateTd=document.createElement("td");dateTd.textContent=formatDateShort(q.updatedAt||q.createdAt);
+      var itemsTd=document.createElement("td");itemsTd.textContent=(q.items||[]).length;
+      var actionsTd=document.createElement("td"),actions=document.createElement("div");actions.className="quote-row-actions";
+      var edit=document.createElement("button");edit.type="button";edit.className="secondary-btn";edit.textContent="Editar cotação";edit.addEventListener("click",function(){openQuoteEditor(q.id);});
+      var exportBtn=document.createElement("button");exportBtn.type="button";exportBtn.className="secondary-btn";exportBtn.textContent="Excel ↓";exportBtn.addEventListener("click",function(){exportQuote(q);});
+      actions.append(edit,exportBtn);actionsTd.appendChild(actions);
+      tr.append(nameTd,ownerTd,statusTd,dateTd,itemsTd,actionsTd);body.appendChild(tr);
+    });
+  }
+  function emptyOffer(){
+    return {product:"",value:"",installmentValue:"",freight:"",totalCash:"",totalInstallment:"",brand:"",supplier:"",link:""};
+  }
+  function quoteRowMarkup(item){
+    item=item||emptyOffer();
+    var tr=document.createElement("tr");tr.className="quote-row";
+    var fields=[
+      ["product","product-input q-product","text","Produto",180],
+      ["value","q-value","number","0,00",0],
+      ["installmentValue","q-installment","number","0,00",0],
+      ["freight","q-freight","number","0,00",0],
+      ["totalCash","q-total-cash","number","0,00",0],
+      ["totalInstallment","q-total-installment","number","0,00",0],
+      ["brand","q-brand","text","Marca",120],
+      ["supplier","q-supplier","text","Fornecedor",160],
+      ["link","link-input q-link","url","https://...",0]
+    ];
+    fields.forEach(function(field){
+      var td=document.createElement("td"),input=document.createElement("input");
+      input.className=field[1];input.type=field[2];input.setAttribute("aria-label",field[3]);
+      if(field[4])input.maxLength=field[4];
+      if(input.type==="number"){input.min="0";input.step="0.01";}
+      input.placeholder=field[3];
+      input.value=item[field[0]]===undefined||item[field[0]]===null?"":item[field[0]];
+      td.appendChild(input);tr.appendChild(td);
+    });
+    var removeTd=document.createElement("td"),remove=document.createElement("button");
+    remove.type="button";remove.className="remove-offer-btn";remove.textContent="×";remove.title="Remover oferta";remove.setAttribute("aria-label","Remover oferta");
+    remove.addEventListener("click",function(){
+      if(quoteRowsBody.querySelectorAll(".quote-row").length<=1){tr.querySelectorAll("input").forEach(function(inp){inp.value="";});}
+      else tr.remove();
+      applyPriceFilter();
+    });
+    removeTd.appendChild(remove);tr.appendChild(removeTd);
+    tr.querySelectorAll("input").forEach(function(input){input.addEventListener("input",applyPriceFilter);});
+    return tr;
+  }
+  function addQuoteRow(item){
+    quoteRowsBody.appendChild(quoteRowMarkup(item||emptyOffer()));
+    applyPriceFilter();
+  }
+  document.getElementById("addQuoteOfferBtn").addEventListener("click",function(){addQuoteRow(emptyOffer());});
+  function setPriceFilter(value){
+    priceFilter=value;
+    document.querySelectorAll("[data-price-filter]").forEach(function(btn){btn.classList.toggle("active",btn.getAttribute("data-price-filter")===priceFilter);});
+    applyPriceFilter();
+  }
+  document.querySelectorAll("[data-price-filter]").forEach(function(btn){
+    btn.addEventListener("click",function(){setPriceFilter(btn.getAttribute("data-price-filter"));});
+  });
+  function applyPriceFilter(){
+    var rows=Array.prototype.slice.call(quoteRowsBody.querySelectorAll(".quote-row"));
+    var valued=rows.map(function(row,index){
+      var input=row.querySelector(".q-total-cash");
+      var raw=input?input.value:"";
+      return {row:row,index:index,value:raw!==""?Number(raw):NaN};
+    }).filter(function(item){return Number.isFinite(item.value)&&item.value>=0;});
+    var selected=new Set();
+    if(priceFilter==="barato"&&valued.length){
+      var min=Math.min.apply(null,valued.map(function(x){return x.value;}));valued.filter(function(x){return x.value===min;}).forEach(function(x){selected.add(x.index);});
+    }else if(priceFilter==="alto"&&valued.length){
+      var max=Math.max.apply(null,valued.map(function(x){return x.value;}));valued.filter(function(x){return x.value===max;}).forEach(function(x){selected.add(x.index);});
+    }else if(priceFilter==="medio"&&valued.length){
+      var avg=valued.reduce(function(sum,x){return sum+x.value;},0)/valued.length;
+      var nearest=Math.min.apply(null,valued.map(function(x){return Math.abs(x.value-avg);}));
+      valued.filter(function(x){return Math.abs(x.value-avg)===nearest;}).forEach(function(x){selected.add(x.index);});
+    }
+    rows.forEach(function(row,index){
+      var show=priceFilter==="todos"||!["barato","medio","alto"].includes(priceFilter)||selected.has(index);
+      row.classList.toggle("price-hidden",!show);
+    });
+  }
+  function openQuoteEditor(id){
+    currentQuoteId=id||null;
+    priceFilter="todos";
+    document.querySelectorAll("[data-price-filter]").forEach(function(btn){btn.classList.toggle("active",btn.getAttribute("data-price-filter")==="todos");});
+    quoteForm.reset();
+    quoteRowsBody.replaceChildren();
+    var existing=id?quotesCache.find(function(q){return q.id===id;}):null;
+    if(existing){
+      document.getElementById("quoteEditorHeading").textContent="Editar cotação";
+      document.getElementById("saveQuoteBtn").textContent="Salvar alterações";
+      document.getElementById("quoteTitle").value=existing.title||"";
+      document.getElementById("quotePurchaseRef").value=existing.purchaseReference||"";
+      document.getElementById("quoteOwner").value=existing.owner||"";
+      document.getElementById("quoteStatus").value=existing.status||"Em andamento";
+      (existing.items&&existing.items.length?existing.items:[emptyOffer()]).forEach(addQuoteRow);
+    }else{
+      document.getElementById("quoteEditorHeading").textContent="Nova cotação";
+      document.getElementById("saveQuoteBtn").textContent="Salvar cotação";
+      document.getElementById("quoteStatus").value="Em andamento";
+      addQuoteRow(emptyOffer());
+    }
+    quotesView.classList.add("hidden");
+    comprasView.classList.add("hidden");
+    quoteEditorView.classList.remove("hidden");
+    document.getElementById("exportQuoteFromEditor").disabled=!existing;
+    document.getElementById("exportQuoteFromEditor").style.opacity=existing?"1":".55";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function readQuoteItems(){
+    return Array.prototype.slice.call(quoteRowsBody.querySelectorAll(".quote-row")).map(function(row){
+      function val(sel){var el=row.querySelector(sel);return el?el.value.trim():"";}
+      return {product:val(".q-product"),value:val(".q-value"),installmentValue:val(".q-installment"),freight:val(".q-freight"),totalCash:val(".q-total-cash"),totalInstallment:val(".q-total-installment"),brand:val(".q-brand"),supplier:val(".q-supplier"),link:val(".q-link")};
+    }).filter(function(item){return Object.values(item).some(function(v){return v!=="";});});
+  }
+  function persistQuotesLocally(){
+    saveLocalQuotes(quotesCache);
+  }
+  async function saveQuote(event){
+    event.preventDefault();
+    if(!quoteForm.reportValidity())return;
+    var items=readQuoteItems();
+    if(!items.length||!items.some(function(item){return item.product||item.supplier||item.value||item.totalCash;})){
+      alert("Adicione pelo menos um produto ou uma oferta antes de salvar.");return;
+    }
+    var now=new Date().toISOString();
+    var old=currentQuoteId?quotesCache.find(function(q){return q.id===currentQuoteId;}):null;
+    var id=currentQuoteId||(function(){
+      var d=new Date();return "COT-"+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+String(d.getSeconds()).padStart(2,"0");
+    })();
+    var quote={id:id,title:document.getElementById("quoteTitle").value.trim(),purchaseReference:document.getElementById("quotePurchaseRef").value.trim(),owner:document.getElementById("quoteOwner").value.trim(),status:document.getElementById("quoteStatus").value,items:items,createdAt:old?old.createdAt:now,updatedAt:now};
+    var index=quotesCache.findIndex(function(q){return q.id===id;});
+    if(index>=0)quotesCache[index]=quote;else quotesCache.unshift(quote);
+    persistQuotesLocally();
+    if(supabaseClient){
+      try{
+        var response=await supabaseClient.from("costalog_cotacoes").upsert({id:quote.id,payload:quote,updated_at:quote.updatedAt});
+        if(response.error)throw response.error;
+        setQuoteNotice("Cotação salva e sincronizada com o banco compartilhado.",false);
+      }catch(error){
+        setQuoteNotice("A cotação foi salva neste navegador, mas a sincronização falhou. Verifique a tabela e as políticas do banco.",true);
+        alert("A cotação foi salva localmente, mas não foi enviada ao banco compartilhado. Verifique a configuração.");
+      }
+    }
+    renderQuotesTable();
+    showQuotesPage();
+    alert(old?"Cotação atualizada com sucesso.":"Cotação salva com sucesso.");
+  }
+  quoteForm.addEventListener("submit",saveQuote);
+  async function exportQuote(quote){
+    if(!quote){alert("Abra uma cotação salva para exportar.");return;}
+    if(!window.XLSX){alert("A biblioteca de exportação ainda está carregando. Tente novamente em alguns segundos.");return;}
+    var headers=["PRODUTO","VALOR","VALOR PARC.","FRETE ","VALOR TOTAL A VISTA ","VALOR TOTAL PARC","MARCA","FORNECEDOR","LINK "];
+    var rows=[headers].concat((quote.items||[]).map(function(item){
+      function money(value){return value===""||value===null||value===undefined?null:Number(value);}
+      return [item.product||"",money(item.value),money(item.installmentValue),money(item.freight),money(item.totalCash),money(item.totalInstallment),item.brand||"",item.supplier||"",item.link||""];
+    }));
+    var ws=window.XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"]=[{wch:30},{wch:16},{wch:16},{wch:14},{wch:22},{wch:20},{wch:19},{wch:28},{wch:42}];
+    ws["!rows"]=[{hpt:25}];
+    for(var col=0;col<headers.length;col++){
+      var cell=window.XLSX.utils.encode_cell({r:0,c:col});
+      ws[cell].s={fill:{patternType:"solid",fgColor:{rgb:"E30613"}},font:{name:"Arial",sz:11,bold:true,color:{rgb:"FFFFFF"}},alignment:{horizontal:"center",vertical:"center",wrapText:true},border:{bottom:{style:"thin",color:{rgb:"B8040F"}}}};
+    }
+    for(var rowIndex=1;rowIndex<rows.length;rowIndex++){
+      for(var colIndex=0;colIndex<headers.length;colIndex++){
+        var addr=window.XLSX.utils.encode_cell({r:rowIndex,c:colIndex});
+        if(!ws[addr])continue;
+        ws[addr].s={font:{name:"Arial",sz:10,color:{rgb:"222222"}},alignment:{vertical:"center",wrapText:true},border:{bottom:{style:"thin",color:{rgb:"E4E4E7"}}}};
+        if(colIndex>=1&&colIndex<=5&&typeof ws[addr].v==="number")ws[addr].z='"R$" #,##0.00';
+        if(colIndex===8&&typeof ws[addr].v==="string"&&/^https?:\/\//i.test(ws[addr].v))ws[addr].l={Target:ws[addr].v,Tooltip:"Abrir link do fornecedor"};
+      }
+    }
+    var book=window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(book,ws,"Cotação");
+    var slug=(quote.title||"cotacao").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9_-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,55)||"cotacao";
+    window.XLSX.writeFile(book,slug+"_"+quote.id+".xlsx");
+  }
+  document.getElementById("exportQuoteFromEditor").addEventListener("click",function(){
+    var quote=currentQuoteId?quotesCache.find(function(q){return q.id===currentQuoteId;}):null;
+    if(!quote){
+      var draft={id:"RASCUNHO",title:document.getElementById("quoteTitle").value||"cotacao",items:readQuoteItems()};
+      if(!draft.items.length){alert("Preencha pelo menos uma oferta antes de exportar.");return;}
+      exportQuote(draft);
+    }else exportQuote(quote);
+  });
+  document.getElementById("quoteForm");
+  if(supabaseClient){
+    refreshQuotes();
+    try{
+      supabaseClient.channel("costalog-cotacoes-realtime").on("postgres_changes",{event:"*",schema:"public",table:"costalog_cotacoes"},function(){refreshQuotes();}).subscribe();
+    }catch(e){}
+  }
 
   function formatCurrency(raw){
     return Number(raw).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
