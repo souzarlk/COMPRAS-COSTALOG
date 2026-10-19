@@ -2156,7 +2156,6 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     } catch(storageError) {
       /* O comprovante continua disponível nesta sessão mesmo se o armazenamento local estiver indisponível. */
     }
-    document.getElementById("myOrdersName").value=activeUserName;
     updateMyOrdersBadge();
     receiptModal.classList.remove("hidden");
     document.getElementById("closeReceiptBtn").focus({preventScroll:true});
