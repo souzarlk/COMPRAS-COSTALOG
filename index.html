@@ -803,9 +803,12 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   var app=document.getElementById("app");
   var loginForm=document.getElementById("loginForm");
   var requestForm=document.getElementById("requestForm");
+  var purchaseRegistrationForm=document.getElementById("purchaseRegistrationForm");
   var homeView=document.getElementById("homeView");
+  var userOrdersView=document.getElementById("userOrdersView");
   var requestView=document.getElementById("requestView");
   var comprasView=document.getElementById("comprasView");
+  var purchaseRegistrationView=document.getElementById("purchaseRegistrationView");
   var launchesView=document.getElementById("launchesView");
   var launchEditorView=document.getElementById("launchEditorView");
   var launchForm=document.getElementById("launchForm");
@@ -828,14 +831,21 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   var pageContainer=document.querySelector(".page-main .container");
   var activeRole="solicitante";
   var savedUser="";
-  try { if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode"); } catch(e) {}
+  var activeUserName="";
+  var currentPurchaseProtocol=null;
+  try {
+    if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode");
+    activeUserName=localStorage.getItem("costalogUsuarioAtivo")||"";
+  } catch(e) {}
 
   function showApp(){
-    savedUser="";
+    savedUser=activeUserName;
     loginScreen.classList.add("hidden");
     app.classList.remove("hidden");
-    document.getElementById("requesterName").value="";
+    document.getElementById("requesterName").value=activeUserName;
+    document.getElementById("myOrdersName").value=activeUserName;
     document.getElementById("themeToggle").textContent=document.body.classList.contains("dark-mode")?"☀":"☾";
+    updateMyOrdersBadge();
   }
   loginForm.addEventListener("submit",function(event){
     event.preventDefault();
@@ -865,16 +875,17 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");
     document.querySelectorAll(".role-option").forEach(function(option){var selected=option.getAttribute("data-role")==="solicitante";option.classList.toggle("active",selected);option.setAttribute("aria-current",selected?"true":"false");});
     homeView.classList.remove("hidden");
-    requestView.classList.add("hidden");
-    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+    comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    updateMyOrdersBadge();
   }
   function showRequest(){
-    homeView.classList.add("hidden");
+    homeView.classList.add("hidden");userOrdersView.classList.add("hidden");
     requestView.classList.remove("hidden");
-    comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
-    document.getElementById("requesterName").value=savedUser;
+    document.getElementById("requesterName").value=activeUserName||savedUser;
     document.getElementById("requesterSector").focus({preventScroll:true});
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -892,15 +903,15 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       option.setAttribute("aria-current",isActive?"true":"false");
     });
     if(activeRole==="compras"){
-      homeView.classList.add("hidden");requestView.classList.add("hidden");
-      comprasView.classList.remove("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+      homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+      comprasView.classList.remove("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
       quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
       currentRoleLabel.textContent="Setor de Compras";renderPurchases();updateLaunchNavCount();
     }else{
-      comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+      comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
       quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
-      homeView.classList.remove("hidden");requestView.classList.add("hidden");
-      currentRoleLabel.textContent="Área do solicitante";
+      homeView.classList.remove("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+      currentRoleLabel.textContent="Área do solicitante";updateMyOrdersBadge();
     }
     window.scrollTo({top:0,behavior:"smooth"});
   }
