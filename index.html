@@ -901,7 +901,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       valued.filter(function(x){return Math.abs(x.value-avg)===nearest;}).forEach(function(x){selected.add(x.index);});
     }
     rows.forEach(function(row,index){
-      var show=priceFilter==="todos"||!["barato","medio","alto"].includes(priceFilter)||selected.has(index);
+      var show=priceFilter==="todos"||!["barato","medio","alto"].includes(priceFilter)||valued.length===0||selected.has(index);
       row.classList.toggle("price-hidden",!show);
     });
   }
