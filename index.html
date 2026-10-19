@@ -861,7 +861,6 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   "use strict";
   var loginScreen=document.getElementById("loginScreen");
   var app=document.getElementById("app");
-  var loginForm=document.getElementById("loginForm");
   var requestForm=document.getElementById("requestForm");
   var purchaseRegistrationForm=document.getElementById("purchaseRegistrationForm");
   var homeView=document.getElementById("homeView");
@@ -927,8 +926,13 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     }
     portalRole=role;portalIdentity={id:id,email:email,name:name,key:id?"id:"+id:"email:"+email};showApp();return true;
   }
+  // Defina parentOrigin em assets/config.js para a origem oficial do Portal Costalog.
+  // A ferramenta falha de forma segura se a origem ainda não estiver configurada.
   var allowedParentOrigin="";
-  try{if(document.referrer)allowedParentOrigin=new URL(document.referrer).origin;}catch(e){}
+  try{
+    var configuredParentOrigin=String((window.COSTALOG_CONFIG||{}).parentOrigin||"").trim();
+    if(configuredParentOrigin)allowedParentOrigin=new URL(configuredParentOrigin).origin;
+  }catch(e){allowedParentOrigin="";}
   window.addEventListener("message",function(event){
     if(window.parent===window||event.source!==window.parent||!allowedParentOrigin||event.origin!==allowedParentOrigin)return;
     var data=event.data||{};
