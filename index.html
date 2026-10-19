@@ -383,6 +383,48 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   .quote-table-shell{border-radius:9px}
 }
 
+
+/* Página Lançamentos de compras */
+.launch-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.launch-summary-card{min-width:0;padding:17px 18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 7px 23px rgba(0,0,0,.035)}
+.launch-summary-card small{display:block;color:var(--muted);font-size:10px;font-weight:850;line-height:1.4}
+.launch-summary-card strong{display:block;margin-top:8px;font-size:clamp(19px,2.2vw,28px);letter-spacing:-.04em;overflow-wrap:anywhere}
+.launch-summary-card.pending{border-top:3px solid #e6b84b}.launch-summary-card.current{border-top:3px solid #e30613}.launch-summary-card.previous{border-top:3px solid #6b7280}.launch-summary-card.year{border-top:3px solid #16834a}
+.launch-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:20px 0;padding:17px;border:1px solid var(--line);border-radius:15px;background:var(--paper)}
+.launch-filter-field{min-width:0}
+.launch-filter-field label{display:block;margin-bottom:7px;font-size:10px;font-weight:900;color:var(--ink)}
+.launch-filter-field input,.launch-filter-field select{display:block;width:100%;min-width:0;min-height:39px;padding:9px 10px;border:1px solid #d7d7dc;border-radius:9px;background:#fff;color:#202024;font-size:11px}
+.launch-filter-actions{display:flex;align-items:end}.launch-filter-actions button{width:100%;padding:10px 11px;font-size:10px}
+.launch-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:15px;background:var(--paper);box-shadow:0 7px 22px rgba(0,0,0,.035)}
+.launch-table{width:100%;min-width:1000px;border-collapse:collapse}
+.launch-table thead th{padding:13px 12px;background:#e30613;color:#fff;font-size:9px;letter-spacing:.055em;text-align:left;white-space:nowrap}
+.launch-table tbody td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:10px;vertical-align:middle}
+.launch-table tbody tr:last-child td{border-bottom:0}.launch-table td strong{display:block;font-size:11px;line-height:1.45}.launch-table td small{display:block;margin-top:3px;color:var(--muted);font-size:9px}
+.launch-state{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border-radius:999px;font-size:9px;font-weight:950;white-space:nowrap}
+.launch-state:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.launch-state.pending{background:#fff3cc;color:#936100}.launch-state.done{background:#e6f8ed;color:#147a43}
+body.dark-mode .launch-summary-card,body.dark-mode .launch-filters,body.dark-mode .launch-table-wrap{border-color:#38383f}
+body.dark-mode .launch-filter-field input,body.dark-mode .launch-filter-field select{background:#131317;border-color:#414149;color:#f4f4f6}
+body.dark-mode .launch-state.pending{background:#3a2c14;color:#ffd17a}body.dark-mode .launch-state.done{background:#183323;color:#80d99e}
+.launch-empty{padding:45px 20px;text-align:center}.launch-empty strong{display:block;margin-bottom:7px;font-size:15px;color:var(--ink)}.launch-empty span{display:block;max-width:460px;margin:auto;color:var(--muted);font-size:11px;line-height:1.6}
+.launch-row-actions{display:flex;gap:7px;flex-wrap:wrap}.launch-row-actions button{padding:9px 11px;font-size:10px;white-space:nowrap}
+.launch-editor-card{width:100%;max-width:100%;padding:clamp(20px,2.4vw,34px);border:1px solid var(--line);border-radius:18px;background:var(--paper);box-shadow:var(--shadow);box-sizing:border-box}
+.launch-source-panel{padding:19px;border:1px solid var(--line);border-radius:13px;background:rgba(120,120,120,.035);margin-bottom:24px}.launch-source-panel h3{margin:0 0 13px;font-size:13px}
+.launch-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.launch-source-item{min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--paper)}.launch-source-item.full{grid-column:1/-1}
+.launch-source-item small{display:block;margin-bottom:5px;color:var(--muted);font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.launch-source-item strong{display:block;font-size:11px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.launch-editor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 15px}.launch-editor-grid .field{min-width:0}
+.launch-editor-grid .field input,.launch-editor-grid .field select{width:100%;min-width:0;min-height:43px;padding:11px 12px;border:1px solid #d6d6d9;border-radius:10px;background:#fff;color:#202024}
+body.dark-mode .launch-source-panel{background:#19191e;border-color:#38383f}body.dark-mode .launch-source-item{background:#202026;border-color:#393940}
+body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-grid .field select{background:#131317;border-color:#414149;color:#f4f4f6}
+.launch-installment-help{font-size:10px;color:var(--muted);margin-top:7px;line-height:1.5}
+.launch-editor-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:25px;padding-top:22px;border-top:1px solid var(--line)}.launch-editor-actions button{padding:12px 17px}
+.launch-nav-button{position:relative}.launch-nav-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:4px;border-radius:99px;background:#ffcf58;color:#3c2a00;font-size:9px;font-weight:950}.launch-nav-count.hidden{display:none!important}
+@media(max-width:1000px){.launch-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.launch-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.launch-filters{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px}.launch-source-grid,.launch-editor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.launch-source-item.full{grid-column:1/-1}.launch-editor-card{padding:16px 12px}.launch-editor-actions{flex-direction:column-reverse}.launch-editor-actions button{width:100%}}
+@media(max-width:450px){.launch-filters{grid-template-columns:minmax(0,1fr)}.launch-source-grid,.launch-editor-grid{grid-template-columns:minmax(0,1fr)}.launch-source-item.full{grid-column:auto}}
+
 </style>
 </head>
 <body>
@@ -460,7 +502,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     <section id="comprasView" class="hidden">
       <div class="section-head">
         <div><span class="eyebrow red">ÁREA DE COMPRAS</span><h2 style="margin:7px 0 0">Painel do setor de Compras</h2><p>Consulte pedidos recebidos e abra a central de cotações para comparar propostas de fornecedores.</p></div>
-        <div class="quote-editor-buttons-right"><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
+        <div class="quote-editor-buttons-right"><button id="openLaunchesBtn" class="back-btn launch-nav-button" type="button">Lançamentos <span id="launchNavCount" class="launch-nav-count hidden">0</span></button><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
       </div>
       <div class="purchase-stats">
         <div class="purchase-stat"><small>Total de pedidos</small><strong id="purchasesTotal">0</strong></div>
@@ -470,6 +512,68 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       </div>
       <div id="purchasesList" class="purchases-list" aria-live="polite"></div>
       <p class="form-note purchase-mode-note">Modo de configuração: esta versão mostra os pedidos salvos neste navegador. A sincronização em tempo real entre diferentes computadores será conectada em uma próxima etapa.</p>
+    </section>
+
+    <section id="launchesView" class="hidden">
+      <div class="section-head">
+        <div><span class="eyebrow red">SETOR DE COMPRAS</span><h2 style="margin:7px 0 0">Lançamentos</h2><p>Registre no sistema as compras realizadas e acompanhe os lançamentos pendentes.</p></div>
+        <button id="backFromLaunchesBtn" class="back-btn" type="button">← Painel de Compras</button>
+      </div>
+      <div class="launch-summary-grid">
+        <div class="launch-summary-card pending"><small>Lançamentos a realizar</small><strong id="launchPendingCount">0</strong></div>
+        <div class="launch-summary-card current"><small>Gasto no mês atual</small><strong id="launchSpentCurrent">R$ 0,00</strong></div>
+        <div class="launch-summary-card previous"><small>Gasto no mês passado</small><strong id="launchSpentPrevious">R$ 0,00</strong></div>
+        <div class="launch-summary-card year"><small>Gasto no ano</small><strong id="launchSpentYear">R$ 0,00</strong></div>
+      </div>
+      <div class="launch-filters">
+        <div class="launch-filter-field"><label for="launchPurchaseFrom">Data da compra — de</label><input id="launchPurchaseFrom" type="date"></div>
+        <div class="launch-filter-field"><label for="launchPurchaseTo">Data da compra — até</label><input id="launchPurchaseTo" type="date"></div>
+        <div class="launch-filter-field"><label for="launchCardFilter">Cartão</label><select id="launchCardFilter"><option value="">Todos os cartões</option></select></div>
+        <div class="launch-filter-field"><label for="launchDueFrom">Vencimento — de</label><input id="launchDueFrom" type="date"></div>
+        <div class="launch-filter-field"><label for="launchDueTo">Vencimento — até</label><input id="launchDueTo" type="date"></div>
+        <div class="launch-filter-field"><label for="launchSectorFilter">Setor</label><select id="launchSectorFilter"><option value="">Todos os setores</option></select></div>
+        <div class="launch-filter-field"><label for="launchStatusFilter">Status do lançamento</label><select id="launchStatusFilter"><option value="">Todos os status</option><option value="pendente">Lançamento a ser realizado</option><option value="realizado">Lançamento realizado</option></select></div>
+        <div class="launch-filter-field launch-filter-actions"><button id="resetLaunchFiltersBtn" class="secondary-btn" type="button">Limpar filtros</button></div>
+      </div>
+      <div class="launch-table-wrap">
+        <table class="launch-table">
+          <thead><tr><th>DATA DA COMPRA</th><th>PRODUTO</th><th>SETOR</th><th>VALOR</th><th>CARTÃO</th><th>VENCIMENTO</th><th>STATUS</th><th>AÇÃO</th></tr></thead>
+          <tbody id="launchTableBody"><tr><td colspan="8"><div class="launch-empty"><strong>Nenhum lançamento neste mês</strong><span>Quando uma compra mudar para “Compra Realizada”, ela aparecerá aqui para ser lançada.</span></div></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="launchEditorView" class="hidden">
+      <div class="section-head">
+        <div><span class="eyebrow red">SETOR DE COMPRAS • REGISTRO CONTÁBIL</span><h2 id="launchEditorHeading" style="margin:7px 0 0">Registrar Lançamento</h2><p>Confira os dados da compra e informe os dados necessários para o lançamento.</p></div>
+        <button id="cancelLaunchEditorTop" class="back-btn" type="button">← Voltar aos lançamentos</button>
+      </div>
+      <form id="launchForm" class="launch-editor-card">
+        <div class="launch-source-panel">
+          <h3>Informações da compra</h3>
+          <div class="launch-source-grid">
+            <div class="launch-source-item"><small>Protocolo do pedido</small><strong id="launchSourceProtocol">—</strong></div>
+            <div class="launch-source-item"><small>Produto</small><strong id="launchSourceProduct">—</strong></div>
+            <div class="launch-source-item"><small>Solicitante</small><strong id="launchSourceRequester">—</strong></div>
+            <div class="launch-source-item"><small>Setor</small><strong id="launchSourceSector">—</strong></div>
+            <div class="launch-source-item"><small>Autorizado por</small><strong id="launchSourceAuthorized">—</strong></div>
+            <div class="launch-source-item"><small>Valor estimado do pedido</small><strong id="launchSourceEstimated">—</strong></div>
+            <div class="launch-source-item full"><small>Observação da compra</small><strong id="launchSourceObservation">—</strong></div>
+          </div>
+        </div>
+        <div class="launch-editor-grid">
+          <div class="field"><label for="launchNumber">Número do lançamento <span class="required">*</span></label><input id="launchNumber" required maxlength="100" placeholder="Número registrado no sistema"></div>
+          <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="number" required min="0.01" step="0.01" placeholder="0,00"></div>
+          <div class="field"><label for="launchPaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="launchPaymentMethod" required><option value="">Selecione</option><option>Cartão corporativo</option><option>Boleto</option><option>PIX</option><option>Transferência bancária</option><option>Dinheiro</option><option>Outro</option></select></div>
+          <div class="field"><label for="launchCard">Cartão utilizado <span class="required">*</span></label><input id="launchCard" required maxlength="120" list="launchCardOptions" placeholder="Identificação do cartão"><datalist id="launchCardOptions"></datalist></div>
+          <div class="field"><label for="launchInstallment">Parcelado? <span class="required">*</span></label><select id="launchInstallment" required><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+          <div class="field hidden" id="launchInstallmentsField"><label for="launchInstallmentCount">Quantidade de parcelas <span class="required">*</span></label><select id="launchInstallmentCount"><option value="">Selecione</option><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option><option value="11">11x</option><option value="12">12x</option></select></div>
+          <div class="field"><label for="launchPurchaseDate">Data da compra <span class="required">*</span></label><input id="launchPurchaseDate" type="date" required></div>
+          <div class="field"><label for="launchDueDate">Data de vencimento <span class="required">*</span></label><input id="launchDueDate" type="date" required></div>
+        </div>
+        <p class="launch-installment-help">Ao selecionar “Sim” em Parcelado?, informe a quantidade de parcelas de 1x a 12x.</p>
+        <div class="launch-editor-actions"><button id="cancelLaunchEditor" class="secondary-btn" type="button">Cancelar</button><button class="primary-btn" type="submit">Salvar Lançamento</button></div>
+      </form>
     </section>
 
     <section id="quotesView" class="hidden">
@@ -597,6 +701,9 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   var homeView=document.getElementById("homeView");
   var requestView=document.getElementById("requestView");
   var comprasView=document.getElementById("comprasView");
+  var launchesView=document.getElementById("launchesView");
+  var launchEditorView=document.getElementById("launchEditorView");
+  var launchForm=document.getElementById("launchForm");
   var quotesView=document.getElementById("quotesView");
   var quoteEditorView=document.getElementById("quoteEditorView");
   var quoteForm=document.getElementById("quoteForm");
@@ -672,19 +779,14 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       option.setAttribute("aria-current",isActive?"true":"false");
     });
     if(activeRole==="compras"){
-      homeView.classList.add("hidden");
-      requestView.classList.add("hidden");
-      comprasView.classList.remove("hidden");
-      quotesView.classList.add("hidden");
-      quoteEditorView.classList.add("hidden");
-      currentRoleLabel.textContent="Setor de Compras";
-      renderPurchases();
+      homeView.classList.add("hidden");requestView.classList.add("hidden");
+      comprasView.classList.remove("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+      currentRoleLabel.textContent="Setor de Compras";renderPurchases();updateLaunchNavCount();
     }else{
-      comprasView.classList.add("hidden");
-      quotesView.classList.add("hidden");
-      quoteEditorView.classList.add("hidden");
-      homeView.classList.remove("hidden");
-      requestView.classList.add("hidden");
+      comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+      homeView.classList.remove("hidden");requestView.classList.add("hidden");
       currentRoleLabel.textContent="Área do solicitante";
     }
     window.scrollTo({top:0,behavior:"smooth"});
@@ -721,12 +823,25 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     var items=getLocalPurchases();
     var updated=false;
     items=items.map(function(item){
-      if(item.protocolo===protocol){item.comprasStatus=status;updated=true;}
+      if(item.protocolo===protocol){
+        item.comprasStatus=status;
+        if(status==="Compra Realizada"){
+          item.dataCompra=item.dataCompra||new Date().toISOString();
+          if(!item.launchInfo)item.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:item.dataCompra,valorCompra:String(item.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
+          else if(item.launchInfo.situacao!=="Lançamento realizado"){
+            item.launchInfo.situacao="Lançamento a ser realizado";
+            item.launchInfo.dataCompra=item.launchInfo.dataCompra||item.dataCompra;
+          }
+        }
+        updated=true;
+      }
       return item;
     });
     if(!updated)return;
     try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(items));}catch(error){}
     renderPurchases();
+    updateLaunchNavCount();
+    if(!launchesView.classList.contains("hidden"))renderLaunches();
   }
   function createPurchaseDetail(label,value,full){
     var wrapper=document.createElement("div");
@@ -780,10 +895,19 @@ body.dark-mode .receipt-success p{color:#b0cabb}
       );
       card.appendChild(details);
       var actions=document.createElement("div");actions.className="purchase-actions";
-      var analyze=document.createElement("button");analyze.type="button";analyze.className="secondary-btn purchase-review";analyze.textContent="Marcar em análise";analyze.addEventListener("click",function(){updatePurchaseStatus(order.protocolo,"Em análise");});
-      var accept=document.createElement("button");accept.type="button";accept.className="secondary-btn purchase-accept";accept.textContent="Aceitar pedido";accept.addEventListener("click",function(){if(window.confirm("Confirmar o aceite deste pedido?"))updatePurchaseStatus(order.protocolo,"Aceito");});
-      var reject=document.createElement("button");reject.type="button";reject.className="secondary-btn purchase-reject";reject.textContent="Negar pedido";reject.addEventListener("click",function(){if(window.confirm("Confirmar a negativa deste pedido?"))updatePurchaseStatus(order.protocolo,"Negado");});
-      actions.append(analyze,accept,reject);card.appendChild(actions);list.appendChild(card);
+      if(order.comprasStatus==="Aceito"){
+        var bought=document.createElement("button");bought.type="button";bought.className="secondary-btn purchase-accept";bought.textContent="Marcar compra realizada";bought.addEventListener("click",function(){if(window.confirm("Confirmar que esta compra foi realizada? Ela entrará em Lançamentos."))updatePurchaseStatus(order.protocolo,"Compra Realizada");});
+        actions.appendChild(bought);
+      }else if(order.comprasStatus==="Compra Realizada"){
+        var launchLink=document.createElement("button");launchLink.type="button";launchLink.className="secondary-btn purchase-review";launchLink.textContent=order.launchInfo&&order.launchInfo.situacao==="Lançamento realizado"?"Ver lançamento":"Registrar lançamento";launchLink.addEventListener("click",function(){showLaunchesPage();openLaunchEditor(order.protocolo);});
+        actions.appendChild(launchLink);
+      }else if(order.comprasStatus!=="Negado"){
+        var analyze=document.createElement("button");analyze.type="button";analyze.className="secondary-btn purchase-review";analyze.textContent="Marcar em análise";analyze.addEventListener("click",function(){updatePurchaseStatus(order.protocolo,"Em análise");});
+        var accept=document.createElement("button");accept.type="button";accept.className="secondary-btn purchase-accept";accept.textContent="Aceitar pedido";accept.addEventListener("click",function(){if(window.confirm("Confirmar o aceite deste pedido?"))updatePurchaseStatus(order.protocolo,"Aceito");});
+        var reject=document.createElement("button");reject.type="button";reject.className="secondary-btn purchase-reject";reject.textContent="Negar pedido";reject.addEventListener("click",function(){if(window.confirm("Confirmar a negativa deste pedido?"))updatePurchaseStatus(order.protocolo,"Negado");});
+        actions.append(analyze,accept,reject);
+      }
+      card.appendChild(actions);list.appendChild(card);
     });
   }
   document.getElementById("refreshPurchasesBtn").addEventListener("click",renderPurchases);
