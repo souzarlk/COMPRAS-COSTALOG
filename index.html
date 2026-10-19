@@ -1397,7 +1397,8 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   }
   function showLaunchesPage(){
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
-    homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
+    homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+    comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     launchesView.classList.remove("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
     currentRoleLabel.textContent="Setor de Compras";
@@ -1405,7 +1406,10 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     window.scrollTo({top:0,behavior:"smooth"});
   }
   function returnToLaunches(){
+    userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
+    homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
     launchEditorView.classList.add("hidden");launchesView.classList.remove("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
     initializeLaunchFilters();renderLaunches();
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1548,6 +1552,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     document.getElementById("launchForm").dataset.protocol=protocol;
     var cards=Array.from(new Set(getLaunchOrders().map(function(item){return item.launchInfo&&item.launchInfo.cartao||(item.purchaseInfo&&item.purchaseInfo.cartao)||"";}).filter(Boolean)));
     var datalist=document.getElementById("launchCardOptions");datalist.replaceChildren();cards.forEach(function(value){datalist.appendChild(new Option(value,value));});
+    userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");homeView.classList.add("hidden");requestView.classList.add("hidden");
     launchesView.classList.add("hidden");comprasView.classList.add("hidden");quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
     launchEditorView.classList.remove("hidden");
     window.scrollTo({top:0,behavior:"smooth"});
@@ -1687,6 +1692,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   }
   function showQuotesPage(){
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
+    userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quoteEditorView.classList.add("hidden");
     quotesView.classList.remove("hidden");
@@ -1695,6 +1701,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   }
   function returnToPurchases(){
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
+    userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
     homeView.classList.add("hidden");requestView.classList.add("hidden");
