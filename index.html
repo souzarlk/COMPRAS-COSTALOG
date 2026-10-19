@@ -1352,13 +1352,13 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     return Number(value||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
   }
   function getLaunchPurchaseDate(order){
-    return localDateISO((order.purchaseInfo&&order.purchaseInfo.dataCompra)||(order.launchInfo&&order.launchInfo.dataCompra)||order.dataCompra||order.dataRegistro);
+    return localDateISO((order.launchInfo&&order.launchInfo.dataCompra)||(order.purchaseInfo&&order.purchaseInfo.dataCompra)||order.dataCompra||order.dataRegistro);
   }
   function getLaunchValue(order){
-    var purchaseValue=order.purchaseInfo&&order.purchaseInfo.valor;
-    if(purchaseValue!==undefined&&purchaseValue!==null&&String(purchaseValue)!=="")return Number(purchaseValue)||0;
     var raw=order.launchInfo&&order.launchInfo.valorCompra;
     if(raw!==undefined&&raw!==null&&String(raw)!=="")return Number(raw)||0;
+    var purchaseValue=order.purchaseInfo&&order.purchaseInfo.valor;
+    if(purchaseValue!==undefined&&purchaseValue!==null&&String(purchaseValue)!=="")return Number(purchaseValue)||0;
     return Number(order.valorEstimado)||0;
   }
   function isLaunchCompleted(order){
