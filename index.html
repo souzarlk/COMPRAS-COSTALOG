@@ -507,6 +507,22 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
 @media(max-width:850px){.analytics-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-filters p{grid-column:1/-1}.analytics-chart-grid{grid-template-columns:minmax(0,1fr)}.analytics-chart-card:nth-child(5){grid-column:auto}.analytics-canvas-wrap{height:270px}}
 @media(max-width:560px){.purchase-list-toolbar{align-items:stretch}.purchase-list-filter{min-width:100%}.analytics-filters{grid-template-columns:minmax(0,1fr)}.analytics-filters p{grid-column:auto}.analytics-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-summary-grid .launch-summary-card{padding:14px 12px}.analytics-summary-grid .launch-summary-card strong{font-size:19px}.analytics-chart-card{padding:14px}.analytics-canvas-wrap{height:250px}}
 
+ 
+@keyframes costalogPageIn{from{opacity:0;transform:translateY(12px) scale(.995);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes costalogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes costalogPulse{0%,100%{box-shadow:0 0 0 0 rgba(227,6,19,0)}50%{box-shadow:0 0 0 5px rgba(227,6,19,.10)}}
+#app .page-main .container>section:not(.hidden){animation:costalogPageIn .42s cubic-bezier(.2,.75,.25,1) both}
+button,.home-card,.launch-summary-card,.purchase-item,.analytics-chart-card,.user-order-card{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease}
+button:hover:not(:disabled){transform:translateY(-1px)}button:active:not(:disabled){transform:scale(.985)}
+.home-icon{animation:costalogFloat 4s ease-in-out infinite}.home-icon svg{transition:transform .3s ease}.home-card:hover .home-icon svg{transform:rotate(-7deg) scale(1.08)}
+.purchase-item:hover,.user-order-card:hover,.analytics-chart-card:hover{transform:translateY(-2px);box-shadow:0 16px 35px rgba(0,0,0,.075);border-color:rgba(227,6,19,.28)}
+.launch-summary-card:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(0,0,0,.07)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(227,6,19,.10)}
+.login-card{animation:costalogPageIn .65s cubic-bezier(.2,.75,.25,1) both}.login-dot{animation:costalogPulse 2.5s ease-in-out infinite}.login-glow{animation:costalogFloat 8s ease-in-out infinite}.login-glow-two{animation-delay:-3s}
+.money-help{display:block;margin-top:6px;color:var(--muted);font-size:10px;line-height:1.5}input[data-money="brl"]{font-variant-numeric:tabular-nums;font-weight:650}
+body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0) invert(1)}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -585,7 +601,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
           <div class="class-heading"><span class="class-icon" aria-hidden="true">02</span><div><h3>Pedido</h3><p>Informações sobre o produto ou material solicitado</p></div></div>
           <div class="form-grid order-grid">
             <div class="field full"><label for="productName">Produto <span class="required">*</span></label><input id="productName" name="productName" required maxlength="180" placeholder="Descreva o material, peça ou serviço"></div>
-            <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="number" inputmode="decimal" min="0.01" max="999999999" step="0.01" required placeholder="0,00"></div>
+            <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
             <div class="field"><label for="suggestedBrand">Marca indicada</label><input id="suggestedBrand" name="suggestedBrand" maxlength="120" placeholder="Marca ou modelo preferido"></div>
             <div class="field full"><label for="observations">Observação</label><textarea id="observations" name="observations" maxlength="2000" placeholder="Inclua detalhes, quantidade, justificativa ou outras informações relevantes."></textarea></div>
           </div>
@@ -630,7 +646,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
           </div>
         </div>
         <div class="purchase-register-grid">
-          <div class="field"><label for="purchaseActualValue">Valor da compra (R$) <span class="required">*</span></label><input id="purchaseActualValue" type="number" min="0.01" max="999999999" step="0.01" required placeholder="0,00"></div>
+          <div class="field"><label for="purchaseActualValue">Valor da compra (R$) <span class="required">*</span></label><input id="purchaseActualValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
           <div class="field"><label for="purchasePaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="purchasePaymentMethod" required><option value="">Selecione</option><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Boleto</option></select></div>
           <div class="field hidden" id="purchaseCardField"><label for="purchaseCard">Cartão utilizado <span class="required">*</span></label><input id="purchaseCard" list="purchaseCardOptions" maxlength="120" placeholder="Identificação do cartão"><datalist id="purchaseCardOptions"></datalist></div>
           <div class="field hidden" id="purchaseInstallmentField"><label for="purchaseInstallment">Parcelado? <span class="required">*</span></label><select id="purchaseInstallment"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
@@ -714,7 +730,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
         </div>
         <div class="launch-editor-grid">
           <div class="field"><label for="launchNumber">Número do lançamento <span class="required">*</span></label><input id="launchNumber" required maxlength="100" placeholder="Número registrado no sistema"></div>
-          <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="number" required min="0.01" step="0.01" placeholder="0,00"></div>
+          <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
           <div class="field"><label for="launchPaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="launchPaymentMethod" required><option value="">Selecione</option><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Boleto</option></select></div>
           <div class="field" id="launchCardField"><label for="launchCard">Cartão utilizado <span class="required">*</span></label><input id="launchCard" maxlength="120" list="launchCardOptions" placeholder="Identificação do cartão"><datalist id="launchCardOptions"></datalist></div>
           <div class="field" id="launchInstallmentField"><label for="launchInstallment">Parcelado? <span class="required">*</span></label><select id="launchInstallment" required><option value="nao">Não</option><option value="sim">Sim</option></select></div>
@@ -787,11 +803,11 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
               <tbody id="quoteRowsBody">
                 <tr class="quote-row">
                   <td><input class="product-input q-product" aria-label="Produto" placeholder="Produto" maxlength="180"></td>
-                  <td><input class="q-value" aria-label="Valor" type="number" min="0" step="0.01" placeholder="0,00"></td>
-                  <td><input class="q-installment" aria-label="Valor parcelado" type="number" min="0" step="0.01" placeholder="0,00"></td>
-                  <td><input class="q-freight" aria-label="Frete" type="number" min="0" step="0.01" placeholder="0,00"></td>
-                  <td><input class="q-total-cash" aria-label="Valor total à vista" type="number" min="0" step="0.01" placeholder="0,00"></td>
-                  <td><input class="q-total-installment" aria-label="Valor total parcelado" type="number" min="0" step="0.01" placeholder="0,00"></td>
+                  <td><input class="q-value money-input" aria-label="Valor" type="text" inputmode="decimal" data-money="brl" placeholder="R$ 0,00"></td>
+                  <td><input class="q-installment money-input" aria-label="Valor parcelado" type="text" inputmode="decimal" data-money="brl" placeholder="R$ 0,00"></td>
+                  <td><input class="q-freight money-input" aria-label="Frete" type="text" inputmode="decimal" data-money="brl" placeholder="R$ 0,00"></td>
+                  <td><input class="q-total-cash money-input" aria-label="Valor total à vista" type="text" inputmode="decimal" data-money="brl" placeholder="R$ 0,00"></td>
+                  <td><input class="q-total-installment money-input" aria-label="Valor total parcelado" type="text" inputmode="decimal" data-money="brl" placeholder="R$ 0,00"></td>
                   <td><input class="q-brand" aria-label="Marca" maxlength="120" placeholder="Marca"></td>
                   <td><input class="q-supplier" aria-label="Fornecedor" maxlength="160" placeholder="Fornecedor"></td>
                   <td><input class="link-input q-link" aria-label="Link" type="url" placeholder="https://..."></td>
@@ -839,7 +855,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
   </section>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/config.js"></script>
@@ -1268,7 +1284,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     var now=new Date().toISOString();
     var actualDate=document.getElementById("purchaseDate").value;
     var purchaseInfo={
-      valor:String(Number(document.getElementById("purchaseActualValue").value)),
+      valor:String(parseBRL(document.getElementById("purchaseActualValue").value)||0),
       formaPagamento:method,
       cartao:method==="Cartão"?document.getElementById("purchaseCard").value.trim():"",
       parcelado:parcelado,
@@ -1441,17 +1457,18 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     return isNaN(date.getTime())?null:date;
   }
   function launchCurrency(value){
-    return Number(value||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+    var n=typeof value==="number"?value:parseBRL(value);if(n===null||!Number.isFinite(n))n=0;
+    return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
   }
   function getLaunchPurchaseDate(order){
     return localDateISO((order.launchInfo&&order.launchInfo.dataCompra)||(order.purchaseInfo&&order.purchaseInfo.dataCompra)||order.dataCompra||order.dataRegistro);
   }
   function getLaunchValue(order){
     var raw=order.launchInfo&&order.launchInfo.valorCompra;
-    if(raw!==undefined&&raw!==null&&String(raw)!=="")return Number(raw)||0;
+    if(raw!==undefined&&raw!==null&&String(raw)!==""){var parsedLaunch=parseBRL(raw);return parsedLaunch===null?0:parsedLaunch;}
     var purchaseValue=order.purchaseInfo&&order.purchaseInfo.valor;
-    if(purchaseValue!==undefined&&purchaseValue!==null&&String(purchaseValue)!=="")return Number(purchaseValue)||0;
-    return Number(order.valorEstimado)||0;
+    if(purchaseValue!==undefined&&purchaseValue!==null&&String(purchaseValue)!==""){var parsedPurchase=parseBRL(purchaseValue);return parsedPurchase===null?0:parsedPurchase;}
+    var estimate=parseBRL(order.valorEstimado);return estimate===null?0:estimate;
   }
   function isLaunchCompleted(order){
     return !!(order.launchInfo&&order.launchInfo.situacao==="Lançamento realizado");
@@ -1727,7 +1744,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
         situacao:"Lançamento realizado",
         deleted:false,
         numeroLancamento:document.getElementById("launchNumber").value.trim(),
-        valorCompra:String(Number(document.getElementById("launchPurchaseValue").value)),
+        valorCompra:String(parseBRL(document.getElementById("launchPurchaseValue").value)||0),
         formaPagamento:paymentMethod,
         cartao:paymentMethod==="Cartão"?document.getElementById("launchCard").value.trim():"",
         parcelado:parcelado,
@@ -1897,11 +1914,11 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     var tr=document.createElement("tr");tr.className="quote-row";
     var fields=[
       ["product","product-input q-product","text","Produto",180],
-      ["value","q-value","number","0,00",0],
-      ["installmentValue","q-installment","number","0,00",0],
-      ["freight","q-freight","number","0,00",0],
-      ["totalCash","q-total-cash","number","0,00",0],
-      ["totalInstallment","q-total-installment","number","0,00",0],
+      ["value","q-value money-input","text","R$ 0,00",0],
+      ["installmentValue","q-installment money-input","text","R$ 0,00",0],
+      ["freight","q-freight money-input","text","R$ 0,00",0],
+      ["totalCash","q-total-cash money-input","text","R$ 0,00",0],
+      ["totalInstallment","q-total-installment money-input","text","R$ 0,00",0],
       ["brand","q-brand","text","Marca",120],
       ["supplier","q-supplier","text","Fornecedor",160],
       ["link","link-input q-link","url","https://...",0]
@@ -1910,9 +1927,11 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
       var td=document.createElement("td"),input=document.createElement("input");
       input.className=field[1];input.type=field[2];input.setAttribute("aria-label",field[3]);
       if(field[4])input.maxLength=field[4];
-      if(input.type==="number"){input.min="0";input.step="0.01";}
+      if(input.classList.contains("money-input"))input.dataset.money="brl";
       input.placeholder=field[3];
-      input.value=item[field[0]]===undefined||item[field[0]]===null?"":item[field[0]];
+      var storedValue=item[field[0]];
+      if(input.classList.contains("money-input")){var parsedValue=parseBRL(storedValue);input.value=parsedValue===null?"":formatCurrency(parsedValue);}
+      else input.value=storedValue===undefined||storedValue===null?"":storedValue;
       td.appendChild(input);tr.appendChild(td);
     });
     var removeTd=document.createElement("td"),remove=document.createElement("button");
@@ -1944,7 +1963,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     var valued=rows.map(function(row,index){
       var input=row.querySelector(".q-total-cash");
       var raw=input?input.value:"";
-      return {row:row,index:index,value:raw!==""?Number(raw):NaN};
+      return {row:row,index:index,value:raw!==""?(parseBRL(raw)===null?NaN:parseBRL(raw)):NaN};
     }).filter(function(item){return Number.isFinite(item.value)&&item.value>=0;});
     var selected=new Set();
     if(priceFilter==="barato"&&valued.length){
@@ -2035,7 +2054,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     if(!window.XLSX){alert("A biblioteca de exportação ainda está carregando. Tente novamente em alguns segundos.");return;}
     var headers=["PRODUTO","VALOR","VALOR PARC.","FRETE ","VALOR TOTAL A VISTA ","VALOR TOTAL PARC","MARCA","FORNECEDOR","LINK "];
     var rows=[headers].concat((quote.items||[]).map(function(item){
-      function money(value){return value===""||value===null||value===undefined?null:Number(value);}
+      function money(value){return value===""||value===null||value===undefined?null:parseBRL(value);}
       return [item.product||"",money(item.value),money(item.installmentValue),money(item.freight),money(item.totalCash),money(item.totalInstallment),item.brand||"",item.supplier||"",item.link||""];
     }));
     var ws=window.XLSX.utils.aoa_to_sheet(rows);
@@ -2075,9 +2094,21 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
     }catch(e){}
   }
 
-  function formatCurrency(raw){
-    return Number(raw).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  function parseBRL(value){
+    if(value===null||value===undefined)return null;
+    var raw=String(value).trim();if(!raw)return null;
+    raw=raw.replaceAll("R$","").replaceAll(" ","").replaceAll(String.fromCharCode(160),"");
+    if(raw.indexOf(",")>=0)raw=raw.replaceAll(".","").replace(",",".");
+    else if(raw.indexOf(".")>=0){var parts=raw.split("."),last=parts[parts.length-1];if(parts.length>1&&last.length===3)raw=parts.join("");}
+    var n=Number(raw);return Number.isFinite(n)?n:null;
   }
+  function formatCurrency(raw){
+    var n=typeof raw==="number"?raw:parseBRL(raw);if(n===null||!Number.isFinite(n))n=0;
+    return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  }
+  function moneyInputPlain(value){var n=parseBRL(value);return n===null?"":n.toFixed(2).replace(".",",");}
+  document.addEventListener("focusin",function(event){var input=event.target;if(input&&input.matches&&input.matches('[data-money="brl"]'))input.value=moneyInputPlain(input.value);});
+  document.addEventListener("focusout",function(event){var input=event.target;if(input&&input.matches&&input.matches('[data-money="brl"]')){var n=parseBRL(input.value);input.value=n===null?"":formatCurrency(n);}});
   function currentDate(){
     return new Date().toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
   }
@@ -2106,7 +2137,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
       setor:document.getElementById("requesterSector").value.trim(),
       autorizadoPor:document.getElementById("authorizedBy").value,
       produto:document.getElementById("productName").value.trim(),
-      valorEstimado:Number(document.getElementById("estimatedValue").value),
+      valorEstimado:parseBRL(document.getElementById("estimatedValue").value),
       marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
       observacao:document.getElementById("observations").value.trim(),
       dataRegistro:date.toISOString(),
@@ -2158,7 +2189,7 @@ body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-edit
   var canvas=document.getElementById("matrixLayer");
   var ctx=canvas.getContext("2d");
   var columns=[],fontSize=16,animationId=null,lastFrame=0;
-  var chars="01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
+  var chars="0123456789";
   function resizeMatrix(){
     var ratio=Math.min(window.devicePixelRatio||1,2);
     canvas.width=Math.floor(window.innerWidth*ratio);
