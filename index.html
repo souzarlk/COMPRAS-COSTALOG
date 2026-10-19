@@ -1156,6 +1156,13 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
     alert("Lançamento salvo com sucesso.");
   });
 
+  window.addEventListener("storage",function(event){
+    if(event.key==="comprasCostalogPedidosLocais"){
+      renderPurchases();updateLaunchNavCount();
+      if(launchesView&&!launchesView.classList.contains("hidden")){initializeLaunchFilters();renderLaunches();}
+    }
+  });
+
   function setQuoteNotice(message,isError){
     var notice=document.getElementById("quoteSyncNotice");
     if(notice){
