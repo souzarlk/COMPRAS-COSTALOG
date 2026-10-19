@@ -669,9 +669,9 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
         <div class="launch-editor-grid">
           <div class="field"><label for="launchNumber">Número do lançamento <span class="required">*</span></label><input id="launchNumber" required maxlength="100" placeholder="Número registrado no sistema"></div>
           <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="number" required min="0.01" step="0.01" placeholder="0,00"></div>
-          <div class="field"><label for="launchPaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="launchPaymentMethod" required><option value="">Selecione</option><option>Cartão corporativo</option><option>Boleto</option><option>PIX</option><option>Transferência bancária</option><option>Dinheiro</option><option>Outro</option></select></div>
-          <div class="field"><label for="launchCard">Cartão utilizado <span class="required">*</span></label><input id="launchCard" required maxlength="120" list="launchCardOptions" placeholder="Identificação do cartão"><datalist id="launchCardOptions"></datalist></div>
-          <div class="field"><label for="launchInstallment">Parcelado? <span class="required">*</span></label><select id="launchInstallment" required><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+          <div class="field"><label for="launchPaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="launchPaymentMethod" required><option value="">Selecione</option><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Boleto</option></select></div>
+          <div class="field" id="launchCardField"><label for="launchCard">Cartão utilizado <span class="required">*</span></label><input id="launchCard" maxlength="120" list="launchCardOptions" placeholder="Identificação do cartão"><datalist id="launchCardOptions"></datalist></div>
+          <div class="field" id="launchInstallmentField"><label for="launchInstallment">Parcelado? <span class="required">*</span></label><select id="launchInstallment" required><option value="nao">Não</option><option value="sim">Sim</option></select></div>
           <div class="field hidden" id="launchInstallmentsField"><label for="launchInstallmentCount">Quantidade de parcelas <span class="required">*</span></label><select id="launchInstallmentCount"><option value="">Selecione</option><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="7">7x</option><option value="8">8x</option><option value="9">9x</option><option value="10">10x</option><option value="11">11x</option><option value="12">12x</option></select></div>
           <div class="field"><label for="launchPurchaseDate">Data da compra <span class="required">*</span></label><input id="launchPurchaseDate" type="date" required></div>
           <div class="field"><label for="launchDueDate">Data de vencimento <span class="required">*</span></label><input id="launchDueDate" type="date" required></div>
@@ -1352,9 +1352,11 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     return Number(value||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
   }
   function getLaunchPurchaseDate(order){
-    return localDateISO((order.launchInfo&&order.launchInfo.dataCompra)||order.dataCompra||order.dataRegistro);
+    return localDateISO((order.purchaseInfo&&order.purchaseInfo.dataCompra)||(order.launchInfo&&order.launchInfo.dataCompra)||order.dataCompra||order.dataRegistro);
   }
   function getLaunchValue(order){
+    var purchaseValue=order.purchaseInfo&&order.purchaseInfo.valor;
+    if(purchaseValue!==undefined&&purchaseValue!==null&&String(purchaseValue)!=="")return Number(purchaseValue)||0;
     var raw=order.launchInfo&&order.launchInfo.valorCompra;
     if(raw!==undefined&&raw!==null&&String(raw)!=="")return Number(raw)||0;
     return Number(order.valorEstimado)||0;
@@ -1377,7 +1379,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       }
     });
     if(changed){try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(all));}catch(error){}}
-    return all.filter(function(order){return order.comprasStatus==="Compra Realizada";});
+    return all.filter(function(order){return order.comprasStatus==="Compra Realizada"&&!(order.launchInfo&&order.launchInfo.deleted);});
   }
   function updateLaunchNavCount(){
     var badge=document.getElementById("launchNavCount");
@@ -1414,7 +1416,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     var purchases=getLaunchOrders();
     var cardSelect=document.getElementById("launchCardFilter"),sectorSelect=document.getElementById("launchSectorFilter");
     var currentCard=cardSelect.value,currentSector=sectorSelect.value;
-    var cards=Array.from(new Set(purchases.map(function(order){return order.launchInfo&&order.launchInfo.cartao||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
+    var cards=Array.from(new Set(purchases.map(function(order){return order.launchInfo&&order.launchInfo.cartao||(order.purchaseInfo&&order.purchaseInfo.cartao)||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
     var sectors=Array.from(new Set(purchases.map(function(order){return order.setor||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
     cardSelect.replaceChildren(new Option("Todos os cartões",""));
     cards.forEach(function(card){cardSelect.add(new Option(card,card));});
@@ -1497,7 +1499,16 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       var statusTd=document.createElement("td"),badge=document.createElement("span");badge.className="launch-state "+(isLaunchCompleted(order)?"done":"pending");badge.textContent=isLaunchCompleted(order)?"Lançamento realizado":"Lançamento a ser realizado";statusTd.appendChild(badge);
       var actionTd=document.createElement("td"),actions=document.createElement("div");actions.className="launch-row-actions";
       var register=document.createElement("button");register.type="button";register.className=isLaunchCompleted(order)?"secondary-btn":"primary-btn";register.textContent=isLaunchCompleted(order)?"Editar Lançamento":"Registrar Lançamento";register.addEventListener("click",function(){openLaunchEditor(order.protocolo);});
-      actions.appendChild(register);actionTd.appendChild(actions);
+      var removeLaunch=document.createElement("button");removeLaunch.type="button";removeLaunch.className="secondary-btn purchase-reject";removeLaunch.textContent="Excluir";removeLaunch.addEventListener("click",function(){
+        if(!window.confirm("Excluir o lançamento deste pedido? A compra continuará registrada e poderá ser lançada novamente pelo Painel de Compras."))return;
+        var saved=getLocalPurchases().map(function(item){
+          if(item.protocolo===order.protocolo&&item.launchInfo){item.launchInfo.deleted=true;item.launchInfo.deletedAt=new Date().toISOString();}
+          return item;
+        });
+        try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(saved));}catch(e){alert("Não foi possível excluir o lançamento.");return;}
+        initializeLaunchFilters();renderLaunches();updateLaunchNavCount();
+      });
+      actions.append(register,removeLaunch);actionTd.appendChild(actions);
       tr.append(dateTd,productTd,sectorTd,valueTd,cardTd,dueTd,statusTd,actionTd);tbody.appendChild(tr);
     });
   }
@@ -1571,8 +1582,26 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   });
 
   window.addEventListener("storage",function(event){
+    if(event.key==="costalogUsuarioAtivo"){
+      activeUserName=event.newValue||"";savedUser=activeUserName;
+      if(!userOrdersView.classList.contains("hidden"))document.getElementById("myOrdersName").value=activeUserName;
+      updateMyOrdersBadge();
+    }
     if(event.key==="comprasCostalogPedidosLocais"){
-      renderPurchases();updateLaunchNavCount();
+      var oldRows=[],newRows=[];
+      try{oldRows=JSON.parse(event.oldValue||"[]");}catch(e){}
+      try{newRows=JSON.parse(event.newValue||"[]");}catch(e){}
+      var oldNotificationIds=new Set();
+      oldRows.forEach(function(order){(order.notificacoes||[]).forEach(function(n){oldNotificationIds.add(n.id);});});
+      newRows.forEach(function(order){
+        (order.notificacoes||[]).forEach(function(notification){
+          if(!oldNotificationIds.has(notification.id)&&!notification.lida&&normalizePersonName(order.nome)===normalizePersonName(activeUserName)){
+            alertRequesterOfStatus(order,notification);
+          }
+        });
+      });
+      renderPurchases();updateLaunchNavCount();updateMyOrdersBadge();
+      if(!userOrdersView.classList.contains("hidden"))renderMyOrders();
       if(launchesView&&!launchesView.classList.contains("hidden")){initializeLaunchFilters();renderLaunches();}
     }
   });
@@ -1908,8 +1937,14 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
       observacao:document.getElementById("observations").value.trim(),
       dataRegistro:date.toISOString(),
-      status:"Registrado"
+      status:"Registrado",
+      comprasStatus:"Pendente de análise",
+      notificacoes:[]
     };
+    activeUserName=order.nome;
+    savedUser=order.nome;
+    try{localStorage.setItem("costalogUsuarioAtivo",order.nome);}catch(e){}
+    appendOrderNotification(order,"Pendente de análise");
     setText("receiptProtocol",order.protocolo);
     setText("receiptName",order.nome);
     setText("receiptSector",order.setor);
@@ -1928,6 +1963,8 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     } catch(storageError) {
       /* O comprovante continua disponível nesta sessão mesmo se o armazenamento local estiver indisponível. */
     }
+    document.getElementById("myOrdersName").value=activeUserName;
+    updateMyOrdersBadge();
     receiptModal.classList.remove("hidden");
     document.getElementById("closeReceiptBtn").focus({preventScroll:true});
   });
@@ -1935,7 +1972,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   document.getElementById("closeReceiptBtn").addEventListener("click",function(){
     closeReceipt();
     requestForm.reset();
-    document.getElementById("requesterName").value=savedUser;
+    document.getElementById("requesterName").value=activeUserName||savedUser;
     showHome();
     window.scrollTo({top:0,behavior:"smooth"});
   });
