@@ -598,7 +598,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
           <div class="class-heading"><span class="class-icon" aria-hidden="true">02</span><div><h3>Pedido</h3><p>Informações sobre o produto ou material solicitado</p></div></div>
           <div class="form-grid order-grid">
             <div class="field full"><label for="productName">Produto <span class="required">*</span></label><input id="productName" name="productName" required maxlength="180" placeholder="Descreva o material, peça ou serviço"></div>
-            <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
+            <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"><small class="money-help">Digite em reais, por exemplo 2000 ou 2.000,00. O campo será formatado automaticamente.</small></div>
             <div class="field"><label for="suggestedBrand">Marca indicada</label><input id="suggestedBrand" name="suggestedBrand" maxlength="120" placeholder="Marca ou modelo preferido"></div>
             <div class="field full"><label for="observations">Observação</label><textarea id="observations" name="observations" maxlength="2000" placeholder="Inclua detalhes, quantidade, justificativa ou outras informações relevantes."></textarea></div>
           </div>
@@ -643,7 +643,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
           </div>
         </div>
         <div class="purchase-register-grid">
-          <div class="field"><label for="purchaseActualValue">Valor da compra (R$) <span class="required">*</span></label><input id="purchaseActualValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
+          <div class="field"><label for="purchaseActualValue">Valor da compra (R$) <span class="required">*</span></label><input id="purchaseActualValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"><small class="money-help">Digite em reais, por exemplo 2000 ou 2.000,00. O campo será formatado automaticamente.</small></div>
           <div class="field"><label for="purchasePaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="purchasePaymentMethod" required><option value="">Selecione</option><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Boleto</option></select></div>
           <div class="field hidden" id="purchaseCardField"><label for="purchaseCard">Cartão utilizado <span class="required">*</span></label><input id="purchaseCard" list="purchaseCardOptions" maxlength="120" placeholder="Identificação do cartão"><datalist id="purchaseCardOptions"></datalist></div>
           <div class="field hidden" id="purchaseInstallmentField"><label for="purchaseInstallment">Parcelado? <span class="required">*</span></label><select id="purchaseInstallment"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
@@ -727,7 +727,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
         </div>
         <div class="launch-editor-grid">
           <div class="field"><label for="launchNumber">Número do lançamento <span class="required">*</span></label><input id="launchNumber" required maxlength="100" placeholder="Número registrado no sistema"></div>
-          <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"></div>
+          <div class="field"><label for="launchPurchaseValue">Valor da compra (R$) <span class="required">*</span></label><input id="launchPurchaseValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"><small class="money-help">Digite em reais, por exemplo 2000 ou 2.000,00. O campo será formatado automaticamente.</small></div>
           <div class="field"><label for="launchPaymentMethod">Forma de pagamento <span class="required">*</span></label><select id="launchPaymentMethod" required><option value="">Selecione</option><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Boleto</option></select></div>
           <div class="field" id="launchCardField"><label for="launchCard">Cartão utilizado <span class="required">*</span></label><input id="launchCard" maxlength="120" list="launchCardOptions" placeholder="Identificação do cartão"><datalist id="launchCardOptions"></datalist></div>
           <div class="field" id="launchInstallmentField"><label for="launchInstallment">Parcelado? <span class="required">*</span></label><select id="launchInstallment" required><option value="nao">Não</option><option value="sim">Sim</option></select></div>
@@ -1137,7 +1137,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     userOrdersView.classList.remove("hidden");
-    currentRoleLabel.textContent="Área do solicitante";
+    currentRoleLabel.textContent="USUÁRIO • Solicitante";
     setMyOrdersNotice("");
     renderMyOrders();window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1256,6 +1256,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   purchaseRegistrationForm.addEventListener("submit",function(event){
     event.preventDefault();
     if(!purchaseRegistrationForm.reportValidity())return;
+    var parsedActualValue=parseBRL(document.getElementById("purchaseActualValue").value);
+    if(parsedActualValue===null||parsedActualValue<=0){alert("Informe um valor válido, por exemplo 2000 ou 2.000,00.");document.getElementById("purchaseActualValue").focus();return;}
     var protocol=currentPurchaseProtocol;
     var method=document.getElementById("purchasePaymentMethod").value;
     var isCashOrPix=method==="Dinheiro"||method==="PIX";
@@ -1263,7 +1265,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var now=new Date().toISOString();
     var actualDate=document.getElementById("purchaseDate").value;
     var purchaseInfo={
-      valor:String(parseBRL(document.getElementById("purchaseActualValue").value)||0),
+      valor:String(parsedActualValue),
       formaPagamento:method,
       cartao:method==="Cartão"?document.getElementById("purchaseCard").value.trim():"",
       parcelado:parcelado,
@@ -1628,7 +1630,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var canvas=document.getElementById(id);if(!canvas)return;var wrap=canvas.parentElement,old=wrap.querySelector(".chart-fallback");if(old)old.remove();if(analyticsCharts[id]){analyticsCharts[id].destroy();delete analyticsCharts[id];}
     if(!window.Chart){canvas.style.display="none";var fb=document.createElement("div");fb.className="chart-fallback";var max=Math.max.apply(null,values.concat([1]));
       labels.forEach(function(name,i){var row=document.createElement("div");row.style.margin="8px 0";var h=document.createElement("div");h.style.display="flex";h.style.justifyContent="space-between";h.style.fontSize="11px";var n=document.createElement("span");n.textContent=name;var v=document.createElement("strong");v.textContent=label.indexOf("R$")>=0?launchCurrency(values[i]):String(values[i]||0);h.append(n,v);var track=document.createElement("div");track.style.height="7px";track.style.background="var(--line)";track.style.borderRadius="8px";track.style.marginTop="5px";var bar=document.createElement("div");bar.style.height="100%";bar.style.width=Math.max(0,Number(values[i]||0)/max*100)+"%";bar.style.background="#e30613";track.appendChild(bar);row.append(h,track);fb.appendChild(row);});wrap.appendChild(fb);return;}
-    canvas.style.display="block";analyticsCharts[id]=new window.Chart(canvas.getContext("2d"),{type:type,data:{labels:labels,datasets:[{label:label,data:values,borderWidth:1,backgroundColor:["#e30613","#ed6b72","#71717a","#c4c4c9","#9f1239","#f59e0b","#64748b","#16a34a","#a855f7","#0891b2","#ea580c","#6b7280"],borderColor:"#e30613",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:horizontal?"y":"x",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.parsed&&typeof c.parsed==="object"?(c.parsed.x!==undefined?c.parsed.x:c.parsed.y):c.parsed;return label+": "+(label.indexOf("R$")>=0?launchCurrency(v):v);}}}},scales:{x:{beginAtZero:true},y:{beginAtZero:true}}}});
+    canvas.style.display="block";analyticsCharts[id]=new window.Chart(canvas.getContext("2d"),{type:type,data:{labels:labels,datasets:[{label:label,data:values,borderWidth:1,backgroundColor:["#e30613","#ed6b72","#71717a","#c4c4c9","#9f1239","#f59e0b","#64748b","#16a34a","#a855f7","#0891b2","#ea580c","#6b7280"],borderColor:"#e30613",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:horizontal?"y":"x",animation:{duration:900,easing:"easeOutQuart"},layout:{padding:8},plugins:{legend:{display:false},tooltip:{backgroundColor:"#19191d",titleColor:"#fff",bodyColor:"#f4f4f5",padding:12,cornerRadius:9,displayColors:false,callbacks:{label:function(c){var v=c.parsed&&typeof c.parsed==="object"?(c.parsed.x!==undefined?c.parsed.x:c.parsed.y):c.parsed;return label+": "+(label.indexOf("R$")>=0?launchCurrency(v):v);}}}},scales:{x:{beginAtZero:true,grid:{color:document.body.classList.contains("dark-mode")?"rgba(255,255,255,.08)":"rgba(23,23,23,.07)"},ticks:{color:document.body.classList.contains("dark-mode")?"#d4d4d8":"#55555d"}},y:{beginAtZero:true,grid:{color:document.body.classList.contains("dark-mode")?"rgba(255,255,255,.08)":"rgba(23,23,23,.07)"},ticks:{color:document.body.classList.contains("dark-mode")?"#d4d4d8":"#55555d"}}}}});
   }
   function renderAnalytics(){
     if(!analyticsView||analyticsView.classList.contains("hidden"))return;initializeAnalyticsFilters();
@@ -1713,6 +1715,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   launchForm.addEventListener("submit",function(event){
     event.preventDefault();
     if(!launchForm.reportValidity())return;
+    var parsedLaunchValue=parseBRL(document.getElementById("launchPurchaseValue").value);
+    if(parsedLaunchValue===null||parsedLaunchValue<=0){alert("Informe um valor válido, por exemplo 2000 ou 2.000,00.");document.getElementById("launchPurchaseValue").focus();return;}
     var protocol=launchForm.dataset.protocol;
     var items=getLocalPurchases(),matched=false,now=new Date().toISOString(),newNotification=null,changedOrder=null;
     items=items.map(function(order){
@@ -1726,7 +1730,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
         situacao:"Lançamento realizado",
         deleted:false,
         numeroLancamento:document.getElementById("launchNumber").value.trim(),
-        valorCompra:String(parseBRL(document.getElementById("launchPurchaseValue").value)||0),
+        valorCompra:String(parsedLaunchValue),
         formaPagamento:paymentMethod,
         cartao:paymentMethod==="Cartão"?document.getElementById("launchCard").value.trim():"",
         parcelado:parcelado,
@@ -1829,6 +1833,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     window.scrollTo({top:0,behavior:"smooth"});
   }
   function returnToPurchases(){
+    if(portalRole!=="ADM")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
