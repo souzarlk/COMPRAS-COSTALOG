@@ -6,5 +6,8 @@
  */
 window.COSTALOG_CONFIG = {
   url: "",
-  anonKey: ""
+  anonKey: "",
+  // URL de origem do site principal, por exemplo: "https://portal.costalog.com.br"
+  // Preencha antes de incorporar a ferramenta em produção.
+  parentOrigin: ""
 };
