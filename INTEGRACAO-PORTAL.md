@@ -99,7 +99,7 @@ Hoje, esta versão do front-end mantém pedidos e cotações no armazenamento lo
 4. Valide no servidor as permissões para alterar status, registrar compras, excluir lançamentos e consultar cotações. Esconder botões ou receber `role: "ADM"` via mensagem não substitui essa validação.
 5. Associe ou migre os pedidos antigos sem ID de solicitante antes de mostrá-los aos usuários; a tela "Meus pedidos" filtra por ID/e-mail, não pelo nome digitado.
 
-A ferramenta aceita os tipos de mensagem `COSTALOG_PORTAL_SESSION` e `COSTALOG_PORTAL_SIGNOUT` somente quando a mensagem vem da janela pai e da origem indicada pelo `document.referrer`. A mensagem não deve conter senha nem credenciais de banco.
+A ferramenta aceita os tipos de mensagem `COSTALOG_PORTAL_SESSION` e `COSTALOG_PORTAL_SIGNOUT` somente quando a mensagem vem da janela pai e a origem coincide com `parentOrigin` configurada em `assets/config.js`. A mensagem não deve conter senha nem credenciais de banco.
 
 
 **Antes de publicar a integração:** defina `parentOrigin` em `assets/config.js` com a origem exata do site principal, por exemplo `https://portal.costalog.com.br`. Não deixe o campo vazio em produção. Por segurança, a ferramenta rejeita mensagens de sessão até que essa origem seja configurada.
