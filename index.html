@@ -523,6 +523,14 @@ button:hover:not(:disabled){transform:translateY(-1px)}button:active:not(:disabl
 body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0) invert(1)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
+.role-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #3a3a3f;border-radius:999px;background:#202024;color:#e9e9ed;font-size:11px;font-weight:800;white-space:nowrap}
+.role-badge:before{content:"";width:7px;height:7px;border-radius:50%;background:#36c77b;box-shadow:0 0 0 4px rgba(54,199,123,.12)}
+.user-orders-identity{display:flex;align-items:center;gap:12px;flex:1;min-width:240px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+.identity-lock{display:grid;place-items:center;width:34px;height:34px;flex:0 0 auto;border-radius:10px;background:#e8fbf0;color:#16834a;font-weight:900}
+.user-orders-identity strong{display:block;font-size:12px}.user-orders-identity small{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.5}
+.login-session-notice{padding:13px 15px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.055);color:#d5d5dc;font-size:12px;line-height:1.7}
+@media(max-width:650px){.role-badge{font-size:9px;padding:8px 10px}.user-orders-identity{min-width:100%}}
+
 </style>
 </head>
 <body>
@@ -535,9 +543,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     <span class="eyebrow">ACESSO AO PORTAL</span>
     <h1>Portal de<br><span>Compras</span></h1>
     <p>Acesso aberto temporariamente para configuração do Portal de Compras.</p>
-    <form id="loginForm">
-      <button class="primary-btn login-submit" type="submit"><span>Efetuar Login</span><span class="btn-arrow">→</span></button>
-    </form>
+    <div id="loginSessionNotice" class="login-session-notice" role="status">Acesse esta ferramenta pelo Portal Costalog. O seu login e as permissões serão fornecidos pelo portal principal.</div>
     <div class="login-security"><span class="security-icon">⌁</span><span>Login demonstrativo • Acesso interno</span></div>
   </div>
   <div class="login-footer">Portal de Compras Costalog — Desenvolvido pela equipe de informática.</div>
@@ -547,16 +553,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   <header class="topbar"><div class="topbar-inner">
     <div class="brand-lockup"><img src="assets/logo-costalog-white.svg" alt="Costalog"><div><strong>Portal de Compras</strong><span>Solicitações e acompanhamento</span></div></div>
     <div class="top-actions">
-      <div class="role-switcher-wrap">
-        <button id="roleSwitcher" class="role-switcher" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="roleMenu">
-          <span id="currentRoleLabel">Área do solicitante</span><span class="role-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div id="roleMenu" class="role-menu hidden" role="menu" aria-label="Selecionar cargo">
-          <button type="button" class="role-option active" data-role="solicitante" role="menuitem"><span class="role-option-icon">👤</span><span><strong>Área do solicitante</strong><small>Criar e acompanhar solicitações</small></span><span class="role-option-check">✓</span></button>
-          <button type="button" class="role-option" data-role="compras" role="menuitem"><span class="role-option-icon">🛒</span><span><strong>Setor de Compras</strong><small>Analisar os pedidos recebidos</small></span><span class="role-option-check">✓</span></button>
-        </div>
-      </div>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo claro e escuro" title="Alternar tema">☾</button><button id="logoutBtn" class="logout-btn" type="button">Sair ↗</button></div>
+      <span id="currentRoleLabel" class="role-badge">Aguardando acesso do portal</span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo claro e escuro" title="Alternar tema">☾</button></div>
   </div></header>
   <main class="page-main"><div class="container">
     <section id="homeView">
@@ -578,12 +576,11 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
         <button id="backFromMyOrdersBtn" class="back-btn" type="button">← Voltar ao início</button>
       </div>
       <div class="user-orders-tools">
-        <div class="field"><label for="myOrdersName">Nome informado no pedido</label><input id="myOrdersName" maxlength="100" placeholder="Digite o nome utilizado no pedido"></div>
-        <button id="searchMyOrdersBtn" class="primary-btn" type="button">Consultar pedidos</button>
+        <div class="user-orders-identity"><span class="identity-lock">✓</span><div><strong>Pedidos vinculados à sua conta</strong><small>Você verá somente as solicitações registradas pelo seu usuário no Portal Costalog.</small></div></div>
         <button id="enableStatusNotificationsBtn" class="secondary-btn" type="button">Ativar notificações</button>
       </div>
       <div id="myOrdersNotice" class="user-orders-notice" role="status" aria-live="polite"></div>
-      <div id="myOrdersList" class="user-order-list" aria-live="polite"><div class="user-orders-empty"><strong>Consulte seus pedidos</strong><span>Digite o mesmo nome que foi informado ao criar o pedido para ver os status e as notificações.</span></div></div>
+      <div id="myOrdersList" class="user-order-list" aria-live="polite"><div class="user-orders-empty"><strong>Carregando suas solicitações</strong><span>Os pedidos vinculados à sua conta aparecerão aqui.</span></div></div>
     </section>
 
     <section id="requestView" class="hidden">
@@ -890,9 +887,9 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   if(window.supabase&&window.supabase.createClient&&supabaseConfig.url&&supabaseConfig.anonKey){
     try{supabaseClient=window.supabase.createClient(supabaseConfig.url,supabaseConfig.anonKey);}catch(e){supabaseClient=null;}
   }
-  var roleSwitcher=document.getElementById("roleSwitcher");
-  var roleMenu=document.getElementById("roleMenu");
   var currentRoleLabel=document.getElementById("currentRoleLabel");
+  var portalRole="";
+  var portalIdentity={id:"",email:"",name:"",key:""};
   var pageContainer=document.querySelector(".page-main .container");
   var activeRole="solicitante";
   var savedUser="";
@@ -901,24 +898,43 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   var COMPANY_SECTORS=["OPERACIONAL","TERMINAL","FROTA","VAZIO","RH","ADM","MANUTENÇÃO","ALMOXARIFADO"];
   function sectorKey(value){return String(value||"").trim().toUpperCase().replace(/Ç/g,"C").replace(/[ÁÀÂÃ]/g,"A").replace(/[ÉÊ]/g,"E").replace(/Í/g,"I").replace(/[ÓÔÕ]/g,"O").replace(/Ú/g,"U");}
   function normalizeSectorName(value){var raw=String(value||"").trim();if(!raw)return "";var key=sectorKey(raw);var match=COMPANY_SECTORS.find(function(sector){return sectorKey(sector)===key;});return match||raw.toUpperCase();}
-  try {
-    if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode");
-    activeUserName=localStorage.getItem("costalogUsuarioAtivo")||"";
-  } catch(e) {}
-
+  try{if(localStorage.getItem("costalogComprasTema")==="escuro")document.body.classList.add("dark-mode");}catch(e){}
   function showApp(){
-    savedUser=activeUserName;
-    loginScreen.classList.add("hidden");
-    app.classList.remove("hidden");
-    document.getElementById("requesterName").value=activeUserName;
-    document.getElementById("myOrdersName").value=activeUserName;
+    if(!portalIdentity.key||!portalRole)return;
+    activeUserName=portalIdentity.name;savedUser=activeUserName;
+    loginScreen.classList.add("hidden");app.classList.remove("hidden");
+    var requester=document.getElementById("requesterName");requester.value=activeUserName;requester.readOnly=true;
     document.getElementById("themeToggle").textContent=document.body.classList.contains("dark-mode")?"☀":"☾";
-    updateMyOrdersBadge();
+    setActiveRole(portalRole==="ADM"?"compras":"solicitante");updateMyOrdersBadge();
   }
-  loginForm.addEventListener("submit",function(event){
-    event.preventDefault();
-    showApp();
+  function resetPortalSession(){
+    portalRole="";portalIdentity={id:"",email:"",name:"",key:""};activeUserName="";savedUser="";
+    app.classList.add("hidden");loginScreen.classList.remove("hidden");currentRoleLabel.textContent="Aguardando acesso do portal";
+    document.getElementById("requesterName").value="";document.getElementById("requesterName").readOnly=true;
+  }
+  function applyPortalSession(rawSession){
+    var session=rawSession&&rawSession.session?rawSession.session:rawSession||{},user=session.user||session.profile||session;
+    var rawRole=String(session.role||session.perfil||user.role||user.perfil||"").trim().toUpperCase();
+    var role=(rawRole==="ADM"||rawRole==="ADMIN"||rawRole==="ADMINISTRADOR"||rawRole==="COMPRAS")?"ADM":((rawRole==="USUARIO"||rawRole==="USUÁRIO"||rawRole==="USER"||rawRole==="SOLICITANTE")?"USUARIO":"");
+    var id=String(user.id||user.userId||session.userId||session.uid||"").trim();
+    var email=String(user.email||session.email||"").trim().toLowerCase();
+    var name=String(user.name||user.nome||user.full_name||user.fullName||session.name||session.nome||"").trim();
+    if(!role||(!id&&!email)||!name){
+      var notice=document.getElementById("loginSessionNotice");
+      if(notice)notice.textContent="O portal principal precisa enviar o perfil ADM/USUARIO e a identidade única do funcionário (ID ou e-mail), além do nome.";
+      return false;
+    }
+    portalRole=role;portalIdentity={id:id,email:email,name:name,key:id?"id:"+id:"email:"+email};showApp();return true;
+  }
+  var allowedParentOrigin="";
+  try{if(document.referrer)allowedParentOrigin=new URL(document.referrer).origin;}catch(e){}
+  window.addEventListener("message",function(event){
+    if(window.parent===window||event.source!==window.parent||!allowedParentOrigin||event.origin!==allowedParentOrigin)return;
+    var data=event.data||{};
+    if(data.type==="COSTALOG_PORTAL_SESSION")applyPortalSession(data.session||data);
+    else if(data.type==="COSTALOG_PORTAL_SIGNOUT")resetPortalSession();
   });
+  if(window.parent!==window&&allowedParentOrigin)window.parent.postMessage({type:"COSTALOG_TOOL_READY",tool:"compras-costalog"},allowedParentOrigin);
 
   document.getElementById("themeToggle").addEventListener("click",function(){
     document.body.classList.toggle("dark-mode");
@@ -927,28 +943,18 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     try { localStorage.setItem("costalogComprasTema",dark?"escuro":"claro"); } catch(e) {}
   });
 
-  document.getElementById("logoutBtn").addEventListener("click",function(){
-    savedUser="";
-    loginScreen.classList.remove("hidden");
-    app.classList.add("hidden");
-    requestForm.reset();
-    closeReceipt();
-    showHome();
-  });
-
   function showHome(){
+    if(portalRole==="ADM"){setActiveRole("compras");return;}
+    if(portalRole!=="USUARIO")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
-    activeRole="solicitante";
-    currentRoleLabel.textContent="Área do solicitante";
-    roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");
-    document.querySelectorAll(".role-option").forEach(function(option){var selected=option.getAttribute("data-role")==="solicitante";option.classList.toggle("active",selected);option.setAttribute("aria-current",selected?"true":"false");});
-    homeView.classList.remove("hidden");
-    userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+    activeRole="solicitante";currentRoleLabel.textContent="USUÁRIO";
+    homeView.classList.remove("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     updateMyOrdersBadge();
   }
   function showRequest(){
+    if(portalRole!=="USUARIO"||!portalIdentity.key)return;
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");
     requestView.classList.remove("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
@@ -961,50 +967,25 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   document.getElementById("backHomeBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
 
   function setActiveRole(role){
+    if(portalRole==="ADM"&&role!=="compras")return;
+    if(portalRole==="USUARIO"&&role!=="solicitante")return;
+    if(portalRole!=="ADM"&&portalRole!=="USUARIO")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
-    activeRole=role==="compras"?"compras":"solicitante";
-    roleMenu.classList.add("hidden");
-    roleSwitcher.setAttribute("aria-expanded","false");
-    document.querySelectorAll(".role-option").forEach(function(option){
-      var isActive=option.getAttribute("data-role")===activeRole;
-      option.classList.toggle("active",isActive);
-      option.setAttribute("aria-current",isActive?"true":"false");
-    });
-    if(activeRole==="compras"){
+    activeRole=portalRole==="ADM"?"compras":"solicitante";
+    currentRoleLabel.textContent=portalRole==="ADM"?"ADM • Setor de Compras":"USUÁRIO • Solicitante";
+    if(portalRole==="ADM"){
       homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
       comprasView.classList.remove("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
       quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
-      currentRoleLabel.textContent="Setor de Compras";renderPurchases();updateLaunchNavCount();
+      renderPurchases();updateLaunchNavCount();
     }else{
       comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
       quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
       homeView.classList.remove("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
-      currentRoleLabel.textContent="Área do solicitante";updateMyOrdersBadge();
+      updateMyOrdersBadge();
     }
     window.scrollTo({top:0,behavior:"smooth"});
   }
-  roleSwitcher.addEventListener("click",function(){
-    var shouldOpen=roleMenu.classList.contains("hidden");
-    roleMenu.classList.toggle("hidden",!shouldOpen);
-    roleSwitcher.setAttribute("aria-expanded",shouldOpen?"true":"false");
-  });
-  document.querySelectorAll(".role-option").forEach(function(option){
-    option.addEventListener("click",function(){setActiveRole(option.getAttribute("data-role"));});
-  });
-  document.addEventListener("click",function(event){
-    if(!event.target.closest(".role-switcher-wrap")){
-      roleMenu.classList.add("hidden");
-      roleSwitcher.setAttribute("aria-expanded","false");
-    }
-  });
-  document.addEventListener("keydown",function(event){
-    if(event.key==="Escape"&&!roleMenu.classList.contains("hidden")){
-      roleMenu.classList.add("hidden");
-      roleSwitcher.setAttribute("aria-expanded","false");
-      roleSwitcher.focus();
-    }
-  });
-
   function getLocalPurchases(){
     try{
       var items=JSON.parse(localStorage.getItem("comprasCostalogPedidosLocais")||"[]");
@@ -1036,16 +1017,22 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     });
     if(order.notificacoes.length>80)order.notificacoes=order.notificacoes.slice(-80);
   }
-  function getUnreadNotificationsFor(name){
-    var normalized=normalizePersonName(name);
-    if(!normalized)return 0;
-    return getLocalPurchases().filter(function(order){return normalizePersonName(order.nome)===normalized;})
+  function orderBelongsToCurrentUser(order){
+    if(!portalIdentity.key||!order)return false;
+    if(order.solicitanteKey)return order.solicitanteKey===portalIdentity.key;
+    if(portalIdentity.id&&order.solicitanteId)return String(order.solicitanteId)===portalIdentity.id;
+    if(portalIdentity.email&&order.solicitanteEmail)return String(order.solicitanteEmail).trim().toLowerCase()===portalIdentity.email;
+    return false;
+  }
+  function getUnreadNotificationsFor(){
+    if(!portalIdentity.key)return 0;
+    return getLocalPurchases().filter(function(order){return orderBelongsToCurrentUser(order);})
       .reduce(function(sum,order){return sum+(Array.isArray(order.notificacoes)?order.notificacoes.filter(function(n){return !n.lida;}).length:0);},0);
   }
   function updateMyOrdersBadge(){
     var badge=document.getElementById("userOrdersCount");
     if(!badge)return;
-    var count=getUnreadNotificationsFor(activeUserName);
+    var count=getUnreadNotificationsFor();
     badge.textContent=count;
     badge.classList.toggle("hidden",count===0);
     badge.title=count+" notificações não lidas";
@@ -1068,21 +1055,15 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     box.append(strong,span);return box;
   }
   function renderMyOrders(){
-    var name=(document.getElementById("myOrdersName").value||"").trim();
-    var list=document.getElementById("myOrdersList");
-    list.replaceChildren();
-    if(!name){
-      list.appendChild(emptyMyOrders("Digite seu nome","Informe o mesmo nome usado no campo Nome do pedido para consultar seus pedidos e as atualizações da equipe de Compras."));
+    var list=document.getElementById("myOrdersList");list.replaceChildren();
+    if(portalRole!=="USUARIO"||!portalIdentity.key){
+      list.appendChild(emptyMyOrders("Sessão não identificada","Acesse o Portal Costalog com sua conta para consultar as próprias solicitações."));
       updateMyOrdersBadge();return;
     }
-    var normalized=normalizePersonName(name);
-    var orders=getLocalPurchases().filter(function(order){return normalizePersonName(order.nome)===normalized;})
+    var orders=getLocalPurchases().filter(function(order){return orderBelongsToCurrentUser(order);})
       .sort(function(a,b){return new Date(b.dataRegistro||0)-new Date(a.dataRegistro||0);});
-    activeUserName=name;
-    savedUser=name;
-    try{localStorage.setItem("costalogUsuarioAtivo",name);}catch(e){}
     if(!orders.length){
-      list.appendChild(emptyMyOrders("Nenhum pedido encontrado","Não localizei pedidos com esse nome neste navegador. Confira a grafia ou tente novamente mais tarde."));
+      list.appendChild(emptyMyOrders("Nenhum pedido encontrado","Não há solicitações vinculadas à sua conta neste armazenamento. Pedidos antigos precisarão ser associados ao ID/e-mail do usuário."));
       updateMyOrdersBadge();return;
     }
     orders.forEach(function(order){
@@ -1151,19 +1132,17 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     updateMyOrdersBadge();
   }
   function showMyOrdersPage(){
+    if(portalRole!=="USUARIO"||!portalIdentity.key)return;
     homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
     purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
     quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     userOrdersView.classList.remove("hidden");
-    if(activeUserName)document.getElementById("myOrdersName").value=activeUserName;
     currentRoleLabel.textContent="Área do solicitante";
     setMyOrdersNotice("");
     renderMyOrders();window.scrollTo({top:0,behavior:"smooth"});
   }
   document.getElementById("openMyOrdersBtn").addEventListener("click",showMyOrdersPage);
   document.getElementById("backFromMyOrdersBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
-  document.getElementById("searchMyOrdersBtn").addEventListener("click",renderMyOrders);
-  document.getElementById("myOrdersName").addEventListener("keydown",function(event){if(event.key==="Enter"){event.preventDefault();renderMyOrders();}});
   document.getElementById("enableStatusNotificationsBtn").addEventListener("click",async function(){
     if(!("Notification" in window)){setMyOrdersNotice("Este navegador não oferece notificações do sistema. As atualizações continuarão visíveis nesta página.");return;}
     try{
@@ -1174,8 +1153,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     }catch(e){setMyOrdersNotice("Não foi possível ativar notificações neste navegador.");}
   });
   function alertRequesterOfStatus(order,notification){
-    var viewedName=(document.getElementById("myOrdersName").value||activeUserName||"").trim();
-    if(normalizePersonName(order.nome)!==normalizePersonName(viewedName))return;
+    if(!orderBelongsToCurrentUser(order))return;
     setMyOrdersNotice(notification.mensagem||notificationMessage(notification.status,order));
     if("Notification" in window&&Notification.permission==="granted"&&document.hidden){
       try{new Notification("Atualização do pedido Costalog",{body:notification.mensagem||notificationMessage(notification.status,order)});}catch(e){}
@@ -1241,6 +1219,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   document.getElementById("purchasePaymentMethod").addEventListener("change",applyPurchaseRegistrationVisibility);
   document.getElementById("purchaseInstallment").addEventListener("change",applyPurchaseRegistrationVisibility);
   function openPurchaseRegistration(protocol){
+    if(portalRole!=="ADM")return;
     var order=getLocalPurchases().find(function(item){return item.protocolo===protocol;});
     if(!order||(order.comprasStatus!=="Aceito"&&order.comprasStatus!=="Compra Realizada")){
       alert("Só é possível registrar a compra de um pedido aceito pela equipe de Compras.");return;
@@ -1342,7 +1321,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     return wrapper;
   }
   function renderPurchases(){
-    if(!comprasView)return;
+    if(portalRole!=="ADM"||!comprasView)return;
     var allOrders=getLocalPurchases();
     var pending=allOrders.filter(function(order){return !order.comprasStatus||order.comprasStatus==="Pendente de análise"||order.comprasStatus==="Registrado";}).length;
     var reviewing=allOrders.filter(function(order){return order.comprasStatus==="Em análise";}).length;
@@ -1432,6 +1411,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   document.getElementById("purchaseStatusFilter").addEventListener("change",renderPurchases);
 
   function showAnalyticsPage(){
+    if(portalRole!=="ADM")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
@@ -1505,6 +1485,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     badge.setAttribute("aria-label",pending+" lançamentos pendentes");
   }
   function showLaunchesPage(){
+    if(portalRole!=="ADM")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
@@ -1677,6 +1658,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var el=document.getElementById(id);if(el)el.textContent=value===undefined||value===null||String(value).trim()===""?"Não informado":String(value);
   }
   function openLaunchEditor(protocol){
+    if(portalRole!=="ADM")return;
     var order=getLocalPurchases().find(function(item){return item.protocolo===protocol;});
     if(!order||order.comprasStatus!=="Compra Realizada"){alert("Esta compra ainda não está com o status Compra Realizada.");return;}
     if(!order.launchInfo)order.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:order.dataCompra||new Date().toISOString(),valorCompra:String(order.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
@@ -1769,11 +1751,6 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   });
 
   window.addEventListener("storage",function(event){
-    if(event.key==="costalogUsuarioAtivo"){
-      activeUserName=event.newValue||"";savedUser=activeUserName;
-      if(!userOrdersView.classList.contains("hidden"))document.getElementById("myOrdersName").value=activeUserName;
-      updateMyOrdersBadge();
-    }
     if(event.key==="comprasCostalogPedidosLocais"){
       var oldRows=[],newRows=[];
       try{oldRows=JSON.parse(event.oldValue||"[]");}catch(e){}
@@ -1782,7 +1759,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
       oldRows.forEach(function(order){(order.notificacoes||[]).forEach(function(n){oldNotificationIds.add(n.id);});});
       newRows.forEach(function(order){
         (order.notificacoes||[]).forEach(function(notification){
-          if(!oldNotificationIds.has(notification.id)&&!notification.lida&&normalizePersonName(order.nome)===normalizePersonName(activeUserName)){
+          if(!oldNotificationIds.has(notification.id)&&!notification.lida&&orderBelongsToCurrentUser(order)){
             alertRequesterOfStatus(order,notification);
           }
         });
@@ -1842,6 +1819,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     return isNaN(d.getTime())?"—":d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
   }
   function showQuotesPage(){
+    if(portalRole!=="ADM")return;
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
@@ -1981,6 +1959,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     });
   }
   function openQuoteEditor(id){
+    if(portalRole!=="ADM")return;
     currentQuoteId=id||null;
     priceFilter="todos";
     document.querySelectorAll("[data-price-filter]").forEach(function(btn){btn.classList.toggle("active",btn.getAttribute("data-price-filter")==="todos");});
@@ -2130,14 +2109,20 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   requestForm.addEventListener("submit",function(event){
     event.preventDefault();
     if(!requestForm.reportValidity()) return;
+    var parsedEstimatedValue=parseBRL(document.getElementById("estimatedValue").value);
+    if(portalRole!=="USUARIO"||!portalIdentity.key){alert("A sessão do Portal Costalog não foi identificada. Abra a ferramenta pelo menu autorizado do portal.");return;}
+    if(parsedEstimatedValue===null||parsedEstimatedValue<=0){alert("Informe um valor válido, por exemplo 2000 ou 2.000,00.");document.getElementById("estimatedValue").focus();return;}
     var date=new Date();
     var order={
       protocolo:makeProtocol(date),
-      nome:document.getElementById("requesterName").value.trim(),
+      solicitanteId:portalIdentity.id,
+      solicitanteEmail:portalIdentity.email,
+      solicitanteKey:portalIdentity.key,
+      nome:portalIdentity.name,
       setor:document.getElementById("requesterSector").value.trim(),
       autorizadoPor:document.getElementById("authorizedBy").value,
       produto:document.getElementById("productName").value.trim(),
-      valorEstimado:parseBRL(document.getElementById("estimatedValue").value),
+      valorEstimado:parsedEstimatedValue,
       marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
       observacao:document.getElementById("observations").value.trim(),
       dataRegistro:date.toISOString(),
@@ -2145,9 +2130,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
       comprasStatus:"Pendente de análise",
       notificacoes:[]
     };
-    activeUserName=order.nome;
-    savedUser=order.nome;
-    try{localStorage.setItem("costalogUsuarioAtivo",order.nome);}catch(e){}
+    activeUserName=portalIdentity.name;
+    savedUser=portalIdentity.name;
     appendOrderNotification(order,"Pendente de análise");
     setText("receiptProtocol",order.protocolo);
     setText("receiptName",order.nome);
