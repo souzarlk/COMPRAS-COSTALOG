@@ -542,8 +542,11 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     <div class="login-card-top"><span class="login-dot"></span><span>SISTEMA COSTALOG</span></div>
     <span class="eyebrow">ACESSO AO PORTAL</span>
     <h1>Portal de<br><span>Compras</span></h1>
-    <p>Entre pelo Portal Costalog e abra esta ferramenta pelo menu autorizado. Sua sessão será validada pelo portal principal.</p>
-    <div id="loginSessionNotice" class="login-session-notice" role="status">Acesse esta ferramenta pelo Portal Costalog. O seu login e as permissões serão fornecidos pelo portal principal.</div>
+    <p>Acesso aberto temporariamente para configuração do Portal de Compras.</p>
+    <form id="loginForm">
+      <button class="primary-btn login-submit" type="submit"><span>Efetuar Login</span><span class="btn-arrow">→</span></button>
+    </form>
+    <div id="loginSessionNotice" class="login-session-notice hidden" role="status">Acesse esta ferramenta pelo Portal Costalog. O seu login e as permissões serão fornecidos pelo portal principal.</div>
     <div class="login-security"><span class="security-icon">⌁</span><span>SESSÃO CENTRALIZADA • ACESSO POR PERMISSÃO</span></div>
   </div>
   <div class="login-footer">Portal de Compras Costalog — Desenvolvido pela equipe de informática.</div>
@@ -553,8 +556,16 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   <header class="topbar"><div class="topbar-inner">
     <div class="brand-lockup"><img src="assets/logo-costalog-white.svg" alt="Costalog"><div><strong>Portal de Compras</strong><span>Solicitações e acompanhamento</span></div></div>
     <div class="top-actions">
-      <span id="currentRoleLabel" class="role-badge">Aguardando acesso do portal</span>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo claro e escuro" title="Alternar tema">☾</button></div>
+      <div class="role-switcher-wrap">
+        <button id="roleSwitcher" class="role-switcher" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="roleMenu">
+          <span id="currentRoleLabel">Área do solicitante</span><span class="role-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div id="roleMenu" class="role-menu hidden" role="menu" aria-label="Selecionar cargo">
+          <button type="button" class="role-option active" data-role="solicitante" role="menuitem"><span class="role-option-icon">👤</span><span><strong>Área do solicitante</strong><small>Criar e acompanhar solicitações</small></span><span class="role-option-check">✓</span></button>
+          <button type="button" class="role-option" data-role="compras" role="menuitem"><span class="role-option-icon">🛒</span><span><strong>Setor de Compras</strong><small>Analisar os pedidos recebidos</small></span><span class="role-option-check">✓</span></button>
+        </div>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar modo claro e escuro" title="Alternar tema">☾</button><button id="logoutBtn" class="logout-btn" type="button">Sair ↗</button></div>
   </div></header>
   <main class="page-main"><div class="container">
     <section id="homeView">
@@ -886,7 +897,11 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   if(window.supabase&&window.supabase.createClient&&supabaseConfig.url&&supabaseConfig.anonKey){
     try{supabaseClient=window.supabase.createClient(supabaseConfig.url,supabaseConfig.anonKey);}catch(e){supabaseClient=null;}
   }
+  var loginForm=document.getElementById("loginForm");
+  var roleSwitcher=document.getElementById("roleSwitcher");
+  var roleMenu=document.getElementById("roleMenu");
   var currentRoleLabel=document.getElementById("currentRoleLabel");
+  var localSetupMode=false;
   var portalRole="";
   var portalIdentity={id:"",email:"",name:"",key:""};
   var pageContainer=document.querySelector(".page-main .container");
@@ -907,11 +922,41 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     setActiveRole(portalRole==="ADM"?"compras":"solicitante");updateMyOrdersBadge();
   }
   function resetPortalSession(){
-    portalRole="";portalIdentity={id:"",email:"",name:"",key:""};activeUserName="";savedUser="";
-    app.classList.add("hidden");loginScreen.classList.remove("hidden");currentRoleLabel.textContent="Aguardando acesso do portal";
+    localSetupMode=false;portalRole="";portalIdentity={id:"",email:"",name:"",key:""};activeUserName="";savedUser="";
+    app.classList.add("hidden");loginScreen.classList.remove("hidden");currentRoleLabel.textContent="Área do solicitante";
+    roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");
     document.getElementById("requesterName").value="";document.getElementById("requesterName").readOnly=true;
     requestForm.reset();closeReceipt();
   }
+  loginForm.addEventListener("submit",function(event){
+    event.preventDefault();
+    // Modo local temporário para permitir a configuração standalone do site.
+    // Quando embutido no portal oficial, somente a sessão externa pode autenticar.
+    if(window.parent!==window&&allowedParentOrigin){
+      var notice=document.getElementById("loginSessionNotice");
+      if(notice){notice.textContent="Abra a ferramenta pelo Portal Costalog e use a sessão do portal principal.";notice.classList.remove("hidden");}
+      return;
+    }
+    localSetupMode=true;
+    portalRole="USUARIO";
+    portalIdentity={id:"configuracao-local",email:"configuracao@local.costalog",name:"Usuário de configuração",key:"id:configuracao-local"};
+    showApp();
+  });
+  document.getElementById("logoutBtn").addEventListener("click",function(){resetPortalSession();});
+  roleSwitcher.addEventListener("click",function(){
+    var open=roleMenu.classList.contains("hidden");
+    roleMenu.classList.toggle("hidden",!open);
+    roleSwitcher.setAttribute("aria-expanded",open?"true":"false");
+  });
+  document.querySelectorAll(".role-option").forEach(function(option){
+    option.addEventListener("click",function(){setActiveRole(option.getAttribute("data-role"));});
+  });
+  document.addEventListener("click",function(event){
+    if(!event.target.closest(".role-switcher-wrap")){roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");}
+  });
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape"&&!roleMenu.classList.contains("hidden")){roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");roleSwitcher.focus();}
+  });
   function applyPortalSession(rawSession){
     var session=rawSession&&rawSession.session?rawSession.session:rawSession||{},user=session.user||session.profile||session;
     var rawRole=String(session.role||session.perfil||user.role||user.perfil||"").trim().toUpperCase();
@@ -921,9 +966,10 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var name=String(user.name||user.nome||user.full_name||user.fullName||session.name||session.nome||"").trim();
     if(!role||(!id&&!email)||!name){
       var notice=document.getElementById("loginSessionNotice");
-      if(notice)notice.textContent="O portal principal precisa enviar o perfil ADM/USUARIO e a identidade única do funcionário (ID ou e-mail), além do nome.";
+      if(notice){notice.textContent="O portal principal precisa enviar o perfil ADM/USUARIO e a identidade única do funcionário (ID ou e-mail), além do nome.";notice.classList.remove("hidden");}
       return false;
     }
+    localSetupMode=false;
     portalRole=role;portalIdentity={id:id,email:email,name:name,key:id?"id:"+id:"email:"+email};showApp();return true;
   }
   // Defina parentOrigin em assets/config.js para a origem oficial do Portal Costalog.
@@ -972,12 +1018,20 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   document.getElementById("backHomeBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
 
   function setActiveRole(role){
-    if(portalRole==="ADM"&&role!=="compras")return;
-    if(portalRole==="USUARIO"&&role!=="solicitante")return;
-    if(portalRole!=="ADM"&&portalRole!=="USUARIO")return;
+    if(localSetupMode){portalRole=role==="compras"?"ADM":"USUARIO";}
+    else{
+      if(portalRole==="ADM"&&role!=="compras")return;
+      if(portalRole==="USUARIO"&&role!=="solicitante")return;
+      if(portalRole!=="ADM"&&portalRole!=="USUARIO")return;
+    }
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     activeRole=portalRole==="ADM"?"compras":"solicitante";
-    currentRoleLabel.textContent=portalRole==="ADM"?"ADM • Setor de Compras":"USUÁRIO • Solicitante";
+    roleMenu.classList.add("hidden");roleSwitcher.setAttribute("aria-expanded","false");
+    document.querySelectorAll(".role-option").forEach(function(option){
+      var selected=option.getAttribute("data-role")===(portalRole==="ADM"?"compras":"solicitante");
+      option.classList.toggle("active",selected);option.setAttribute("aria-current",selected?"true":"false");
+    });
+    currentRoleLabel.textContent=portalRole==="ADM"?"Setor de Compras":"Área do solicitante";
     if(portalRole==="ADM"){
       homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
       comprasView.classList.remove("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
