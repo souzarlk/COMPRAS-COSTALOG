@@ -912,6 +912,242 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
   }
   document.getElementById("refreshPurchasesBtn").addEventListener("click",renderPurchases);
 
+  function localDateISO(value){
+    if(!value)return "";
+    if(/^\d{4}-\d{2}-\d{2}$/.test(String(value)))return String(value);
+    var date=new Date(value);
+    if(isNaN(date.getTime()))return "";
+    return String(date.getFullYear())+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
+  }
+  function parseDateISO(value){
+    if(!value)return null;
+    var parts=String(value).split("-");
+    if(parts.length!==3)return null;
+    var date=new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2]));
+    return isNaN(date.getTime())?null:date;
+  }
+  function launchCurrency(value){
+    return Number(value||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  }
+  function getLaunchPurchaseDate(order){
+    return localDateISO((order.launchInfo&&order.launchInfo.dataCompra)||order.dataCompra||order.dataRegistro);
+  }
+  function getLaunchValue(order){
+    var raw=order.launchInfo&&order.launchInfo.valorCompra;
+    if(raw!==undefined&&raw!==null&&String(raw)!=="")return Number(raw)||0;
+    return Number(order.valorEstimado)||0;
+  }
+  function isLaunchCompleted(order){
+    return !!(order.launchInfo&&order.launchInfo.situacao==="Lançamento realizado");
+  }
+  function getLaunchOrders(){
+    var all=getLocalPurchases();
+    var changed=false;
+    all.forEach(function(order){
+      if(order.comprasStatus==="Compra Realizada"){
+        if(!order.dataCompra){order.dataCompra=order.dataRegistro||new Date().toISOString();changed=true;}
+        if(!order.launchInfo){
+          order.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:order.dataCompra,valorCompra:String(order.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
+          changed=true;
+        }else if(!order.launchInfo.dataCompra){
+          order.launchInfo.dataCompra=order.dataCompra;changed=true;
+        }
+      }
+    });
+    if(changed){try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(all));}catch(error){}}
+    return all.filter(function(order){return order.comprasStatus==="Compra Realizada";});
+  }
+  function updateLaunchNavCount(){
+    var badge=document.getElementById("launchNavCount");
+    if(!badge)return;
+    var pending=getLaunchOrders().filter(function(order){return !isLaunchCompleted(order);}).length;
+    badge.textContent=pending;
+    badge.classList.toggle("hidden",pending===0);
+    badge.setAttribute("aria-label",pending+" lançamentos pendentes");
+  }
+  function showLaunchesPage(){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
+    homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
+    launchesView.classList.remove("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    currentRoleLabel.textContent="Setor de Compras";
+    initializeLaunchFilters();renderLaunches();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function returnToLaunches(){
+    launchEditorView.classList.add("hidden");launchesView.classList.remove("hidden");
+    initializeLaunchFilters();renderLaunches();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("openLaunchesBtn").addEventListener("click",showLaunchesPage);
+  document.getElementById("backFromLaunchesBtn").addEventListener("click",returnToPurchases);
+  document.getElementById("cancelLaunchEditorTop").addEventListener("click",returnToLaunches);
+  document.getElementById("cancelLaunchEditor").addEventListener("click",returnToLaunches);
+
+  function initializeLaunchFilters(reset){
+    var now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),1),end=new Date(now.getFullYear(),now.getMonth()+1,0);
+    var asISO=function(d){return String(d.getFullYear())+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+    var from=document.getElementById("launchPurchaseFrom"),to=document.getElementById("launchPurchaseTo");
+    if(reset||(!from.value&&!to.value)){from.value=asISO(start);to.value=asISO(end);}
+    var purchases=getLaunchOrders();
+    var cardSelect=document.getElementById("launchCardFilter"),sectorSelect=document.getElementById("launchSectorFilter");
+    var currentCard=cardSelect.value,currentSector=sectorSelect.value;
+    var cards=Array.from(new Set(purchases.map(function(order){return order.launchInfo&&order.launchInfo.cartao||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
+    var sectors=Array.from(new Set(purchases.map(function(order){return order.setor||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
+    cardSelect.replaceChildren(new Option("Todos os cartões",""));
+    cards.forEach(function(card){cardSelect.add(new Option(card,card));});
+    sectorSelect.replaceChildren(new Option("Todos os setores",""));
+    sectors.forEach(function(sector){sectorSelect.add(new Option(sector,sector));});
+    if(cards.includes(currentCard))cardSelect.value=currentCard;
+    if(sectors.includes(currentSector))sectorSelect.value=currentSector;
+  }
+  ["launchPurchaseFrom","launchPurchaseTo","launchCardFilter","launchDueFrom","launchDueTo","launchSectorFilter","launchStatusFilter"].forEach(function(id){
+    document.getElementById(id).addEventListener("change",renderLaunches);
+  });
+  document.getElementById("resetLaunchFiltersBtn").addEventListener("click",function(){
+    document.getElementById("launchPurchaseFrom").value="";
+    document.getElementById("launchPurchaseTo").value="";
+    document.getElementById("launchDueFrom").value="";
+    document.getElementById("launchDueTo").value="";
+    document.getElementById("launchCardFilter").value="";
+    document.getElementById("launchSectorFilter").value="";
+    document.getElementById("launchStatusFilter").value="";
+    initializeLaunchFilters(true);renderLaunches();
+  });
+  function renderLaunches(){
+    if(!launchesView)return;
+    var purchases=getLaunchOrders();
+    var now=new Date(),currentMonth=now.getMonth(),currentYear=now.getFullYear();
+    var previousMonth=new Date(currentYear,currentMonth-1,1);
+    var currentSpend=0,previousSpend=0,yearSpend=0,pending=0;
+    purchases.forEach(function(order){
+      var d=parseDateISO(getLaunchPurchaseDate(order));
+      if(!d)return;
+      var amount=getLaunchValue(order);
+      if(d.getFullYear()===currentYear&&d.getMonth()===currentMonth)currentSpend+=amount;
+      if(d.getFullYear()===previousMonth.getFullYear()&&d.getMonth()===previousMonth.getMonth())previousSpend+=amount;
+      if(d.getFullYear()===currentYear)yearSpend+=amount;
+      if(!isLaunchCompleted(order))pending++;
+    });
+    document.getElementById("launchPendingCount").textContent=pending;
+    document.getElementById("launchSpentCurrent").textContent=launchCurrency(currentSpend);
+    document.getElementById("launchSpentPrevious").textContent=launchCurrency(previousSpend);
+    document.getElementById("launchSpentYear").textContent=launchCurrency(yearSpend);
+    updateLaunchNavCount();
+
+    var pFrom=document.getElementById("launchPurchaseFrom").value,pTo=document.getElementById("launchPurchaseTo").value;
+    var dueFrom=document.getElementById("launchDueFrom").value,dueTo=document.getElementById("launchDueTo").value;
+    var card=document.getElementById("launchCardFilter").value,sector=document.getElementById("launchSectorFilter").value;
+    var status=document.getElementById("launchStatusFilter").value;
+    var filtered=purchases.filter(function(order){
+      var launch=order.launchInfo||{},purchaseDate=getLaunchPurchaseDate(order),due=launch.dataVencimento||"";
+      if(pFrom&&(!purchaseDate||purchaseDate<pFrom))return false;
+      if(pTo&&(!purchaseDate||purchaseDate>pTo))return false;
+      if(card&&(launch.cartao||"")!==card)return false;
+      if(dueFrom&&(!due||due<dueFrom))return false;
+      if(dueTo&&(!due||due>dueTo))return false;
+      if(sector&&(order.setor||"")!==sector)return false;
+      if(status==="pendente"&&isLaunchCompleted(order))return false;
+      if(status==="realizado"&&!isLaunchCompleted(order))return false;
+      return true;
+    }).sort(function(a,b){return getLaunchPurchaseDate(b).localeCompare(getLaunchPurchaseDate(a));});
+    var tbody=document.getElementById("launchTableBody");tbody.replaceChildren();
+    if(!filtered.length){
+      var tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=8;
+      var empty=document.createElement("div");empty.className="launch-empty";
+      var strong=document.createElement("strong");strong.textContent=purchases.length?"Nenhum lançamento encontrado com esses filtros":"Nenhum lançamento neste mês";
+      var span=document.createElement("span");span.textContent=purchases.length?"Tente alterar as datas, o cartão, o vencimento, o setor ou o status.":"Quando uma compra mudar para “Compra Realizada”, ela aparecerá aqui para ser lançada.";
+      empty.append(strong,span);td.appendChild(empty);tr.appendChild(td);tbody.appendChild(tr);return;
+    }
+    filtered.forEach(function(order){
+      var info=order.launchInfo||{},tr=document.createElement("tr");
+      var dateTd=document.createElement("td"),dateStrong=document.createElement("strong");
+      var pDate=parseDateISO(getLaunchPurchaseDate(order));
+      dateStrong.textContent=pDate?pDate.toLocaleDateString("pt-BR"):"—";
+      var purchaseSmall=document.createElement("small");purchaseSmall.textContent=order.protocolo||"Pedido";
+      dateTd.append(dateStrong,purchaseSmall);
+      var productTd=document.createElement("td"),product=document.createElement("strong");product.textContent=order.produto||"Produto não informado";
+      var productSmall=document.createElement("small");productSmall.textContent=order.nome||"Solicitante não informado";productTd.append(product,productSmall);
+      var sectorTd=document.createElement("td");sectorTd.textContent=order.setor||"—";
+      var valueTd=document.createElement("td");valueTd.textContent=launchCurrency(getLaunchValue(order));
+      var cardTd=document.createElement("td");cardTd.textContent=info.cartao||"—";
+      var dueTd=document.createElement("td");dueTd.textContent=info.dataVencimento&&parseDateISO(info.dataVencimento)?parseDateISO(info.dataVencimento).toLocaleDateString("pt-BR"):"—";
+      var statusTd=document.createElement("td"),badge=document.createElement("span");badge.className="launch-state "+(isLaunchCompleted(order)?"done":"pending");badge.textContent=isLaunchCompleted(order)?"Lançamento realizado":"Lançamento a ser realizado";statusTd.appendChild(badge);
+      var actionTd=document.createElement("td"),actions=document.createElement("div");actions.className="launch-row-actions";
+      var register=document.createElement("button");register.type="button";register.className=isLaunchCompleted(order)?"secondary-btn":"primary-btn";register.textContent=isLaunchCompleted(order)?"Editar Lançamento":"Registrar Lançamento";register.addEventListener("click",function(){openLaunchEditor(order.protocolo);});
+      actions.appendChild(register);actionTd.appendChild(actions);
+      tr.append(dateTd,productTd,sectorTd,valueTd,cardTd,dueTd,statusTd,actionTd);tbody.appendChild(tr);
+    });
+  }
+  function setLaunchSource(id,value){
+    var el=document.getElementById(id);if(el)el.textContent=value===undefined||value===null||String(value).trim()===""?"Não informado":String(value);
+  }
+  function openLaunchEditor(protocol){
+    var order=getLocalPurchases().find(function(item){return item.protocolo===protocol;});
+    if(!order||order.comprasStatus!=="Compra Realizada"){alert("Esta compra ainda não está com o status Compra Realizada.");return;}
+    if(!order.launchInfo)order.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:order.dataCompra||new Date().toISOString(),valorCompra:String(order.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
+    var info=order.launchInfo;
+    document.getElementById("launchEditorHeading").textContent=isLaunchCompleted(order)?"Editar lançamento":"Registrar Lançamento";
+    setLaunchSource("launchSourceProtocol",order.protocolo);
+    setLaunchSource("launchSourceProduct",order.produto);
+    setLaunchSource("launchSourceRequester",order.nome);
+    setLaunchSource("launchSourceSector",order.setor);
+    setLaunchSource("launchSourceAuthorized",order.autorizadoPor);
+    setLaunchSource("launchSourceEstimated",launchCurrency(order.valorEstimado));
+    setLaunchSource("launchSourceObservation",order.observacao);
+    document.getElementById("launchNumber").value=info.numeroLancamento||"";
+    document.getElementById("launchPurchaseValue").value=info.valorCompra!==undefined&&info.valorCompra!==""?info.valorCompra:(order.valorEstimado||"");
+    document.getElementById("launchPaymentMethod").value=info.formaPagamento||"";
+    document.getElementById("launchCard").value=info.cartao||"";
+    document.getElementById("launchInstallment").value=info.parcelado||"nao";
+    document.getElementById("launchInstallmentCount").value=info.quantidadeParcelas||"";
+    document.getElementById("launchPurchaseDate").value=localDateISO(info.dataCompra||order.dataCompra||order.dataRegistro);
+    document.getElementById("launchDueDate").value=info.dataVencimento||"";
+    document.getElementById("launchInstallmentsField").classList.toggle("hidden",document.getElementById("launchInstallment").value!=="sim");
+    document.getElementById("launchInstallmentCount").required=document.getElementById("launchInstallment").value==="sim";
+    document.getElementById("launchForm").dataset.protocol=protocol;
+    var cards=Array.from(new Set(getLaunchOrders().map(function(item){return item.launchInfo&&item.launchInfo.cartao||"";}).filter(Boolean)));
+    var datalist=document.getElementById("launchCardOptions");datalist.replaceChildren();cards.forEach(function(value){datalist.appendChild(new Option(value,value));});
+    launchesView.classList.add("hidden");comprasView.classList.add("hidden");quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    launchEditorView.classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("launchInstallment").addEventListener("change",function(){
+    var yes=this.value==="sim";
+    document.getElementById("launchInstallmentsField").classList.toggle("hidden",!yes);
+    document.getElementById("launchInstallmentCount").required=yes;
+    if(!yes)document.getElementById("launchInstallmentCount").value="";
+  });
+  launchForm.addEventListener("submit",function(event){
+    event.preventDefault();
+    if(!launchForm.reportValidity())return;
+    var protocol=launchForm.dataset.protocol;
+    var items=getLocalPurchases(),matched=false,now=new Date().toISOString();
+    items=items.map(function(order){
+      if(order.protocolo!==protocol)return order;
+      if(order.comprasStatus!=="Compra Realizada")return order;
+      var parcelado=document.getElementById("launchInstallment").value;
+      order.launchInfo=Object.assign({},order.launchInfo||{},{
+        situacao:"Lançamento realizado",
+        numeroLancamento:document.getElementById("launchNumber").value.trim(),
+        valorCompra:String(Number(document.getElementById("launchPurchaseValue").value)),
+        formaPagamento:document.getElementById("launchPaymentMethod").value,
+        cartao:document.getElementById("launchCard").value.trim(),
+        parcelado:parcelado,
+        quantidadeParcelas:parcelado==="sim"?document.getElementById("launchInstallmentCount").value:"",
+        dataCompra:document.getElementById("launchPurchaseDate").value,
+        dataVencimento:document.getElementById("launchDueDate").value,
+        atualizadoEm:now
+      });
+      order.dataCompra=order.launchInfo.dataCompra;
+      matched=true;return order;
+    });
+    if(!matched){alert("Não foi possível localizar a compra para registrar o lançamento.");return;}
+    try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(items));}catch(error){alert("Não foi possível salvar os dados neste navegador.");return;}
+    initializeLaunchFilters();returnToLaunches();updateLaunchNavCount();
+    alert("Lançamento salvo com sucesso.");
+  });
+
   function setQuoteNotice(message,isError){
     var notice=document.getElementById("quoteSyncNotice");
     if(notice){
