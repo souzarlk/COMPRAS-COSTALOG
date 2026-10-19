@@ -321,6 +321,68 @@ body.dark-mode .receipt-success p{color:#b0cabb}
  .receipt-actions button{width:100%}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Ajuste de largura e contenção da tela Nova cotação */
+.page-main .container.quote-editor-open{
+  width:80vw;
+  max-width:1600px;
+  min-width:0;
+  padding:30px 0 70px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#quoteEditorView{width:100%;min-width:0}
+#quoteEditorView>.section-head{width:100%;max-width:100%;align-items:center}
+.quote-editor-card{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  padding:clamp(18px,2.2vw,32px);
+}
+.quote-editor-section{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.quote-editor-section legend{max-width:100%}
+.quote-meta-grid{width:100%;min-width:0}
+.quote-meta-grid>.field{min-width:0}
+.quote-items-toolbar{width:100%;min-width:0;align-items:center}
+.price-filter-group{min-width:0;max-width:100%}
+.quote-table-shell{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  box-sizing:border-box;
+}
+.quote-edit-table{
+  width:max-content;
+  min-width:1360px;
+  max-width:none;
+  table-layout:auto;
+}
+.quote-edit-table th,.quote-edit-table td{box-sizing:border-box}
+.quote-editor-buttons{width:100%;min-width:0}
+.quote-editor-buttons-right{min-width:0}
+@media(max-width:900px){
+  .page-main .container.quote-editor-open{width:94vw;max-width:94vw;padding:25px 0 55px}
+  .quote-editor-card{padding:20px}
+  .quote-meta-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .page-main .container.quote-editor-open{width:96vw;max-width:96vw;padding:18px 0 40px}
+  .quote-editor-card{padding:15px 11px;border-radius:14px}
+  .quote-meta-grid{grid-template-columns:minmax(0,1fr)}
+  .quote-items-toolbar{align-items:flex-start}
+  .price-filter-group{gap:5px}
+  .price-filter-btn{padding:7px 9px;font-size:9px}
+  .quote-table-shell{border-radius:9px}
+}
+
 </style>
 </head>
 <body>
@@ -551,6 +613,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   var roleSwitcher=document.getElementById("roleSwitcher");
   var roleMenu=document.getElementById("roleMenu");
   var currentRoleLabel=document.getElementById("currentRoleLabel");
+  var pageContainer=document.querySelector(".page-main .container");
   var activeRole="solicitante";
   var savedUser="";
   try { if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode"); } catch(e) {}
@@ -599,6 +662,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
   document.getElementById("backHomeBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
 
   function setActiveRole(role){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     activeRole=role==="compras"?"compras":"solicitante";
     roleMenu.classList.add("hidden");
     roleSwitcher.setAttribute("aria-expanded","false");
@@ -772,6 +836,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     return isNaN(d.getTime())?"—":d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
   }
   function showQuotesPage(){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     comprasView.classList.add("hidden");
     quoteEditorView.classList.add("hidden");
     quotesView.classList.remove("hidden");
@@ -779,6 +844,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     window.scrollTo({top:0,behavior:"smooth"});
   }
   function returnToPurchases(){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     quotesView.classList.add("hidden");
     quoteEditorView.classList.add("hidden");
     comprasView.classList.remove("hidden");
@@ -927,6 +993,7 @@ body.dark-mode .receipt-success p{color:#b0cabb}
     quotesView.classList.add("hidden");
     comprasView.classList.add("hidden");
     quoteEditorView.classList.remove("hidden");
+    if(pageContainer)pageContainer.classList.add("quote-editor-open");
     document.getElementById("exportQuoteFromEditor").disabled=!existing;
     document.getElementById("exportQuoteFromEditor").style.opacity=existing?"1":".55";
     window.scrollTo({top:0,behavior:"smooth"});
