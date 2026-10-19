@@ -1239,7 +1239,10 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     document.getElementById("purchaseSourceAuthorized").textContent=order.autorizadoPor||"Não informado";
     document.getElementById("purchaseSourceEstimated").textContent=launchCurrency(order.valorEstimado);
     document.getElementById("purchaseSourceObservation").textContent=order.observacao||"Não informado";
-    document.getElementById("purchaseActualValue").value=info.valor!==undefined&&info.valor!==""?info.valor:(order.valorEstimado||"");
+    var purchaseAmountInput=document.getElementById("purchaseActualValue");
+    purchaseAmountInput.value=info.valor!==undefined&&info.valor!==""?info.valor:(order.valorEstimado||"");
+    var initialPurchaseAmount=parseBRL(purchaseAmountInput.value);
+    purchaseAmountInput.value=initialPurchaseAmount===null?"":formatCurrency(initialPurchaseAmount);
     document.getElementById("purchasePaymentMethod").value=info.formaPagamento||"";
     document.getElementById("purchaseCard").value=info.cartao||"";
     document.getElementById("purchaseInstallment").value=info.parcelado||"nao";
@@ -1680,7 +1683,10 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     setLaunchSource("launchSourceObservation",order.observacao);
     var purchase=order.purchaseInfo||{};
     document.getElementById("launchNumber").value=info.numeroLancamento||"";
-    document.getElementById("launchPurchaseValue").value=info.valorCompra!==undefined&&info.valorCompra!==""?info.valorCompra:(purchase.valor||order.valorEstimado||"");
+    var launchAmountInput=document.getElementById("launchPurchaseValue");
+    launchAmountInput.value=info.valorCompra!==undefined&&info.valorCompra!==""?info.valorCompra:(purchase.valor||order.valorEstimado||"");
+    var initialLaunchAmount=parseBRL(launchAmountInput.value);
+    launchAmountInput.value=initialLaunchAmount===null?"":formatCurrency(initialLaunchAmount);
     document.getElementById("launchPaymentMethod").value=info.formaPagamento||purchase.formaPagamento||"";
     document.getElementById("launchCard").value=info.cartao||purchase.cartao||"";
     document.getElementById("launchInstallment").value=info.parcelado||purchase.parcelado||"nao";
