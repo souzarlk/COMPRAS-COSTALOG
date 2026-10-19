@@ -856,7 +856,7 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
     var orders=getLocalPurchases();
     var pending=orders.filter(function(order){return !order.comprasStatus||order.comprasStatus==="Pendente de análise"||order.comprasStatus==="Registrado";}).length;
     var reviewing=orders.filter(function(order){return order.comprasStatus==="Em análise";}).length;
-    var closed=orders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Negado";}).length;
+    var closed=orders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Negado"||order.comprasStatus==="Compra Realizada";}).length;
     document.getElementById("purchasesTotal").textContent=orders.length;
     document.getElementById("purchasesPending").textContent=pending;
     document.getElementById("purchasesReviewing").textContent=reviewing;
@@ -880,7 +880,7 @@ body.dark-mode .launch-editor-grid .field input,body.dark-mode .launch-editor-gr
       var statusText=order.comprasStatus||"Pendente de análise";
       var badge=document.createElement("span");badge.className="purchase-status";
       if(statusText==="Em análise")badge.classList.add("reviewing");
-      else if(statusText==="Aceito")badge.classList.add("accepted");
+      else if(statusText==="Aceito"||statusText==="Compra Realizada")badge.classList.add("accepted");
       else if(statusText==="Negado")badge.classList.add("rejected");
       badge.textContent=statusText;
       head.append(titleWrap,badge);card.appendChild(head);
