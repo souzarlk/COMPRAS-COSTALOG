@@ -194,11 +194,11 @@ body.dark-mode .remove-offer-btn{background:#3a1d20;border-color:#653037;color:#
 .role-option small{font-size:9px;color:#777;margin-top:3px;line-height:1.35}
 .role-option-check{font-size:12px;font-weight:950;color:var(--red);opacity:0}
 .role-option.active .role-option-check{opacity:1}
-.purchase-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0}
+.purchase-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:22px 0}
 .purchase-stat{padding:16px 18px;background:var(--paper);border:1px solid var(--line);border-radius:13px;box-shadow:0 7px 22px rgba(0,0,0,.035)}
 .purchase-stat small{display:block;color:var(--muted);font-size:10px;font-weight:800}
 .purchase-stat strong{display:block;margin-top:7px;font-size:27px;letter-spacing:-.04em}
-.purchase-stat.pending strong{color:#ad6800}.purchase-stat.reviewing strong{color:#2463b5}.purchase-stat.closed strong{color:#16834a}
+.purchase-stat.pending strong{color:#ad6800}.purchase-stat.reviewing strong{color:#2463b5}.purchase-stat.accepted strong{color:#16834a}.purchase-stat.rejected strong{color:#b8040f}
 .purchases-list{display:grid;gap:14px}
 .purchase-empty{padding:48px 20px;background:var(--paper);border:1px dashed var(--line);border-radius:16px;text-align:center}
 .purchase-empty-icon{width:48px;height:48px;margin:0 auto 12px;display:grid;place-items:center;border-radius:14px;background:#fff0f1;color:var(--red);font-size:22px}
@@ -222,6 +222,10 @@ body.dark-mode .remove-offer-btn{background:#3a1d20;border-color:#653037;color:#
 .purchase-actions .purchase-accept{border-color:#b8e0c6;background:#eaf8ef;color:#146c3a}
 .purchase-actions .purchase-reject{border-color:#f0c2c2;background:#fff1f1;color:#a00000}
 .purchase-actions .purchase-review{border-color:#c2d5f4;background:#eef4ff;color:#2459a9}
+.user-order-actions{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0 2px;padding-top:12px;border-top:1px solid var(--line)}
+.user-order-actions button{padding:10px 13px;font-size:11px}
+.user-order-delete{border-color:#f0c2c2;background:#fff1f1;color:#a00000}
+.reference-image-detail{min-width:0}
 .purchase-mode-note{margin-top:18px}
 body.dark-mode .role-menu{background:#1e1e24;border-color:#3d3d45;color:#f4f4f5}
 body.dark-mode .role-option{color:#f4f4f5}
@@ -238,6 +242,7 @@ body.dark-mode .purchase-status.rejected{background:#3a1d20;color:#ff9aa0}
 body.dark-mode .purchase-actions .purchase-accept{background:#183323;border-color:#2d6648;color:#80d99e}
 body.dark-mode .purchase-actions .purchase-reject{background:#3a1d20;border-color:#653037;color:#ff9aa0}
 body.dark-mode .purchase-actions .purchase-review{background:#1e2b43;border-color:#344c72;color:#a9c8ff}
+body.dark-mode .user-order-delete{background:#3a1d20;border-color:#653037;color:#ff9aa0}
 @media(max-width:760px){.purchase-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.purchase-details{grid-template-columns:repeat(2,minmax(0,1fr))}.role-switcher{gap:7px;padding:8px 9px;font-size:10px}.role-menu{width:240px}}
 @media(max-width:540px){.purchase-item{padding:15px}.purchase-item-head{flex-direction:column;gap:9px}.purchase-details{grid-template-columns:1fr}.purchase-detail.full{grid-column:auto}.purchase-actions{display:grid;grid-template-columns:1fr}.purchase-actions button{width:100%}.role-switcher{max-width:164px;white-space:normal;text-align:left;line-height:1.25}.role-switcher-wrap{max-width:164px}.role-menu{width:245px;left:auto;right:0}}
 
@@ -263,6 +268,10 @@ body.dark-mode .purchase-actions .purchase-review{background:#1e2b43;border-colo
 .receipt-item.full{grid-column:1/-1}
 .receipt-item small{display:block;color:#85858b;font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
 .receipt-item strong{display:block;font-size:12px;line-height:1.55;overflow-wrap:anywhere;white-space:pre-wrap}
+.reference-image-gallery{display:flex;align-items:flex-start;flex-wrap:wrap;gap:9px;margin-top:7px}
+.reference-image-link{display:inline-flex;overflow:hidden;border:1px solid var(--line);border-radius:9px;background:var(--paper);line-height:0}
+.reference-image-thumb{display:block;width:96px;height:76px;object-fit:cover}
+.receipt-reference-gallery .reference-image-thumb{width:120px;height:96px}
 .receipt-meta{margin-top:17px;padding-top:14px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:9px;flex-wrap:wrap}
 .receipt-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:22px}
 .receipt-actions .primary-btn{min-width:105px}
@@ -611,6 +620,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
             <div class="field full"><label for="productName">Produto <span class="required">*</span></label><input id="productName" name="productName" required maxlength="180" placeholder="Descreva o material, peça ou serviço"></div>
             <div class="field"><label for="estimatedValue">Valor estimado (R$) <span class="required">*</span></label><input id="estimatedValue" name="estimatedValue" type="text" inputmode="decimal" autocomplete="off" data-money="brl" required placeholder="R$ 0,00"><small class="money-help">Digite em reais, por exemplo 2000 ou 2.000,00. O campo será formatado automaticamente.</small></div>
             <div class="field"><label for="suggestedBrand">Marca indicada</label><input id="suggestedBrand" name="suggestedBrand" maxlength="120" placeholder="Marca ou modelo preferido"></div>
+            <div class="field full"><label for="referenceImages">Imagens de referência (JPG/JPEG)</label><input id="referenceImages" name="referenceImages" type="file" accept=".jpg,.jpeg,image/jpeg" multiple><small>Envie até 3 imagens JPEG para exemplificar o produto. As imagens serão reduzidas automaticamente.</small></div>
             <div class="field full"><label for="observations">Observação</label><textarea id="observations" name="observations" maxlength="2000" placeholder="Inclua detalhes, quantidade, justificativa ou outras informações relevantes."></textarea></div>
           </div>
         </fieldset>
@@ -622,13 +632,14 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     <section id="comprasView" class="hidden">
       <div class="section-head">
         <div><span class="eyebrow red">ÁREA DE COMPRAS</span><h2 style="margin:7px 0 0">Painel do setor de Compras</h2><p>Consulte pedidos recebidos e abra a central de cotações para comparar propostas de fornecedores.</p></div>
-        <div class="quote-editor-buttons-right"><button id="openLaunchesBtn" class="back-btn launch-nav-button" type="button">Lançamentos <span id="launchNavCount" class="launch-nav-count hidden">0</span></button><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="openAnalyticsBtn" class="back-btn" type="button">Dados e gráficos</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
+        <div class="quote-editor-buttons-right"><button id="openLaunchesBtn" class="back-btn launch-nav-button" type="button">Lançamentos <span id="launchNavCount" class="launch-nav-count hidden">0</span></button><button id="openQuotesBtn" class="back-btn" type="button">Cotações →</button><button id="openAnalyticsBtn" class="back-btn" type="button">Dados e gráficos</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
       </div>
       <div class="purchase-stats">
         <div class="purchase-stat"><small>Total de pedidos</small><strong id="purchasesTotal">0</strong></div>
-        <div class="purchase-stat pending"><small>Pendentes</small><strong id="purchasesPending">0</strong></div>
+        <div class="purchase-stat pending"><small>Pendentes de análise</small><strong id="purchasesPending">0</strong></div>
         <div class="purchase-stat reviewing"><small>Em análise</small><strong id="purchasesReviewing">0</strong></div>
-        <div class="purchase-stat closed"><small>Decididos</small><strong id="purchasesClosed">0</strong></div>
+        <div class="purchase-stat accepted"><small>Aceitos / realizados</small><strong id="purchasesAccepted">0</strong></div>
+        <div class="purchase-stat rejected"><small>Negados</small><strong id="purchasesRejected">0</strong></div>
       </div>
       <div class="purchase-list-toolbar"><div class="purchase-list-filter"><label for="purchaseStatusFilter">Filtrar pedidos</label><select id="purchaseStatusFilter"><option value="aberto" selected>Pedidos em aberto</option><option value="analise">Em análise</option><option value="aceito">Pedidos aceitos</option><option value="negado">Pedidos negados</option><option value="realizada">Compras realizadas</option><option value="todos">Todos os pedidos</option></select></div><span class="purchase-list-hint">Pedidos negados ficam separados e não aparecem na lista principal.</span></div>
       <div id="purchasesList" class="purchases-list" aria-live="polite"></div>
@@ -844,7 +855,7 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   <div class="modal-backdrop"></div>
   <section class="receipt-card">
     <div class="receipt-topline"><div class="receipt-brand"><img src="assets/logo-costalog.svg" alt="Costalog"><div><span>COSTALOG • COMPRAS</span><h2 id="receiptHeading">Comprovante do pedido</h2></div></div><div class="protocol"><small>NÚMERO DO PEDIDO</small><strong id="receiptProtocol">PC-00000000</strong></div></div>
-    <div class="receipt-success"><span class="receipt-check">✓</span><div><strong>Pedido de compra registrado com sucesso!</strong><p>Confira abaixo os dados que foram informados na solicitação.</p></div></div>
+    <div class="receipt-success"><span class="receipt-check">✓</span><div><strong id="receiptSuccessTitle">Pedido de compra registrado com sucesso!</strong><p id="receiptIntroText">Confira abaixo os dados que foram informados na solicitação.</p></div></div>
     <div class="receipt-section-label">Cabeçalho</div>
     <div class="receipt-grid">
       <div class="receipt-item"><small>Nome</small><strong id="receiptName">—</strong></div>
@@ -857,8 +868,9 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
       <div class="receipt-item"><small>Valor estimado</small><strong id="receiptValue">—</strong></div>
       <div class="receipt-item"><small>Marca indicada</small><strong id="receiptBrand">—</strong></div>
       <div class="receipt-item full"><small>Observação</small><strong id="receiptObservations">—</strong></div>
+      <div id="receiptImagesWrap" class="receipt-item full hidden"><small>Imagens de referência</small><div id="receiptImages" class="reference-image-gallery receipt-reference-gallery"></div></div>
     </div>
-    <div class="receipt-meta"><span id="receiptDate">Data do registro: —</span><span>Status: Registrado pelo solicitante</span></div>
+    <div class="receipt-meta"><span id="receiptDate">Data do registro: —</span><span id="receiptStatus">Status: Registrado pelo solicitante</span></div>
     <div class="receipt-actions"><button id="closeReceiptBtn" class="secondary-btn" type="button">Fechar</button><button id="emailNoopReceipt" class="primary-btn" type="button">Registrar pedido no email</button></div>
   </section>
 </div>
@@ -889,6 +901,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
   var quoteForm=document.getElementById("quoteForm");
   var quoteRowsBody=document.getElementById("quoteRowsBody");
   var receiptModal=document.getElementById("receiptModal");
+  var receiptOpenedFromOrders=false;
+  var requestSubmitting=false;
   var currentQuoteId=null;
   var priceFilter="todos";
   var quotesCache=[];
@@ -1083,6 +1097,67 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     if(portalIdentity.email&&order.solicitanteEmail)return String(order.solicitanteEmail).trim().toLowerCase()===portalIdentity.email;
     return false;
   }
+
+  function normalizeReferenceImages(images){
+    if(!Array.isArray(images))return [];
+    return images.filter(function(image){
+      return image&&typeof image.dataUrl==="string"&&image.dataUrl.indexOf("data:image/jpeg;base64,")===0;
+    });
+  }
+  function renderReferenceImageLinks(container,images){
+    if(!container)return;
+    container.replaceChildren();
+    normalizeReferenceImages(images).forEach(function(image,index){
+      var link=document.createElement("a");
+      link.className="reference-image-link";
+      link.href=image.dataUrl;
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.title=image.name||("Imagem de referência "+(index+1));
+      var img=document.createElement("img");
+      img.className="reference-image-thumb";
+      img.src=image.dataUrl;
+      img.alt="Imagem de referência "+(index+1);
+      link.appendChild(img);
+      container.appendChild(link);
+    });
+  }
+  function createOrderImagesDetail(images){
+    var valid=normalizeReferenceImages(images);
+    if(!valid.length)return null;
+    var wrapper=document.createElement("div");
+    wrapper.className="purchase-detail full reference-image-detail";
+    var label=document.createElement("small");
+    label.textContent="Imagens de referência";
+    var gallery=document.createElement("div");
+    gallery.className="reference-image-gallery";
+    renderReferenceImageLinks(gallery,valid);
+    wrapper.append(label,gallery);
+    return wrapper;
+  }
+  function deletePurchaseOrder(protocol,audience){
+    var orders=getLocalPurchases();
+    var target=orders.find(function(order){return order.protocolo===protocol;});
+    if(!target){alert("Não foi possível localizar esse pedido.");return;}
+    if(audience==="user"){
+      if(portalRole!=="USUARIO"||!orderBelongsToCurrentUser(target)){
+        alert("Você só pode excluir pedidos registrados pela sua própria conta.");return;
+      }
+    }else if(portalRole!=="ADM"){
+      alert("Somente o setor de Compras pode excluir pedidos por esta opção.");return;
+    }
+    if(!window.confirm("Deseja excluir definitivamente o pedido "+(target.protocolo||"selecionado")+"? Esta ação não pode ser desfeita."))return;
+    var remaining=orders.filter(function(order){return order.protocolo!==protocol;});
+    try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(remaining));}
+    catch(error){alert("Não foi possível excluir o pedido neste navegador.");return;}
+    updateMyOrdersBadge();
+    renderPurchases();
+    updateLaunchNavCount();
+    if(userOrdersView&&!userOrdersView.classList.contains("hidden"))renderMyOrders();
+    if(launchesView&&!launchesView.classList.contains("hidden")){initializeLaunchFilters();renderLaunches();}
+    if(analyticsView&&!analyticsView.classList.contains("hidden"))renderAnalytics();
+    alert("Pedido excluído com sucesso.");
+  }
   function getUnreadNotificationsFor(){
     if(!portalIdentity.key)return 0;
     return getLocalPurchases().filter(function(order){return orderBelongsToCurrentUser(order);})
@@ -1154,6 +1229,17 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
       addDetail("Marca indicada",order.marcaIndicada);
       addDetail("Observação",order.observacao);
       card.appendChild(details);
+      var orderActions=document.createElement("div");orderActions.className="user-order-actions";
+      var viewReceiptBtn=document.createElement("button");viewReceiptBtn.type="button";viewReceiptBtn.className="secondary-btn";viewReceiptBtn.textContent="Visualizar comprovante";
+      viewReceiptBtn.addEventListener("click",function(){
+        var latest=getLocalPurchases().find(function(item){return item.protocolo===order.protocolo;});
+        if(!latest||!orderBelongsToCurrentUser(latest)){alert("Este pedido não está mais disponível na sua conta.");return;}
+        populateOrderReceipt(latest,true);
+      });
+      var deleteUserOrderBtn=document.createElement("button");deleteUserOrderBtn.type="button";deleteUserOrderBtn.className="secondary-btn user-order-delete";deleteUserOrderBtn.textContent="Excluir pedido";
+      deleteUserOrderBtn.addEventListener("click",function(){deletePurchaseOrder(order.protocolo,"user");});
+      orderActions.append(viewReceiptBtn,deleteUserOrderBtn);
+      card.appendChild(orderActions);
       var history=document.createElement("div");history.className="user-order-history";
       var historyHead=document.createElement("div");historyHead.className="user-order-history-title";
       var historyTitle=document.createElement("span");historyTitle.textContent="Notificações e atualizações";
@@ -1389,11 +1475,13 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var allOrders=getLocalPurchases();
     var pending=allOrders.filter(function(order){return !order.comprasStatus||order.comprasStatus==="Pendente de análise"||order.comprasStatus==="Registrado";}).length;
     var reviewing=allOrders.filter(function(order){return order.comprasStatus==="Em análise";}).length;
-    var closed=allOrders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Negado"||order.comprasStatus==="Compra Realizada";}).length;
+    var accepted=allOrders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Compra Realizada";}).length;
+    var rejected=allOrders.filter(function(order){return order.comprasStatus==="Negado";}).length;
     document.getElementById("purchasesTotal").textContent=allOrders.length;
     document.getElementById("purchasesPending").textContent=pending;
     document.getElementById("purchasesReviewing").textContent=reviewing;
-    document.getElementById("purchasesClosed").textContent=closed;
+    document.getElementById("purchasesAccepted").textContent=accepted;
+    document.getElementById("purchasesRejected").textContent=rejected;
     var list=document.getElementById("purchasesList");
     var statusFilter=document.getElementById("purchaseStatusFilter").value||"aberto";
     var orders=allOrders.filter(function(order){var status=order.comprasStatus||"Pendente de análise";
@@ -1436,6 +1524,8 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
         createPurchaseDetail("Marca indicada",order.marcaIndicada),
         createPurchaseDetail("Observação",order.observacao,true)
       );
+      var imageDetail=createOrderImagesDetail(order.imagensReferencia);
+      if(imageDetail)details.appendChild(imageDetail);
       card.appendChild(details);
       var statusEditor=document.createElement("div");statusEditor.className="purchase-status-editor";
       var statusSelectWrap=document.createElement("div");statusSelectWrap.className="status-select-wrap";
@@ -1468,6 +1558,10 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
         var reject=document.createElement("button");reject.type="button";reject.className="secondary-btn purchase-reject";reject.textContent="Negar pedido";reject.addEventListener("click",function(){if(window.confirm("Confirmar a negativa deste pedido?"))updatePurchaseStatus(order.protocolo,"Negado");});
         actions.append(analyze,accept,reject);
       }
+      var deleteOrderBtn=document.createElement("button");
+      deleteOrderBtn.type="button";deleteOrderBtn.className="secondary-btn user-order-delete";deleteOrderBtn.textContent="Excluir pedido";
+      deleteOrderBtn.addEventListener("click",function(){deletePurchaseOrder(order.protocolo,"admin");});
+      actions.appendChild(deleteOrderBtn);
       card.appendChild(actions);list.appendChild(card);
     });
   }
@@ -2173,64 +2267,123 @@ body.dark-mode .footer img,body.dark-mode .receipt-brand img{filter:brightness(0
     var ss=String(date.getSeconds()).padStart(2,"0");
     return "PC-"+yyyy+mm+dd+"-"+hh+mi+ss;
   }
-  function closeReceipt(){
-    receiptModal.classList.add("hidden");
-  }
-  requestForm.addEventListener("submit",function(event){
-    event.preventDefault();
-    if(!requestForm.reportValidity()) return;
-    var parsedEstimatedValue=parseBRL(document.getElementById("estimatedValue").value);
-    if(portalRole!=="USUARIO"||!portalIdentity.key){alert("A sessão do Portal Costalog não foi identificada. Abra a ferramenta pelo menu autorizado do portal.");return;}
-    if(parsedEstimatedValue===null||parsedEstimatedValue<=0){alert("Informe um valor válido, por exemplo 2000 ou 2.000,00.");document.getElementById("estimatedValue").focus();return;}
-    var date=new Date();
-    var order={
-      protocolo:makeProtocol(date),
-      solicitanteId:portalIdentity.id,
-      solicitanteEmail:portalIdentity.email,
-      solicitanteKey:portalIdentity.key,
-      nome:portalIdentity.name,
-      setor:document.getElementById("requesterSector").value.trim(),
-      autorizadoPor:document.getElementById("authorizedBy").value,
-      produto:document.getElementById("productName").value.trim(),
-      valorEstimado:parsedEstimatedValue,
-      marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
-      observacao:document.getElementById("observations").value.trim(),
-      dataRegistro:date.toISOString(),
-      status:"Registrado",
-      comprasStatus:"Pendente de análise",
-      notificacoes:[]
-    };
-    activeUserName=portalIdentity.name;
-    savedUser=portalIdentity.name;
-    appendOrderNotification(order,"Pendente de análise");
+  function populateOrderReceipt(order,fromOrders){
+    receiptOpenedFromOrders=!!fromOrders;
+    var status=order.comprasStatus||"Pendente de análise";
+    document.getElementById("receiptSuccessTitle").textContent=fromOrders?"Comprovante do pedido":"Pedido de compra registrado com sucesso!";
+    document.getElementById("receiptIntroText").textContent=fromOrders?"Confira as informações registradas nesta solicitação.":"Confira abaixo os dados que foram informados na solicitação.";
     setText("receiptProtocol",order.protocolo);
     setText("receiptName",order.nome);
     setText("receiptSector",order.setor);
     setText("receiptAuthorized",order.autorizadoPor);
     setText("receiptProduct",order.produto);
-    setText("receiptValue",formatCurrency(order.valorEstimado));
+    var parsedValue=parseBRL(order.valorEstimado);
+    setText("receiptValue",parsedValue===null?"Não informado":formatCurrency(parsedValue));
     setText("receiptBrand",order.marcaIndicada);
     setText("receiptObservations",order.observacao);
-    setText("receiptDate","Data do registro: "+currentDate());
-
-    try {
-      var previous=JSON.parse(localStorage.getItem("comprasCostalogPedidosLocais")||"[]");
-      if(!Array.isArray(previous)) previous=[];
-      previous.unshift(order);
-      localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(previous.slice(0,100)));
-    } catch(storageError) {
-      /* O comprovante continua disponível nesta sessão mesmo se o armazenamento local estiver indisponível. */
-    }
-    updateMyOrdersBadge();
+    setText("receiptDate","Data do registro: "+(order.dataRegistro?new Date(order.dataRegistro).toLocaleString("pt-BR"):"Não informada"));
+    setText("receiptStatus","Status: "+status);
+    var images=normalizeReferenceImages(order.imagensReferencia);
+    document.getElementById("receiptImagesWrap").classList.toggle("hidden",images.length===0);
+    renderReferenceImageLinks(document.getElementById("receiptImages"),images);
     receiptModal.classList.remove("hidden");
     document.getElementById("closeReceiptBtn").focus({preventScroll:true});
+  }
+  function compressOrderImages(fileList){
+    var files=Array.prototype.slice.call(fileList||[]);
+    if(files.length>3)return Promise.reject(new Error("Anexe no máximo 3 imagens JPG/JPEG por pedido."));
+    return Promise.all(files.map(function(file){
+      return new Promise(function(resolve,reject){
+        var name=String(file&&file.name||"").toLowerCase();
+        if(!file||(file.type!=="image/jpeg"&&!name.endsWith(".jpg")&&!name.endsWith(".jpeg"))){
+          reject(new Error("O anexo precisa estar no formato JPG/JPEG."));return;
+        }
+        if(file.size>15*1024*1024){reject(new Error("Cada imagem deve ter no máximo 15 MB antes da compressão."));return;}
+        var reader=new FileReader();
+        reader.onerror=function(){reject(new Error("Não foi possível ler uma das imagens selecionadas."));};
+        reader.onload=function(){
+          var image=new Image();
+          image.onerror=function(){reject(new Error("Uma das imagens JPEG não pôde ser aberta."));};
+          image.onload=function(){
+            var maxSide=1200,scale=Math.min(1,maxSide/Math.max(image.width,image.height));
+            var canvas=document.createElement("canvas");
+            canvas.width=Math.max(1,Math.round(image.width*scale));
+            canvas.height=Math.max(1,Math.round(image.height*scale));
+            var context=canvas.getContext("2d");
+            if(!context){reject(new Error("Não foi possível processar a imagem neste navegador."));return;}
+            context.drawImage(image,0,0,canvas.width,canvas.height);
+            var dataUrl=canvas.toDataURL("image/jpeg",0.68);
+            resolve({name:file.name||"imagem-referencia.jpg",type:"image/jpeg",dataUrl:dataUrl});
+          };
+          image.src=String(reader.result||"");
+        };
+        reader.readAsDataURL(file);
+      });
+    }));
+  }
+  function closeReceipt(){
+    receiptModal.classList.add("hidden");
+  }
+  requestForm.addEventListener("submit",async function(event){
+    event.preventDefault();
+    if(requestSubmitting)return;
+    if(!requestForm.reportValidity())return;
+    var parsedEstimatedValue=parseBRL(document.getElementById("estimatedValue").value);
+    if(portalRole!=="USUARIO"||!portalIdentity.key){alert("A sessão do Portal Costalog não foi identificada. Abra a ferramenta pelo menu autorizado do portal.");return;}
+    if(parsedEstimatedValue===null||parsedEstimatedValue<=0){alert("Informe um valor válido, por exemplo 2000 ou 2.000,00.");document.getElementById("estimatedValue").focus();return;}
+    requestSubmitting=true;
+    var submitButton=requestForm.querySelector('button[type="submit"]');
+    if(submitButton){submitButton.disabled=true;submitButton.textContent="Preparando pedido...";}
+    try{
+      var referenceImages=await compressOrderImages(document.getElementById("referenceImages").files);
+      var date=new Date();
+      var order={
+        protocolo:makeProtocol(date),
+        solicitanteId:portalIdentity.id,
+        solicitanteEmail:portalIdentity.email,
+        solicitanteKey:portalIdentity.key,
+        nome:portalIdentity.name,
+        setor:document.getElementById("requesterSector").value.trim(),
+        autorizadoPor:document.getElementById("authorizedBy").value,
+        produto:document.getElementById("productName").value.trim(),
+        valorEstimado:parsedEstimatedValue,
+        marcaIndicada:document.getElementById("suggestedBrand").value.trim(),
+        observacao:document.getElementById("observations").value.trim(),
+        imagensReferencia:referenceImages,
+        dataRegistro:date.toISOString(),
+        status:"Registrado",
+        comprasStatus:"Pendente de análise",
+        notificacoes:[]
+      };
+      activeUserName=portalIdentity.name;
+      savedUser=portalIdentity.name;
+      appendOrderNotification(order,"Pendente de análise");
+      var previous=getLocalPurchases();
+      previous.unshift(order);
+      try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(previous.slice(0,100)));}
+      catch(storageError){alert("Não foi possível salvar o pedido neste navegador. Reduza a quantidade ou o tamanho das imagens e tente novamente.");return;}
+      updateMyOrdersBadge();
+      populateOrderReceipt(order,false);
+    }catch(error){
+      alert(error&&error.message?error.message:"Não foi possível processar o pedido. Confira os arquivos selecionados e tente novamente.");
+    }finally{
+      requestSubmitting=false;
+      if(submitButton){submitButton.disabled=false;submitButton.innerHTML='Finalizar pedido de compra <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>';}
+    }
   });
 
   document.getElementById("closeReceiptBtn").addEventListener("click",function(){
+    var wasFromOrders=receiptOpenedFromOrders;
     closeReceipt();
-    requestForm.reset();
-    document.getElementById("requesterName").value=activeUserName||savedUser;
-    showHome();
+    receiptOpenedFromOrders=false;
+    if(wasFromOrders){
+      if(portalRole==="ADM")returnToPurchases();
+      else showMyOrdersPage();
+    }else{
+      requestForm.reset();
+      document.getElementById("requesterName").value=activeUserName||savedUser;
+      showHome();
+    }
     window.scrollTo({top:0,behavior:"smooth"});
   });
 
