@@ -1369,13 +1369,19 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     var changed=false;
     all.forEach(function(order){
       if(order.comprasStatus==="Compra Realizada"){
-        if(!order.dataCompra){order.dataCompra=order.dataRegistro||new Date().toISOString();changed=true;}
+        var purchase=order.purchaseInfo||{};
+        if(!order.dataCompra){order.dataCompra=purchase.dataCompra||order.dataRegistro||new Date().toISOString();changed=true;}
         if(!order.launchInfo){
-          order.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:order.dataCompra,valorCompra:String(order.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
+          order.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:purchase.dataCompra||order.dataCompra,valorCompra:String(purchase.valor||order.valorEstimado||""),numeroLancamento:"",formaPagamento:purchase.formaPagamento||"",cartao:purchase.cartao||"",parcelado:purchase.parcelado||"nao",quantidadeParcelas:purchase.quantidadeParcelas||"",dataVencimento:purchase.dataVencimento||"",deleted:false};
           changed=true;
         }else if(!order.launchInfo.dataCompra){
-          order.launchInfo.dataCompra=order.dataCompra;changed=true;
+          order.launchInfo.dataCompra=purchase.dataCompra||order.dataCompra;changed=true;
         }
+        if(order.launchInfo.deleted===undefined){order.launchInfo.deleted=false;changed=true;}
+        if(purchase.valor&&!order.launchInfo.valorCompra){order.launchInfo.valorCompra=String(purchase.valor);changed=true;}
+        if(purchase.formaPagamento&&!order.launchInfo.formaPagamento){order.launchInfo.formaPagamento=purchase.formaPagamento;changed=true;}
+        if(purchase.cartao&&!order.launchInfo.cartao){order.launchInfo.cartao=purchase.cartao;changed=true;}
+        if(purchase.dataVencimento&&!order.launchInfo.dataVencimento){order.launchInfo.dataVencimento=purchase.dataVencimento;changed=true;}
       }
     });
     if(changed){try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(all));}catch(error){}}
@@ -1452,8 +1458,8 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       if(d.getFullYear()===currentYear&&d.getMonth()===currentMonth)currentSpend+=amount;
       if(d.getFullYear()===previousMonth.getFullYear()&&d.getMonth()===previousMonth.getMonth())previousSpend+=amount;
       if(d.getFullYear()===currentYear)yearSpend+=amount;
-      if(!isLaunchCompleted(order))pending++;
     });
+    purchases.forEach(function(order){if(!isLaunchCompleted(order))pending++;});
     document.getElementById("launchPendingCount").textContent=pending;
     document.getElementById("launchSpentCurrent").textContent=launchCurrency(currentSpend);
     document.getElementById("launchSpentPrevious").textContent=launchCurrency(previousSpend);
@@ -1500,7 +1506,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       var statusTd=document.createElement("td"),badge=document.createElement("span");badge.className="launch-state "+(isLaunchCompleted(order)?"done":"pending");badge.textContent=isLaunchCompleted(order)?"Lançamento realizado":"Lançamento a ser realizado";statusTd.appendChild(badge);
       var actionTd=document.createElement("td"),actions=document.createElement("div");actions.className="launch-row-actions";
       var register=document.createElement("button");register.type="button";register.className=isLaunchCompleted(order)?"secondary-btn":"primary-btn";register.textContent=isLaunchCompleted(order)?"Editar Lançamento":"Registrar Lançamento";register.addEventListener("click",function(){openLaunchEditor(order.protocolo);});
-      var removeLaunch=document.createElement("button");removeLaunch.type="button";removeLaunch.className="secondary-btn purchase-reject";removeLaunch.textContent="Excluir";removeLaunch.addEventListener("click",function(){
+      var removeLaunch=document.createElement("button");removeLaunch.type="button";removeLaunch.className="secondary-btn purchase-reject";removeLaunch.textContent="Excluir lançamento";removeLaunch.addEventListener("click",function(){
         if(!window.confirm("Excluir o lançamento deste pedido? A compra continuará registrada e poderá ser lançada novamente pelo Painel de Compras."))return;
         var saved=getLocalPurchases().map(function(item){
           if(item.protocolo===order.protocolo&&item.launchInfo){item.launchInfo.deleted=true;item.launchInfo.deletedAt=new Date().toISOString();}
