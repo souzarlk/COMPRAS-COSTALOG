@@ -1115,28 +1115,38 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   }
 
   function updatePurchaseStatus(protocol,status){
-    var items=getLocalPurchases();
-    var updated=false;
+    var items=getLocalPurchases(),updated=false,latestNotification=null,updatedOrder=null;
     items=items.map(function(item){
-      if(item.protocolo===protocol){
+      if(item.protocolo!==protocol)return item;
+      var previousStatus=item.comprasStatus||"Pendente de análise";
+      if(previousStatus!==status){
         item.comprasStatus=status;
-        if(status==="Compra Realizada"){
-          item.dataCompra=item.dataCompra||new Date().toISOString();
-          if(!item.launchInfo)item.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:item.dataCompra,valorCompra:String(item.valorEstimado||""),numeroLancamento:"",formaPagamento:"",cartao:"",parcelado:"nao",quantidadeParcelas:"",dataVencimento:""};
-          else if(item.launchInfo.situacao!=="Lançamento realizado"){
-            item.launchInfo.situacao="Lançamento a ser realizado";
-            item.launchInfo.dataCompra=item.launchInfo.dataCompra||item.dataCompra;
-          }
-        }
-        updated=true;
+        appendOrderNotification(item,status);
+        latestNotification=item.notificacoes[item.notificacoes.length-1];
       }
-      return item;
+      if(status==="Compra Realizada"){
+        item.dataCompra=item.dataCompra||(item.purchaseInfo&&item.purchaseInfo.dataCompra)||new Date().toISOString();
+        if(!item.launchInfo)item.launchInfo={situacao:"Lançamento a ser realizado",dataCompra:item.dataCompra,valorCompra:String((item.purchaseInfo&&item.purchaseInfo.valor)||item.valorEstimado||""),numeroLancamento:"",formaPagamento:(item.purchaseInfo&&item.purchaseInfo.formaPagamento)||"",cartao:(item.purchaseInfo&&item.purchaseInfo.cartao)||"",parcelado:(item.purchaseInfo&&item.purchaseInfo.parcelado)||"nao",quantidadeParcelas:(item.purchaseInfo&&item.purchaseInfo.quantidadeParcelas)||"",dataVencimento:(item.purchaseInfo&&item.purchaseInfo.dataVencimento)||"",deleted:false};
+        else if(item.launchInfo.situacao!=="Lançamento realizado"){
+          item.launchInfo.situacao="Lançamento a ser realizado";
+          item.launchInfo.dataCompra=item.dataCompra;
+          item.launchInfo.valorCompra=String((item.purchaseInfo&&item.purchaseInfo.valor)||item.launchInfo.valorCompra||item.valorEstimado||"");
+          item.launchInfo.formaPagamento=(item.purchaseInfo&&item.purchaseInfo.formaPagamento)||item.launchInfo.formaPagamento||"";
+          item.launchInfo.cartao=(item.purchaseInfo&&item.purchaseInfo.cartao)||item.launchInfo.cartao||"";
+          item.launchInfo.parcelado=(item.purchaseInfo&&item.purchaseInfo.parcelado)||"nao";
+          item.launchInfo.quantidadeParcelas=(item.purchaseInfo&&item.purchaseInfo.quantidadeParcelas)||"";
+          item.launchInfo.dataVencimento=(item.purchaseInfo&&item.purchaseInfo.dataVencimento)||"";
+          item.launchInfo.deleted=false;
+        }
+      }
+      updatedOrder=item;updated=true;return item;
     });
     if(!updated)return;
     try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(items));}catch(error){}
-    renderPurchases();
-    updateLaunchNavCount();
+    renderPurchases();updateLaunchNavCount();updateMyOrdersBadge();
     if(!launchesView.classList.contains("hidden"))renderLaunches();
+    if(!userOrdersView.classList.contains("hidden"))renderMyOrders();
+    if(updatedOrder&&latestNotification)alertRequesterOfStatus(updatedOrder,latestNotification);
   }
   function createPurchaseDetail(label,value,full){
     var wrapper=document.createElement("div");
@@ -1191,11 +1201,12 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       card.appendChild(details);
       var actions=document.createElement("div");actions.className="purchase-actions";
       if(order.comprasStatus==="Aceito"){
-        var bought=document.createElement("button");bought.type="button";bought.className="secondary-btn purchase-accept";bought.textContent="Marcar compra realizada";bought.addEventListener("click",function(){if(window.confirm("Confirmar que esta compra foi realizada? Ela entrará em Lançamentos."))updatePurchaseStatus(order.protocolo,"Compra Realizada");});
+        var bought=document.createElement("button");bought.type="button";bought.className="secondary-btn purchase-accept";bought.textContent="Registrar compra";bought.addEventListener("click",function(){openPurchaseRegistration(order.protocolo);});
         actions.appendChild(bought);
       }else if(order.comprasStatus==="Compra Realizada"){
-        var launchLink=document.createElement("button");launchLink.type="button";launchLink.className="secondary-btn purchase-review";launchLink.textContent=order.launchInfo&&order.launchInfo.situacao==="Lançamento realizado"?"Ver lançamento":"Registrar lançamento";launchLink.addEventListener("click",function(){showLaunchesPage();openLaunchEditor(order.protocolo);});
-        actions.appendChild(launchLink);
+        var editPurchase=document.createElement("button");editPurchase.type="button";editPurchase.className="secondary-btn purchase-review";editPurchase.textContent="Editar dados da compra";editPurchase.addEventListener("click",function(){openPurchaseRegistration(order.protocolo);});
+        var launchLink=document.createElement("button");launchLink.type="button";launchLink.className="secondary-btn purchase-accept";launchLink.textContent=order.launchInfo&&order.launchInfo.situacao==="Lançamento realizado"?"Ver lançamento":"Registrar lançamento";launchLink.addEventListener("click",function(){showLaunchesPage();openLaunchEditor(order.protocolo);});
+        actions.append(editPurchase,launchLink);
       }else if(order.comprasStatus!=="Negado"){
         var analyze=document.createElement("button");analyze.type="button";analyze.className="secondary-btn purchase-review";analyze.textContent="Marcar em análise";analyze.addEventListener("click",function(){updatePurchaseStatus(order.protocolo,"Em análise");});
         var accept=document.createElement("button");accept.type="button";accept.className="secondary-btn purchase-accept";accept.textContent="Aceitar pedido";accept.addEventListener("click",function(){if(window.confirm("Confirmar o aceite deste pedido?"))updatePurchaseStatus(order.protocolo,"Aceito");});
