@@ -484,6 +484,29 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
 @media(max-width:850px){.user-order-details{grid-template-columns:repeat(2,minmax(0,1fr))}.purchase-register-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.user-orders-tools{grid-template-columns:minmax(0,1fr) auto}}
 @media(max-width:560px){.user-orders-tools{grid-template-columns:minmax(0,1fr)}.user-orders-tools button{width:100%}.user-order-head{flex-direction:column;gap:9px}.user-order-details{grid-template-columns:minmax(0,1fr)}.purchase-register-card{padding:16px 12px}.purchase-register-grid{grid-template-columns:minmax(0,1fr)}.purchase-register-actions{flex-direction:column-reverse}.purchase-register-actions button{width:100%}}
 
+
+.purchase-list-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:18px 0 4px;padding:14px 16px;border:1px solid var(--line);border-radius:13px;background:var(--paper)}
+.purchase-list-filter{display:grid;gap:6px;min-width:min(100%,260px)}
+.purchase-list-filter label,.analytics-filters label{font-size:11px;font-weight:850;color:var(--muted)}
+.purchase-list-filter select,.analytics-filters select{min-height:42px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);width:100%}
+.purchase-list-hint{font-size:11px;color:var(--muted);line-height:1.5}
+.purchase-status-editor{display:flex;align-items:flex-end;gap:9px;flex-wrap:wrap;margin:16px 0 2px;padding:12px;border:1px dashed var(--line);border-radius:11px;background:var(--canvas)}
+.purchase-status-editor .status-select-wrap{display:grid;gap:5px;min-width:190px;flex:1}
+.purchase-status-editor label{font-size:10px;font-weight:850;color:var(--muted)}
+.purchase-status-editor select{min-height:38px;padding:8px 10px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px}
+.analytics-filters{display:grid;grid-template-columns:minmax(220px,1fr) minmax(170px,240px) minmax(240px,1.5fr);align-items:end;gap:14px;margin:18px 0}
+.analytics-filters>div{display:grid;gap:6px}.analytics-filters p{font-size:11px;line-height:1.5;color:var(--muted);margin:0 0 4px}
+.analytics-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin:18px 0 22px}
+.analytics-chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.analytics-chart-card{min-width:0;padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--paper);box-shadow:0 7px 23px rgba(0,0,0,.035)}
+.analytics-chart-card h3{font-size:14px;margin:0 0 5px}.analytics-chart-card p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.analytics-canvas-wrap{height:300px;position:relative;margin-top:15px}.analytics-canvas-wrap canvas{width:100%!important;height:100%!important}
+.analytics-chart-card:nth-child(5){grid-column:1/-1}.analytics-data-table{margin:20px 0}
+body.dark-mode .purchase-list-toolbar,body.dark-mode .analytics-chart-card{background:var(--paper)}
+body.dark-mode .purchase-list-filter select,body.dark-mode .purchase-status-editor select,body.dark-mode .analytics-filters select{background:#131317;border-color:#414149;color:#f4f4f6}
+@media(max-width:850px){.analytics-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-filters p{grid-column:1/-1}.analytics-chart-grid{grid-template-columns:minmax(0,1fr)}.analytics-chart-card:nth-child(5){grid-column:auto}.analytics-canvas-wrap{height:270px}}
+@media(max-width:560px){.purchase-list-toolbar{align-items:stretch}.purchase-list-filter{min-width:100%}.analytics-filters{grid-template-columns:minmax(0,1fr)}.analytics-filters p{grid-column:auto}.analytics-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-summary-grid .launch-summary-card{padding:14px 12px}.analytics-summary-grid .launch-summary-card strong{font-size:19px}.analytics-chart-card{padding:14px}.analytics-canvas-wrap{height:250px}}
+
 </style>
 </head>
 <body>
@@ -554,7 +577,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
           <div class="class-heading"><span class="class-icon" aria-hidden="true">01</span><div><h3>Cabeçalho</h3><p>Identificação e autorização da solicitação</p></div></div>
           <div class="form-grid">
             <div class="field"><label for="requesterName">Nome <span class="required">*</span></label><input id="requesterName" name="requesterName" required maxlength="100" placeholder="Nome do solicitante" autocomplete="name"></div>
-            <div class="field"><label for="requesterSector">Setor <span class="required">*</span></label><input id="requesterSector" name="requesterSector" required maxlength="100" placeholder="Ex.: Operacional, TI, RH"></div>
+            <div class="field"><label for="requesterSector">Setor <span class="required">*</span></label><select id="requesterSector" name="requesterSector" required><option value="">Selecione o setor</option><option>OPERACIONAL</option><option>TERMINAL</option><option>FROTA</option><option>VAZIO</option><option>RH</option><option>ADM</option><option>MANUTENÇÃO</option><option>ALMOXARIFADO</option></select></div>
             <div class="field"><label for="authorizedBy">Autorizado por <span class="required">*</span></label><select id="authorizedBy" name="authorizedBy" required><option value="">Selecione o responsável</option><option>ALLAN</option><option>GEDIMAR</option><option>MAURO</option><option>ANDRÉ</option><option>ERICK</option><option>CELSO</option><option>JORGE</option><option>THIAGO</option></select></div>
           </div>
         </fieldset>
@@ -575,7 +598,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     <section id="comprasView" class="hidden">
       <div class="section-head">
         <div><span class="eyebrow red">ÁREA DE COMPRAS</span><h2 style="margin:7px 0 0">Painel do setor de Compras</h2><p>Consulte pedidos recebidos e abra a central de cotações para comparar propostas de fornecedores.</p></div>
-        <div class="quote-editor-buttons-right"><button id="openLaunchesBtn" class="back-btn launch-nav-button" type="button">Lançamentos <span id="launchNavCount" class="launch-nav-count hidden">0</span></button><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
+        <div class="quote-editor-buttons-right"><button id="openLaunchesBtn" class="back-btn launch-nav-button" type="button">Lançamentos <span id="launchNavCount" class="launch-nav-count hidden">0</span></button><button id="openQuotesBtn" class="primary-btn" type="button">Cotações →</button><button id="openAnalyticsBtn" class="back-btn" type="button">Dados e gráficos</button><button id="refreshPurchasesBtn" class="back-btn" type="button">↻ Atualizar pedidos</button></div>
       </div>
       <div class="purchase-stats">
         <div class="purchase-stat"><small>Total de pedidos</small><strong id="purchasesTotal">0</strong></div>
@@ -583,6 +606,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
         <div class="purchase-stat reviewing"><small>Em análise</small><strong id="purchasesReviewing">0</strong></div>
         <div class="purchase-stat closed"><small>Decididos</small><strong id="purchasesClosed">0</strong></div>
       </div>
+      <div class="purchase-list-toolbar"><div class="purchase-list-filter"><label for="purchaseStatusFilter">Filtrar pedidos</label><select id="purchaseStatusFilter"><option value="aberto" selected>Pedidos em aberto</option><option value="analise">Em análise</option><option value="aceito">Pedidos aceitos</option><option value="negado">Pedidos negados</option><option value="realizada">Compras realizadas</option><option value="todos">Todos os pedidos</option></select></div><span class="purchase-list-hint">Pedidos negados ficam separados e não aparecem na lista principal.</span></div>
       <div id="purchasesList" class="purchases-list" aria-live="polite"></div>
       <p class="form-note purchase-mode-note">Modo de configuração: esta versão mostra os pedidos salvos neste navegador. A sincronização em tempo real entre diferentes computadores será conectada em uma próxima etapa.</p>
     </section>
@@ -647,6 +671,28 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
         </table>
       </div>
     </section>
+
+
+<section id="analyticsView" class="hidden">
+  <div class="section-head"><div><span class="eyebrow red">SETOR DE COMPRAS • INDICADORES</span><h2 style="margin:7px 0 0">Dados e gráficos</h2><p>Visão financeira das compras realizadas, considerando apenas lançamentos ativos.</p></div><button id="backFromAnalyticsBtn" class="back-btn" type="button">← Painel de Compras</button></div>
+  <div class="analytics-filters"><div><label for="analyticsSectorFilter">Setor</label><select id="analyticsSectorFilter"><option value="">Todos os setores</option></select></div><div><label for="analyticsYearFilter">Ano dos gráficos</label><select id="analyticsYearFilter"></select></div><p>Ao excluir um lançamento, o valor deixa de compor os totais e gráficos financeiros.</p></div>
+  <div class="analytics-summary-grid">
+    <div class="launch-summary-card current"><small>Gastos do mês atual</small><strong id="analyticsCurrentMonth">R$ 0,00</strong></div>
+    <div class="launch-summary-card previous"><small>Gastos do mês passado</small><strong id="analyticsPreviousMonth">R$ 0,00</strong></div>
+    <div class="launch-summary-card year"><small id="analyticsYearLabel">Gastos no ano</small><strong id="analyticsYearSpend">R$ 0,00</strong></div>
+    <div class="launch-summary-card pending"><small id="analyticsCompanyTotalLabel">Gasto acumulado da empresa</small><strong id="analyticsCompanyTotal">R$ 0,00</strong></div>
+    <div class="launch-summary-card"><small>Compras consideradas</small><strong id="analyticsPurchaseCount">0</strong></div>
+    <div class="launch-summary-card"><small>Forma de pagamento mais usada</small><strong id="analyticsTopPayment">—</strong><small id="analyticsTopPaymentCount"></small></div>
+  </div>
+  <div class="analytics-chart-grid">
+    <article class="analytics-chart-card"><div><h3>Gastos por setor</h3><p>Distribuição dos gastos no ano selecionado.</p></div><div class="analytics-canvas-wrap"><canvas id="analyticsSectorChart" aria-label="Gráfico de gastos por setor"></canvas></div></article>
+    <article class="analytics-chart-card"><div><h3>Gastos mês a mês</h3><p>Comparativo dos valores mensais do ano selecionado.</p></div><div class="analytics-canvas-wrap"><canvas id="analyticsMonthlyChart" aria-label="Gráfico mensal de gastos"></canvas></div></article>
+    <article class="analytics-chart-card"><div><h3>Formas de pagamento mais usadas</h3><p>Quantidade de compras por forma de pagamento.</p></div><div class="analytics-canvas-wrap"><canvas id="analyticsPaymentChart" aria-label="Gráfico de formas de pagamento"></canvas></div></article>
+    <article class="analytics-chart-card"><div><h3>Gastos por cartão</h3><p>Valor total comprado em cada cartão no ano selecionado.</p></div><div class="analytics-canvas-wrap"><canvas id="analyticsCardSpendChart" aria-label="Gráfico de gastos por cartão"></canvas></div></article>
+    <article class="analytics-chart-card"><div><h3>Quantidade de compras por cartão</h3><p>Quantas vezes cada cartão foi utilizado no ano selecionado.</p></div><div class="analytics-canvas-wrap"><canvas id="analyticsCardCountChart" aria-label="Gráfico de quantidade de compras por cartão"></canvas></div></article>
+  </div>
+  <div class="launch-table-wrap analytics-data-table"><table class="launch-table"><thead><tr><th>FORMA DE PAGAMENTO</th><th>QUANTIDADE</th><th>VALOR TOTAL</th></tr></thead><tbody id="analyticsPaymentTableBody"><tr><td colspan="3">Nenhum dado disponível.</td></tr></tbody></table></div>
+</section>
 
     <section id="launchEditorView" class="hidden">
       <div class="section-head">
@@ -793,6 +839,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/config.js"></script>
@@ -814,6 +861,8 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   var launchForm=document.getElementById("launchForm");
   var quotesView=document.getElementById("quotesView");
   var quoteEditorView=document.getElementById("quoteEditorView");
+  var analyticsView=document.getElementById("analyticsView");
+  var analyticsCharts={};
   var quoteForm=document.getElementById("quoteForm");
   var quoteRowsBody=document.getElementById("quoteRowsBody");
   var receiptModal=document.getElementById("receiptModal");
@@ -833,6 +882,9 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   var savedUser="";
   var activeUserName="";
   var currentPurchaseProtocol=null;
+  var COMPANY_SECTORS=["OPERACIONAL","TERMINAL","FROTA","VAZIO","RH","ADM","MANUTENÇÃO","ALMOXARIFADO"];
+  function sectorKey(value){return String(value||"").trim().toUpperCase().replace(/Ç/g,"C").replace(/[ÁÀÂÃ]/g,"A").replace(/[ÉÊ]/g,"E").replace(/Í/g,"I").replace(/[ÓÔÕ]/g,"O").replace(/Ú/g,"U");}
+  function normalizeSectorName(value){var raw=String(value||"").trim();if(!raw)return "";var key=sectorKey(raw);var match=COMPANY_SECTORS.find(function(sector){return sectorKey(sector)===key;});return match||raw.toUpperCase();}
   try {
     if(localStorage.getItem("costalogComprasTema")==="escuro") document.body.classList.add("dark-mode");
     activeUserName=localStorage.getItem("costalogUsuarioAtivo")||"";
@@ -877,14 +929,14 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     homeView.classList.remove("hidden");
     userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     updateMyOrdersBadge();
   }
   function showRequest(){
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");
     requestView.classList.remove("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     document.getElementById("requesterName").value=activeUserName||savedUser;
     document.getElementById("requesterSector").focus({preventScroll:true});
     window.scrollTo({top:0,behavior:"smooth"});
@@ -905,11 +957,11 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     if(activeRole==="compras"){
       homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
       comprasView.classList.remove("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
       currentRoleLabel.textContent="Setor de Compras";renderPurchases();updateLaunchNavCount();
     }else{
       comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+      quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
       homeView.classList.remove("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
       currentRoleLabel.textContent="Área do solicitante";updateMyOrdersBadge();
     }
@@ -1085,7 +1137,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   function showMyOrdersPage(){
     homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
     purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     userOrdersView.classList.remove("hidden");
     if(activeUserName)document.getElementById("myOrdersName").value=activeUserName;
     currentRoleLabel.textContent="Área do solicitante";
@@ -1145,6 +1197,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(items));}catch(error){}
     renderPurchases();updateLaunchNavCount();updateMyOrdersBadge();
     if(!launchesView.classList.contains("hidden"))renderLaunches();
+    if(!analyticsView.classList.contains("hidden"))renderAnalytics();
     if(!userOrdersView.classList.contains("hidden"))renderMyOrders();
     if(updatedOrder&&latestNotification)alertRequesterOfStatus(updatedOrder,latestNotification);
   }
@@ -1199,7 +1252,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     applyPurchaseRegistrationVisibility();
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     purchaseRegistrationView.classList.remove("hidden");
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1274,21 +1327,31 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
   }
   function renderPurchases(){
     if(!comprasView)return;
-    var orders=getLocalPurchases();
-    var pending=orders.filter(function(order){return !order.comprasStatus||order.comprasStatus==="Pendente de análise"||order.comprasStatus==="Registrado";}).length;
-    var reviewing=orders.filter(function(order){return order.comprasStatus==="Em análise";}).length;
-    var closed=orders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Negado"||order.comprasStatus==="Compra Realizada";}).length;
-    document.getElementById("purchasesTotal").textContent=orders.length;
+    var allOrders=getLocalPurchases();
+    var pending=allOrders.filter(function(order){return !order.comprasStatus||order.comprasStatus==="Pendente de análise"||order.comprasStatus==="Registrado";}).length;
+    var reviewing=allOrders.filter(function(order){return order.comprasStatus==="Em análise";}).length;
+    var closed=allOrders.filter(function(order){return order.comprasStatus==="Aceito"||order.comprasStatus==="Negado"||order.comprasStatus==="Compra Realizada";}).length;
+    document.getElementById("purchasesTotal").textContent=allOrders.length;
     document.getElementById("purchasesPending").textContent=pending;
     document.getElementById("purchasesReviewing").textContent=reviewing;
     document.getElementById("purchasesClosed").textContent=closed;
     var list=document.getElementById("purchasesList");
+    var statusFilter=document.getElementById("purchaseStatusFilter").value||"aberto";
+    var orders=allOrders.filter(function(order){var status=order.comprasStatus||"Pendente de análise";
+      if(statusFilter==="aberto")return status==="Pendente de análise"||status==="Registrado";
+      if(statusFilter==="analise")return status==="Em análise";
+      if(statusFilter==="aceito")return status==="Aceito";
+      if(statusFilter==="negado")return status==="Negado";
+      if(statusFilter==="realizada")return status==="Compra Realizada";
+      return true;
+    });
     list.replaceChildren();
     if(!orders.length){
       var empty=document.createElement("div");empty.className="purchase-empty";
       var ico=document.createElement("div");ico.className="purchase-empty-icon";ico.textContent="▤";
       var title=document.createElement("h3");title.textContent="Nenhum pedido encontrado";
-      var desc=document.createElement("p");desc.textContent="Quando você registrar um pedido neste mesmo navegador, ele aparecerá aqui para teste. A caixa de entrada compartilhada será conectada na próxima etapa.";
+      var desc=document.createElement("p");desc.textContent=allOrders.length?"Nenhum pedido corresponde a este filtro. Selecione outro status para consultar os demais pedidos.":"Quando você registrar um pedido neste mesmo navegador, ele aparecerá aqui para teste. A caixa de entrada compartilhada será conectada na próxima etapa.";
+      if(statusFilter==="negado")title.textContent="Nenhum pedido negado";else if(statusFilter==="aberto")title.textContent=allOrders.length?"Nenhum pedido em aberto":"Nenhum pedido encontrado";else title.textContent=allOrders.length?"Nenhum pedido encontrado neste filtro":"Nenhum pedido encontrado";
       empty.append(ico,title,desc);list.appendChild(empty);return;
     }
     orders.forEach(function(order){
@@ -1315,6 +1378,23 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
         createPurchaseDetail("Observação",order.observacao,true)
       );
       card.appendChild(details);
+      var statusEditor=document.createElement("div");statusEditor.className="purchase-status-editor";
+      var statusSelectWrap=document.createElement("div");statusSelectWrap.className="status-select-wrap";
+      var statusLabel=document.createElement("label");statusLabel.textContent="Alterar status do pedido";
+      var statusSelect=document.createElement("select");statusSelect.setAttribute("aria-label","Alterar status do pedido "+(order.protocolo||""));
+      var availableStatuses=[["Pendente de análise","Pedido em aberto"],["Em análise","Em análise"],["Aceito","Aceito"],["Negado","Pedido negado"]];
+      if(statusText==="Compra Realizada")availableStatuses.push(["Compra Realizada","Compra realizada"]);
+      availableStatuses.forEach(function(item){statusSelect.add(new Option(item[1],item[0]));});
+      statusSelect.value=statusText==="Registrado"?"Pendente de análise":statusText;
+      if(!Array.from(statusSelect.options).some(function(option){return option.value===statusSelect.value;}))statusSelect.value="Pendente de análise";
+      statusSelectWrap.append(statusLabel,statusSelect);
+      var saveStatus=document.createElement("button");saveStatus.type="button";saveStatus.className="secondary-btn";saveStatus.textContent="Salvar status";
+      saveStatus.addEventListener("click",function(){var nextStatus=statusSelect.value;if(nextStatus===statusText)return;
+        if(nextStatus==="Negado"&&!window.confirm("Confirmar que este pedido será negado? Ele sairá da lista principal e ficará no filtro Pedidos negados.")){statusSelect.value=statusText;return;}
+        if(nextStatus==="Aceito"&&!window.confirm("Confirmar o aceite deste pedido?")){statusSelect.value=statusText;return;}
+        updatePurchaseStatus(order.protocolo,nextStatus);
+      });
+      statusEditor.append(statusSelectWrap,saveStatus);card.appendChild(statusEditor);
       var actions=document.createElement("div");actions.className="purchase-actions";
       if(order.comprasStatus==="Aceito"){
         var bought=document.createElement("button");bought.type="button";bought.className="secondary-btn purchase-accept";bought.textContent="Registrar compra";bought.addEventListener("click",function(){openPurchaseRegistration(order.protocolo);});
@@ -1333,6 +1413,18 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     });
   }
   document.getElementById("refreshPurchasesBtn").addEventListener("click",renderPurchases);
+  document.getElementById("purchaseStatusFilter").addEventListener("change",renderPurchases);
+
+  function showAnalyticsPage(){
+    if(pageContainer)pageContainer.classList.remove("quote-editor-open");
+    homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
+    comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
+    analyticsView.classList.remove("hidden");currentRoleLabel.textContent="Setor de Compras";
+    initializeAnalyticsFilters();renderAnalytics();window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("openAnalyticsBtn").addEventListener("click",showAnalyticsPage);
+  document.getElementById("backFromAnalyticsBtn").addEventListener("click",returnToPurchases);
 
   function localDateISO(value){
     if(!value)return "";
@@ -1400,7 +1492,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     homeView.classList.add("hidden");userOrdersView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     launchesView.classList.remove("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     currentRoleLabel.textContent="Setor de Compras";
     initializeLaunchFilters();renderLaunches();
     window.scrollTo({top:0,behavior:"smooth"});
@@ -1409,7 +1501,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
     launchEditorView.classList.add("hidden");launchesView.classList.remove("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     initializeLaunchFilters();renderLaunches();
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1427,13 +1519,13 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     var cardSelect=document.getElementById("launchCardFilter"),sectorSelect=document.getElementById("launchSectorFilter");
     var currentCard=cardSelect.value,currentSector=sectorSelect.value;
     var cards=Array.from(new Set(purchases.map(function(order){return order.launchInfo&&order.launchInfo.cartao||(order.purchaseInfo&&order.purchaseInfo.cartao)||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
-    var sectors=Array.from(new Set(purchases.map(function(order){return order.setor||"";}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});
+    var sectors=COMPANY_SECTORS.slice();
     cardSelect.replaceChildren(new Option("Todos os cartões",""));
     cards.forEach(function(card){cardSelect.add(new Option(card,card));});
     sectorSelect.replaceChildren(new Option("Todos os setores",""));
     sectors.forEach(function(sector){sectorSelect.add(new Option(sector,sector));});
     if(cards.includes(currentCard))cardSelect.value=currentCard;
-    if(sectors.includes(currentSector))sectorSelect.value=currentSector;
+    if(sectors.includes(normalizeSectorName(currentSector)))sectorSelect.value=normalizeSectorName(currentSector);
   }
   ["launchPurchaseFrom","launchPurchaseTo","launchCardFilter","launchDueFrom","launchDueTo","launchSectorFilter","launchStatusFilter"].forEach(function(id){
     document.getElementById(id).addEventListener("change",renderLaunches);
@@ -1454,7 +1546,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     var now=new Date(),currentMonth=now.getMonth(),currentYear=now.getFullYear();
     var previousMonth=new Date(currentYear,currentMonth-1,1);
     var currentSpend=0,previousSpend=0,yearSpend=0,pending=0;
-    var purchasesForTotals=getLocalPurchases().filter(function(order){return order.comprasStatus==="Compra Realizada";});
+    var purchasesForTotals=getLocalPurchases().filter(function(order){return order.comprasStatus==="Compra Realizada"&&!(order.launchInfo&&order.launchInfo.deleted);});
     purchasesForTotals.forEach(function(order){
       var d=parseDateISO(getLaunchPurchaseDate(order));
       if(!d)return;
@@ -1481,7 +1573,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       if(card&&(launch.cartao||"")!==card)return false;
       if(dueFrom&&(!due||due<dueFrom))return false;
       if(dueTo&&(!due||due>dueTo))return false;
-      if(sector&&(order.setor||"")!==sector)return false;
+      if(sector&&normalizeSectorName(order.setor)!==sector)return false;
       if(status==="pendente"&&isLaunchCompleted(order))return false;
       if(status==="realizado"&&!isLaunchCompleted(order))return false;
       return true;
@@ -1503,7 +1595,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       dateTd.append(dateStrong,purchaseSmall);
       var productTd=document.createElement("td"),product=document.createElement("strong");product.textContent=order.produto||"Produto não informado";
       var productSmall=document.createElement("small");productSmall.textContent=order.nome||"Solicitante não informado";productTd.append(product,productSmall);
-      var sectorTd=document.createElement("td");sectorTd.textContent=order.setor||"—";
+      var sectorTd=document.createElement("td");sectorTd.textContent=normalizeSectorName(order.setor)||"—";
       var valueTd=document.createElement("td");valueTd.textContent=launchCurrency(getLaunchValue(order));
       var cardTd=document.createElement("td");cardTd.textContent=info.cartao||"—";
       var dueTd=document.createElement("td");dueTd.textContent=info.dataVencimento&&parseDateISO(info.dataVencimento)?parseDateISO(info.dataVencimento).toLocaleDateString("pt-BR"):"—";
@@ -1523,6 +1615,47 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       tr.append(dateTd,productTd,sectorTd,valueTd,cardTd,dueTd,statusTd,actionTd);tbody.appendChild(tr);
     });
   }
+
+  function getFinancialPurchases(){return getLocalPurchases().filter(function(o){return o.comprasStatus==="Compra Realizada"&&!(o.launchInfo&&o.launchInfo.deleted)&&!!parseDateISO(getLaunchPurchaseDate(o));});}
+  function getOrderPayment(o){return (o.launchInfo&&o.launchInfo.formaPagamento)||(o.purchaseInfo&&o.purchaseInfo.formaPagamento)||"";}
+  function getOrderCard(o){return (o.launchInfo&&o.launchInfo.cartao)||(o.purchaseInfo&&o.purchaseInfo.cartao)||"";}
+  function sumOrderValues(orders){return orders.reduce(function(total,o){return total+getLaunchValue(o);},0);}
+  function initializeAnalyticsFilters(){
+    var ss=document.getElementById("analyticsSectorFilter"),ys=document.getElementById("analyticsYearFilter"),sc=ss.value,yc=ys.value;
+    ss.replaceChildren(new Option("Todos os setores",""));COMPANY_SECTORS.forEach(function(v){ss.add(new Option(v,v));});if(COMPANY_SECTORS.includes(normalizeSectorName(sc)))ss.value=normalizeSectorName(sc);
+    var years=getFinancialPurchases().map(function(o){return String(parseDateISO(getLaunchPurchaseDate(o)).getFullYear());}),thisYear=String(new Date().getFullYear());if(!years.includes(thisYear))years.push(thisYear);
+    years=Array.from(new Set(years)).sort(function(a,b){return Number(b)-Number(a);});ys.replaceChildren();years.forEach(function(y){ys.add(new Option(y,y));});ys.value=years.includes(yc)?yc:thisYear;
+  }
+  function drawAnalyticsChart(id,type,labels,values,label,horizontal){
+    var canvas=document.getElementById(id);if(!canvas)return;var wrap=canvas.parentElement,old=wrap.querySelector(".chart-fallback");if(old)old.remove();if(analyticsCharts[id]){analyticsCharts[id].destroy();delete analyticsCharts[id];}
+    if(!window.Chart){canvas.style.display="none";var fb=document.createElement("div");fb.className="chart-fallback";var max=Math.max.apply(null,values.concat([1]));
+      labels.forEach(function(name,i){var row=document.createElement("div");row.style.margin="8px 0";var h=document.createElement("div");h.style.display="flex";h.style.justifyContent="space-between";h.style.fontSize="11px";var n=document.createElement("span");n.textContent=name;var v=document.createElement("strong");v.textContent=label.indexOf("R$")>=0?launchCurrency(values[i]):String(values[i]||0);h.append(n,v);var track=document.createElement("div");track.style.height="7px";track.style.background="var(--line)";track.style.borderRadius="8px";track.style.marginTop="5px";var bar=document.createElement("div");bar.style.height="100%";bar.style.width=Math.max(0,Number(values[i]||0)/max*100)+"%";bar.style.background="#e30613";track.appendChild(bar);row.append(h,track);fb.appendChild(row);});wrap.appendChild(fb);return;}
+    canvas.style.display="block";analyticsCharts[id]=new window.Chart(canvas.getContext("2d"),{type:type,data:{labels:labels,datasets:[{label:label,data:values,borderWidth:1,backgroundColor:["#e30613","#ed6b72","#71717a","#c4c4c9","#9f1239","#f59e0b","#64748b","#16a34a","#a855f7","#0891b2","#ea580c","#6b7280"],borderColor:"#e30613",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:horizontal?"y":"x",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.parsed&&typeof c.parsed==="object"?(c.parsed.x!==undefined?c.parsed.x:c.parsed.y):c.parsed;return label+": "+(label.indexOf("R$")>=0?launchCurrency(v):v);}}}},scales:{x:{beginAtZero:true},y:{beginAtZero:true}}}});
+  }
+  function renderAnalytics(){
+    if(!analyticsView||analyticsView.classList.contains("hidden"))return;initializeAnalyticsFilters();
+    var all=getFinancialPurchases(),sector=document.getElementById("analyticsSectorFilter").value,year=Number(document.getElementById("analyticsYearFilter").value)||new Date().getFullYear();
+    var filtered=all.filter(function(o){return !sector||normalizeSectorName(o.setor)===sector;}),now=new Date(),prev=new Date(now.getFullYear(),now.getMonth()-1,1);
+    var current=filtered.filter(function(o){var d=parseDateISO(getLaunchPurchaseDate(o));return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();});
+    var previous=filtered.filter(function(o){var d=parseDateISO(getLaunchPurchaseDate(o));return d.getFullYear()===prev.getFullYear()&&d.getMonth()===prev.getMonth();});
+    var yearOrders=filtered.filter(function(o){return parseDateISO(getLaunchPurchaseDate(o)).getFullYear()===year;});
+    document.getElementById("analyticsCurrentMonth").textContent=launchCurrency(sumOrderValues(current));document.getElementById("analyticsPreviousMonth").textContent=launchCurrency(sumOrderValues(previous));
+    document.getElementById("analyticsYearSpend").textContent=launchCurrency(sumOrderValues(yearOrders));document.getElementById("analyticsYearLabel").textContent="Gastos no ano "+year;
+    document.getElementById("analyticsCompanyTotal").textContent=launchCurrency(sumOrderValues(filtered));document.getElementById("analyticsCompanyTotalLabel").textContent=sector?"Gasto acumulado do setor":"Gasto acumulado da empresa";
+    document.getElementById("analyticsPurchaseCount").textContent=filtered.length.toLocaleString("pt-BR");
+    var months=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],monthValues=months.map(function(m,i){return sumOrderValues(yearOrders.filter(function(o){return parseDateISO(getLaunchPurchaseDate(o)).getMonth()===i;}));});
+    var allYear=all.filter(function(o){return parseDateISO(getLaunchPurchaseDate(o)).getFullYear()===year;}),sectorValues=COMPANY_SECTORS.map(function(sx){return sumOrderValues(allYear.filter(function(o){return normalizeSectorName(o.setor)===sx;}));});
+    drawAnalyticsChart("analyticsSectorChart","bar",COMPANY_SECTORS,sectorValues,"Gastos (R$)",true);drawAnalyticsChart("analyticsMonthlyChart","bar",months,monthValues,"Gastos (R$)",false);
+    var methods=["Dinheiro","PIX","Cartão","Boleto"],counts=methods.map(function(m){return yearOrders.filter(function(o){return getOrderPayment(o)===m;}).length;}),amounts=methods.map(function(m){return sumOrderValues(yearOrders.filter(function(o){return getOrderPayment(o)===m;}));});
+    var top=counts.reduce(function(best,n,i){return n>counts[best]?i:best;},0),topCount=counts[top]||0;document.getElementById("analyticsTopPayment").textContent=topCount?methods[top]:"Sem dados";document.getElementById("analyticsTopPaymentCount").textContent=topCount?topCount+" compra(s) no ano selecionado":"Nenhuma compra no ano selecionado";
+    drawAnalyticsChart("analyticsPaymentChart","bar",methods,counts,"Quantidade de compras",false);
+    var cards=Array.from(new Set(yearOrders.map(getOrderCard).map(function(c){return c.trim();}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,"pt-BR");});if(!cards.length)cards=["Sem cartão informado"];
+    var cardSpend=cards.map(function(c){return c==="Sem cartão informado"?0:sumOrderValues(yearOrders.filter(function(o){return getOrderCard(o).trim()===c;}));}),cardCounts=cards.map(function(c){return c==="Sem cartão informado"?0:yearOrders.filter(function(o){return getOrderCard(o).trim()===c;}).length;});
+    drawAnalyticsChart("analyticsCardSpendChart","bar",cards,cardSpend,"Gastos (R$)",true);drawAnalyticsChart("analyticsCardCountChart","bar",cards,cardCounts,"Quantidade de compras",true);
+    var tb=document.getElementById("analyticsPaymentTableBody");tb.replaceChildren();methods.forEach(function(m,i){var tr=document.createElement("tr"),a=document.createElement("td"),b=document.createElement("td"),c=document.createElement("td");a.textContent=m;b.textContent=String(counts[i]);c.textContent=launchCurrency(amounts[i]);tr.append(a,b,c);tb.appendChild(tr);});
+  }
+  document.getElementById("analyticsSectorFilter").addEventListener("change",renderAnalytics);document.getElementById("analyticsYearFilter").addEventListener("change",renderAnalytics);
+
   function setLaunchSource(id,value){
     var el=document.getElementById(id);if(el)el.textContent=value===undefined||value===null||String(value).trim()===""?"Não informado":String(value);
   }
@@ -1553,7 +1686,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     var cards=Array.from(new Set(getLaunchOrders().map(function(item){return item.launchInfo&&item.launchInfo.cartao||(item.purchaseInfo&&item.purchaseInfo.cartao)||"";}).filter(Boolean)));
     var datalist=document.getElementById("launchCardOptions");datalist.replaceChildren();cards.forEach(function(value){datalist.appendChild(new Option(value,value));});
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");homeView.classList.add("hidden");requestView.classList.add("hidden");
-    launchesView.classList.add("hidden");comprasView.classList.add("hidden");quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    launchesView.classList.add("hidden");comprasView.classList.add("hidden");quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     launchEditorView.classList.remove("hidden");
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -1694,7 +1827,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     comprasView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quoteEditorView.classList.add("hidden");
+    quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     quotesView.classList.remove("hidden");
     refreshQuotes();
     window.scrollTo({top:0,behavior:"smooth"});
@@ -1703,7 +1836,7 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
     if(pageContainer)pageContainer.classList.remove("quote-editor-open");
     userOrdersView.classList.add("hidden");purchaseRegistrationView.classList.add("hidden");
     launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
-    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");analyticsView.classList.add("hidden");
     homeView.classList.add("hidden");requestView.classList.add("hidden");
     comprasView.classList.remove("hidden");
     renderPurchases();updateLaunchNavCount();
