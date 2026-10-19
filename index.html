@@ -943,6 +943,177 @@ body.dark-mode .purchase-register-grid .field input,body.dark-mode .purchase-reg
       return Array.isArray(items)?items:[];
     }catch(error){return [];}
   }
+  function normalizePersonName(name){
+    return String(name||"").trim().replace(/\s+/g," ").toLocaleLowerCase("pt-BR");
+  }
+  function notificationMessage(status,order){
+    var product=order.produto||"seu pedido";
+    if(status==="Pendente de análise"||status==="Registrado")return "Seu pedido "+product+" foi recebido e aguarda análise da equipe de Compras.";
+    if(status==="Em análise")return "Seu pedido "+product+" está em análise pela equipe de Compras.";
+    if(status==="Aceito")return "Seu pedido "+product+" foi aceito pela equipe de Compras.";
+    if(status==="Negado")return "Seu pedido "+product+" foi negado pela equipe de Compras.";
+    if(status==="Compra Realizada")return "A compra de "+product+" foi registrada como realizada.";
+    if(status==="Lançamento realizado")return "O lançamento da compra de "+product+" foi registrado.";
+    return "O status do pedido "+product+" foi atualizado para "+status+".";
+  }
+  function appendOrderNotification(order,status,message){
+    if(!Array.isArray(order.notificacoes))order.notificacoes=[];
+    var now=new Date().toISOString();
+    order.notificacoes.push({
+      id:(order.protocolo||"pedido")+"-"+Date.now()+"-"+Math.random().toString(36).slice(2,7),
+      status:status,
+      mensagem:message||notificationMessage(status,order),
+      data:now,
+      lida:false
+    });
+    if(order.notificacoes.length>80)order.notificacoes=order.notificacoes.slice(-80);
+  }
+  function getUnreadNotificationsFor(name){
+    var normalized=normalizePersonName(name);
+    if(!normalized)return 0;
+    return getLocalPurchases().filter(function(order){return normalizePersonName(order.nome)===normalized;})
+      .reduce(function(sum,order){return sum+(Array.isArray(order.notificacoes)?order.notificacoes.filter(function(n){return !n.lida;}).length:0);},0);
+  }
+  function updateMyOrdersBadge(){
+    var badge=document.getElementById("userOrdersCount");
+    if(!badge)return;
+    var count=getUnreadNotificationsFor(activeUserName);
+    badge.textContent=count;
+    badge.classList.toggle("hidden",count===0);
+    badge.title=count+" notificações não lidas";
+  }
+  function setMyOrdersNotice(message){
+    var notice=document.getElementById("myOrdersNotice");
+    if(notice)notice.textContent=message||"";
+  }
+  function myOrderStatusClass(status){
+    if(status==="Em análise")return "reviewing";
+    if(status==="Aceito")return "accepted";
+    if(status==="Negado")return "rejected";
+    if(status==="Compra Realizada"||status==="Lançamento realizado")return "completed";
+    return "";
+  }
+  function emptyMyOrders(title,message){
+    var box=document.createElement("div");box.className="user-orders-empty";
+    var strong=document.createElement("strong");strong.textContent=title;
+    var span=document.createElement("span");span.textContent=message;
+    box.append(strong,span);return box;
+  }
+  function renderMyOrders(){
+    var name=(document.getElementById("myOrdersName").value||"").trim();
+    var list=document.getElementById("myOrdersList");
+    list.replaceChildren();
+    if(!name){
+      list.appendChild(emptyMyOrders("Digite seu nome","Informe o mesmo nome usado no campo Nome do pedido para consultar seus pedidos e as atualizações da equipe de Compras."));
+      updateMyOrdersBadge();return;
+    }
+    var normalized=normalizePersonName(name);
+    var orders=getLocalPurchases().filter(function(order){return normalizePersonName(order.nome)===normalized;})
+      .sort(function(a,b){return new Date(b.dataRegistro||0)-new Date(a.dataRegistro||0);});
+    activeUserName=name;
+    savedUser=name;
+    try{localStorage.setItem("costalogUsuarioAtivo",name);}catch(e){}
+    if(!orders.length){
+      list.appendChild(emptyMyOrders("Nenhum pedido encontrado","Não localizei pedidos com esse nome neste navegador. Confira a grafia ou tente novamente mais tarde."));
+      updateMyOrdersBadge();return;
+    }
+    orders.forEach(function(order){
+      if(!Array.isArray(order.notificacoes))order.notificacoes=[];
+      var card=document.createElement("article");card.className="user-order-card";
+      var head=document.createElement("div");head.className="user-order-head";
+      var titleWrap=document.createElement("div");
+      var title=document.createElement("h3");title.textContent=order.produto||"Produto não informado";
+      var meta=document.createElement("div");meta.className="user-order-meta";
+      meta.textContent=(order.protocolo||"Pedido sem protocolo")+" · Registrado em "+(order.dataRegistro?new Date(order.dataRegistro).toLocaleString("pt-BR"):"data não informada");
+      titleWrap.append(title,meta);
+      var status=order.comprasStatus||"Pendente de análise";
+      var badge=document.createElement("span");badge.className="user-order-status "+myOrderStatusClass(status);badge.textContent=status;
+      head.append(titleWrap,badge);card.appendChild(head);
+      var details=document.createElement("div");details.className="user-order-details";
+      function addDetail(label,value){
+        var wrapper=document.createElement("div");wrapper.className="user-order-detail";
+        var small=document.createElement("small");small.textContent=label;
+        var strong=document.createElement("strong");strong.textContent=value!==undefined&&value!==null&&String(value).trim()!==""?String(value):"Não informado";
+        wrapper.append(small,strong);details.appendChild(wrapper);
+      }
+      addDetail("Setor",order.setor);
+      addDetail("Autorizado por",order.autorizadoPor);
+      addDetail("Valor estimado",launchCurrency(order.valorEstimado));
+      if(order.purchaseInfo){
+        addDetail("Valor efetivo",launchCurrency(order.purchaseInfo.valor));
+        addDetail("Forma de pagamento",order.purchaseInfo.formaPagamento);
+      }
+      addDetail("Marca indicada",order.marcaIndicada);
+      addDetail("Observação",order.observacao);
+      card.appendChild(details);
+      var history=document.createElement("div");history.className="user-order-history";
+      var historyHead=document.createElement("div");historyHead.className="user-order-history-title";
+      var historyTitle=document.createElement("span");historyTitle.textContent="Notificações e atualizações";
+      var unread=order.notificacoes.filter(function(n){return !n.lida;}).length;
+      var markRead=document.createElement("button");markRead.type="button";markRead.className="secondary-btn";markRead.textContent=unread?"Marcar como lidas ("+unread+")":"Todas lidas";markRead.disabled=unread===0;
+      markRead.addEventListener("click",function(){
+        var orders=getLocalPurchases().map(function(item){
+          if(item.protocolo===order.protocolo&&Array.isArray(item.notificacoes))item.notificacoes.forEach(function(n){n.lida=true;});
+          return item;
+        });
+        try{localStorage.setItem("comprasCostalogPedidosLocais",JSON.stringify(orders));}catch(e){}
+        renderMyOrders();updateMyOrdersBadge();
+      });
+      historyHead.append(historyTitle,markRead);history.appendChild(historyHead);
+      if(!order.notificacoes.length){
+        var noEvents=document.createElement("div");noEvents.className="user-order-event";
+        var dot=document.createElement("span");dot.className="user-order-event-dot";
+        var copy=document.createElement("div"),msg=document.createElement("strong");msg.textContent="Pedido registrado";
+        var time=document.createElement("small");time.textContent="Aguardando atualização da equipe de Compras.";
+        copy.append(msg,time);noEvents.append(dot,copy);history.appendChild(noEvents);
+      }else{
+        order.notificacoes.slice().reverse().forEach(function(notification){
+          var event=document.createElement("div");event.className="user-order-event"+(!notification.lida?" unread":"");
+          var dot=document.createElement("span");dot.className="user-order-event-dot";
+          var copy=document.createElement("div");
+          var msg=document.createElement("strong");msg.textContent=notification.mensagem||notificationMessage(notification.status,order);
+          var time=document.createElement("small");time.textContent=formatDateShort(notification.data);
+          copy.append(msg,time);event.append(dot,copy);
+          if(!notification.lida){var label=document.createElement("span");label.className="new-label";label.textContent="NOVA";event.appendChild(label);}
+          history.appendChild(event);
+        });
+      }
+      card.appendChild(history);list.appendChild(card);
+    });
+    updateMyOrdersBadge();
+  }
+  function showMyOrdersPage(){
+    homeView.classList.add("hidden");requestView.classList.add("hidden");comprasView.classList.add("hidden");
+    purchaseRegistrationView.classList.add("hidden");launchesView.classList.add("hidden");launchEditorView.classList.add("hidden");
+    quotesView.classList.add("hidden");quoteEditorView.classList.add("hidden");
+    userOrdersView.classList.remove("hidden");
+    if(activeUserName)document.getElementById("myOrdersName").value=activeUserName;
+    currentRoleLabel.textContent="Área do solicitante";
+    setMyOrdersNotice("");
+    renderMyOrders();window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.getElementById("openMyOrdersBtn").addEventListener("click",showMyOrdersPage);
+  document.getElementById("backFromMyOrdersBtn").addEventListener("click",function(){showHome();window.scrollTo({top:0,behavior:"smooth"});});
+  document.getElementById("searchMyOrdersBtn").addEventListener("click",renderMyOrders);
+  document.getElementById("myOrdersName").addEventListener("keydown",function(event){if(event.key==="Enter"){event.preventDefault();renderMyOrders();}});
+  document.getElementById("enableStatusNotificationsBtn").addEventListener("click",async function(){
+    if(!("Notification" in window)){setMyOrdersNotice("Este navegador não oferece notificações do sistema. As atualizações continuarão visíveis nesta página.");return;}
+    try{
+      var permission=Notification.permission;
+      if(permission==="default")permission=await Notification.requestPermission();
+      if(permission==="granted")setMyOrdersNotice("Notificações do navegador ativadas. Mantenha o site aberto para receber alertas neste dispositivo.");
+      else setMyOrdersNotice("Permissão de notificação não concedida. Você continuará vendo as atualizações em Meus pedidos.");
+    }catch(e){setMyOrdersNotice("Não foi possível ativar notificações neste navegador.");}
+  });
+  function alertRequesterOfStatus(order,notification){
+    var viewedName=(document.getElementById("myOrdersName").value||activeUserName||"").trim();
+    if(normalizePersonName(order.nome)!==normalizePersonName(viewedName))return;
+    setMyOrdersNotice(notification.mensagem||notificationMessage(notification.status,order));
+    if("Notification" in window&&Notification.permission==="granted"&&document.hidden){
+      try{new Notification("Atualização do pedido Costalog",{body:notification.mensagem||notificationMessage(notification.status,order)});}catch(e){}
+    }
+  }
+
   function updatePurchaseStatus(protocol,status){
     var items=getLocalPurchases();
     var updated=false;
